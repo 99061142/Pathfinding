@@ -13,23 +13,35 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
                 <div class="dropdown-menu mt-4" aria-labelledby="changeDropdownMenu">
-                    <button class="dropdown-item">Algorithm</button>
+                    <button class="dropdown-item">Algorithm name</button>
                 </div>
             </li>
             <!-- /Algorithms -->
 
             <!-- Run the algorithm -->
-            <li class="nav-item nav-button">
+            <li class="nav-item">
                 <button class="px-4 bg-green">Run</button>
             </li>
             <!-- /Run the algorithm -->
 
-            <!-- Clear everything on the board -->
+            <!-- Reset all the nodes on the board -->
             <li class="nav-item">
-                <button class="buttton-as-anchor">Clear board</button>
+                <button class="buttton-as-anchor" onclick="change_board('clear_all')">Reset board</button>
             </li>
-            <!-- /Clear everything on the board -->
+            <!-- /Reset all the nodes on the board -->
+
+            <!-- Reset all the walls on the board -->
+            <li class="nav-item">
+                <button class="buttton-as-anchor" onclick="change_board('clear_walls')">Clear walls</button>
+            </li>
+            <!-- /Reset all the walls on the board -->
+
+            <!-- Clear the path the algorithm made -->
+            <li class="nav-item">
+                <button class="buttton-as-anchor" onclick="change_board('clear_path')">Clear algorithm path</button>
+            </li>
+            <!-- /Clear the path the algorithm made -->
         </ul>
     </div>
 </nav>
-<div id="container">
+<div class="container">

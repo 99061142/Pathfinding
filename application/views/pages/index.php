@@ -19,11 +19,17 @@
             Walls
         </p>
     </div>
+
+        <p>
+            <i class="fas fa-square text-warning"></i>
+            Fastest route
+        </p>
+    </div>
 </div>
 
 <p class="text-center mt-4 mb-2">* Information about the algorithm *</p>
 
-<div class="div-center">
+<div class="div-center nodes">
     <?php for($i = 0; $i <= 25; $i++){ ?>
         <div class="div-center">
             <?php for($x = 0; $x <= 75; $x++){ ?>
