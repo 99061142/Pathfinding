@@ -45,3 +45,14 @@ nav button:focus{
 
 
 /* /Navigation styling */
+
+.div-center{
+    display: table; 
+    margin: auto;
+}
+
+.node{
+    display: inline-block;
+    padding: 7.5px;
+    border-style: solid;    
+}

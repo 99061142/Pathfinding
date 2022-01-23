@@ -14,5 +14,8 @@
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css"> <!-- Own styling -->
+
+        <script src="<?= base_url(); ?>js/homepage.js" defer></script> <!-- Code for the homepage -->
+
     </head>
     <body>
