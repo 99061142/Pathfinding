@@ -1,0 +1,47 @@
+/* Navigation styling */
+
+
+/* Every element inside the navigation */
+nav *{
+    color: white !important;
+}
+
+/* Every element inside the navigation bar */
+.nav-item{
+    margin: 0px 5px;
+}
+
+/* Color of the navigation */
+nav,
+.dropdown-menu{
+    background-color: #009dc4;
+}
+
+/* Hover color for the elements inside the navigation */
+.bg-green,
+.nav-item:not(.nav-button):hover,
+.nav-item.show,
+.dropdown-item:hover{
+    background-color: #28a745;
+}
+
+/* Button as anchor */
+.buttton-as-anchor{
+    background-color: transparent;
+    border: none;
+}
+
+/* Outline of button inside the navigation */
+nav button:focus{
+    outline: none;
+}
+
+/* Mouse styling for the elements inside the navigation */
+.nav-item,
+.nav-item > button,
+.dropdown-item{
+    cursor: pointer;
+}
+
+
+/* /Navigation styling */

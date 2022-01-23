@@ -2,13 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages extends CI_Controller{
-	public function view($page = 'home'){
+	public function view($page = 'index'){
 		if(!file_exists(APPPATH.'views/pages/' .$page . '.php')){
 			show_404(); # 404 Page
 		}
 
 		$this->load->helper('url'); # Let the navigation bar use the URL inbuild functions
-
 
 		$this->load->view('templates/header'); # Header
 		$this->load->view('templates/navigation'); # Navigation

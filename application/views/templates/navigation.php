@@ -1,7 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-success mb-4">
-    <!-- Title / homepage -->
-    <a class="navbar-brand p-0 pr-3" href="<?= site_url() ?>">Home</a>
-    <!-- /Title / homepage -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand">Pathfinding</a> <!-- /Title -->
 
     <!-- Navigation toggler -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,25 +7,28 @@
     </button>
     <!-- /Navigation toggler -->
 
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse mt-1" id="navbarNavDropdown">
         <ul class="navbar-nav">
-
-            <!-- About  -->
-            <li class="navbar-nav">
-                <a class="nav-link text-white" href="<?= site_url('about') ?>">About</a>
-            </li>
-            <!-- /About -->
-
-            <!-- navigation tests -->
+            <!-- Algorithms -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">test</a>
-                <div class="dropdown-menu" aria-labelledby="changeDropdownMenu">
-                    <a class="dropdown-item" href="">test</a>
-                    <a class="dropdown-item" href="">test</a>
-                    <a class="dropdown-item" href="">test</a>
+                <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
+                <div class="dropdown-menu mt-4" aria-labelledby="changeDropdownMenu">
+                    <button class="dropdown-item">Algorithm</button>
                 </div>
             </li>
-            <!-- /navigation tests -->
+            <!-- /Algorithms -->
+
+            <!-- Run the algorithm -->
+            <li class="nav-item nav-button">
+                <button class="px-4 bg-green">Run</button>
+            </li>
+            <!-- /Run the algorithm -->
+
+            <!-- Clear everything on the board -->
+            <li class="nav-item">
+                <button class="buttton-as-anchor">Clear board</button>
+            </li>
+            <!-- /Clear everything on the board -->
         </ul>
     </div>
 </nav>

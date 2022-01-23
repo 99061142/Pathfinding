@@ -24,10 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$base_url = "http://" . $_SERVER['HTTP_HOST']; # Add the protocol + hostname
-$base_url = dirname($_SERVER['SCRIPT_NAME']); # Path of the parent directory (after the hostname) without the index file
 
-$config['base_url'] = $base_url;
+# Path of the parent directory (after the hostname) without the index file
+$config['base_url'] = dirname($_SERVER['SCRIPT_NAME']);
 
 /*
 |--------------------------------------------------------------------------
