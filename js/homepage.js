@@ -1,4 +1,7 @@
 const nodes = document.querySelectorAll(".node"); // All the nodes
+const algorithm_buttons = document.getElementById("algorithm-dropdown").querySelectorAll("button"); // All the buttons to choose the algorithm
+const run_button = document.getElementById("run-button");
+
 
 var has_start_node = false; // If the board has a start node
 var has_end_node = false; // If the board has a end node
@@ -17,10 +20,10 @@ function starting_points(){
     }
 
     // Add the font to the node
-    icon_classes(start_node, "start")
-    icon_classes(end_node, "end")
+    icon_classes(start_node, "start");
+    icon_classes(end_node, "end");
 }
-starting_points() // Always make the random start / end position
+starting_points(); // Always make the random start / end positions
 
 
 
@@ -50,13 +53,13 @@ function change_board(info){
 function icon_classes(node, position){
     // If the starting node must be made
     if(position == "start"){
-        node.classList.add("start_node", "fas", "fa-arrow-right", "fa-sm");
+        node.classList.add("node", "start-node", "fas", "fa-arrow-right");
         has_start_node = true;
     }
     
     // If the ending node must be made
     else{
-        node.classList.add("end_node", "fas", "fa-home", "fa-sm");
+        node.classList.add("node", "end-node", "fas", "fa-home");
         has_end_node = true;
     }
 }
@@ -79,7 +82,7 @@ nodes.forEach(function(node){
         // If the node is a starting / ending position
         if(node.classList.contains("fas")){
             // If the node is the starting position
-            if(node.classList.contains("start_node")){
+            if(node.classList.contains("start-node")){
                 has_start_node = false;
             }
             
@@ -97,17 +100,37 @@ nodes.forEach(function(node){
             if(node.style.backgroundColor == ""){
                 // If there is not an starting position on the board
                 if(!has_start_node){
-                    icon_classes(node, "start") // Make the node the starting position
+                    icon_classes(node, "start"); // Make the node the starting position
                 }
                 
                 // If there is an starting position on the board
                 else{
                     // If there is not an ending position on the board
                     if(!has_end_node){
-                        icon_classes(node, "end") // Make the node the ending position
+                        icon_classes(node, "end"); // Make the node the ending position
                     }
                 }
             }
         }
+    }
+});
+
+
+// For every algorithm option inside the nav
+algorithm_buttons.forEach(function(algorithm_button){
+    // If the user clicks on an algorithm option
+    algorithm_button.onclick = function(){
+        var algorithm_name = algorithm_button.innerText; // Algorithm name
+
+        run_button.innerText = `Run ${algorithm_name}`; // Show the algorithm name inside the run button
+
+        algorithm_name = algorithm_name.toLowerCase();
+
+        // If the algorithm name includes a '*'
+        if(algorithm_name.includes("*")){
+            algorithm_name = algorithm_name.replace("*", "_star");
+        }
+
+        document.getElementById("run-button").onclick = window[`${algorithm_name}_start`]; // Starting function if the user clicks on the run button inside the nav
     }
 });

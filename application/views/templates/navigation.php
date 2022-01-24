@@ -12,15 +12,16 @@
             <!-- Algorithms -->
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
-                <div class="dropdown-menu mt-4" aria-labelledby="changeDropdownMenu">
-                    <button class="dropdown-item">Algorithm name</button>
+                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
+                    <button class="dropdown-item">Dijkstra</button>
+                    <button class="dropdown-item">A*</button>
                 </div>
             </li>
             <!-- /Algorithms -->
 
             <!-- Run the algorithm -->
             <li class="nav-item">
-                <button class="px-4 bg-green">Run</button>
+                <button class="px-4 bg-green" id="run-button">Run</button>
             </li>
             <!-- /Run the algorithm -->
 

@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-around">
+<div class="d-flex justify-content-around my-2">
     <div>
         <p>
             <i class="fas fa-arrow-right"></i>
@@ -27,11 +27,11 @@
     </div>
 </div>
 
-<p class="text-center mt-4 mb-2">* Information about the algorithm *</p>
+<p class="text-center">* Information about the algorithm *</p>
 
-<div class="div-center nodes">
-    <?php for($i = 0; $i <= 25; $i++){ ?>
-        <div class="div-center">
+<div class="nodes my-2 d-table">
+    <?php for($i = 0; $i <= 35; $i++){ ?>
+        <div>
             <?php for($x = 0; $x <= 75; $x++){ ?>
                 <div class="node"></div>
             <?php } ?>

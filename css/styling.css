@@ -51,8 +51,20 @@ nav button:focus{
     margin: auto;
 }
 
-.node{
-    display: inline-block;
+
+.node:not(.start-node):not(.end-node){
+    width: 15px;
+    height:15px;
     padding: 7.5px;
-    border-style: solid;    
+}  
+
+.start-node,
+.end-node{
+    width: 19px;
+    height:19px;
+}
+
+.node{
+    float: left;
+    border: 2px solid; 
 }
