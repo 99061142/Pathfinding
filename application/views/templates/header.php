@@ -16,10 +16,12 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css"> <!-- Own styling -->
 
         <script src="<?= base_url(); ?>js/homepage.js" defer></script> <!-- Code to let the page work -->
+        <script src="<?= base_url(); ?>js/mazes.js" defer></script> <!-- Code to let the page work -->
 
         <!-- Pathfinding algorithms -->
-        <script src="<?= base_url(); ?>js/dijkstra.js"></script> <!-- Code to let the page work -->
-        <script src="<?= base_url(); ?>js/a-star.js"></script> <!-- Code to let the page work -->
+        <script src="<?= base_url(); ?>js/path-without-walls.js"></script> 
+        <script src="<?= base_url(); ?>js/dijkstra.js"></script>
+        <script src="<?= base_url(); ?>js/a-star.js"></script>
         <!-- /Pathfinding algorithms -->
     </head>
     <body>
