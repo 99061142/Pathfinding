@@ -31,7 +31,7 @@
 
             <!-- Run the algorithm -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick=path_withoud_walls_start()>Run</button>
+                <button class="px-4 bg-green" id="run-button" onclick=get_path()>Run</button>
             </li>
             <!-- /Run the algorithm -->
 
