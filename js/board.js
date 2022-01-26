@@ -1,12 +1,12 @@
-function get_path(){
+function make_path(){
     const start_node = document.getElementById("start-node") // Start node
     const end_node = document.getElementById("end-node") // End node
 
     // If the start / end node is on the board
     if(start_node != null && end_node != null){
         board = make_board(); // Make the board
-        start = find_start(start_node);
-        find_path(board, start);
+        start = start_position(start_node); // Get the position of the starting node
+        path(board, start); // Make the path
     }
 }
 
@@ -16,24 +16,19 @@ function make_board(){
     board = []; // Board
 
     // For every row with nodes
-    document.querySelectorAll(".nodes > div").forEach(function(nodes_row){
+    document.querySelectorAll("#nodes > div").forEach(function(nodes_row){
         row_nodes = []; // Row with nodes
 
         // For every node inside the row
         nodes_row.querySelectorAll(".node").forEach(function(node){
-            // If the node is the starting position
-            if(node.id == "start-node"){
-                row_nodes.push(-1);
+            // If the node is the start position, or empty
+            if(node.id == "" || node.id == "start-node"){
+                row_nodes.push(0);
             }
 
             // If the node is the end position
             else if(node.id == "end-node"){
                 row_nodes.push(2);
-            }
-
-            // If the node is empty
-            else if(node.id == ""){
-                row_nodes.push(0);
             }
 
             // If the node is a wall
@@ -49,7 +44,7 @@ function make_board(){
 }
 
 
-function find_start(start_node){
+function start_position(start_node){
     var parent = start_node.parentElement; // Get the row element of the node
 
     var row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Get the index of the row
@@ -59,7 +54,6 @@ function find_start(start_node){
 }
 
 
-function find_path(board, start){
-    console.log(board)
-    console.log(start)
+function path(board, start){
+    // pass
 }
