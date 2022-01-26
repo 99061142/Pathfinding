@@ -110,7 +110,6 @@ document.querySelectorAll(".node").forEach(function(node){
     }
 });
 
-
 // For every algorithm option inside the nav
 document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach(function(algorithm_button){
     // If the user clicks on an algorithm option

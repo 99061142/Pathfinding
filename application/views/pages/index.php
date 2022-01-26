@@ -30,9 +30,9 @@
 <p class="text-center">* Information about the algorithm *</p>
 
 <div class="nodes my-2">
-    <?php for($i = 0; $i <= 35; $i++){ ?>
+    <?php for($i = 0; $i <= 5; $i++){ ?>
         <div>
-            <?php for($x = 0; $x <= 75; $x++){ ?>
+            <?php for($x = 0; $x <= 5; $x++){ ?>
                 <div class="node"></div>
             <?php } ?>
         </div>
