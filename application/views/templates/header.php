@@ -15,14 +15,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css"> <!-- Own styling -->
 
-        <script src="<?= base_url(); ?>js/homepage.js" defer></script> <!-- Code to let the page work -->
-        <script src="<?= base_url(); ?>js/mazes.js" defer></script> <!-- Code to let the page work -->
-
-        <!-- Pathfinding algorithms -->
-        <script src="<?= base_url(); ?>js/dijkstra.js"></script>
-        <script src="<?= base_url(); ?>js/a-star.js"></script>
-        <!-- /Pathfinding algorithms -->
-
-        <script src="<?= base_url(); ?>js/board-information.js"></script>
+        <script src="<?= base_url(); ?>js/homepage.js" defer></script> <!-- Let the user interact with the page -->
+        <script src="<?= base_url(); ?>js/board.js"></script> <!-- Find the fastest path -->
     </head>
     <body>
