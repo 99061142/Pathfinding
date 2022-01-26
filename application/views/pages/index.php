@@ -29,7 +29,7 @@
 
 <p class="text-center">* Information about the algorithm *</p>
 
-<div class="nodes my-2">
+<div class="my-2" id="nodes">
     <?php for($i = 0; $i <= 5; $i++){ ?>
         <div>
             <?php for($x = 0; $x <= 5; $x++){ ?>

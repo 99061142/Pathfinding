@@ -46,7 +46,7 @@ nav button:focus{
 
 /* /Navigation styling */
 
-.nodes{
+#nodes{
     display: table; 
     margin: 0 auto;
 }
