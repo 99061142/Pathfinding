@@ -1,4 +1,4 @@
-const node_positions = {
+const nodes_information = {
     start: {
         classes: ["fas", "fa-arrow-right"],
         id: "start-node",
@@ -8,7 +8,7 @@ const node_positions = {
     end: {
         classes: ["fas", "fa-home"],
         id: "end-node",
-        in_board: false    
+        in_board: false 
     }
 };
 
@@ -24,13 +24,14 @@ function clear_node_background(info='all'){
 
     // If the path background must be deleted
     if(info == "path" || info == "all"){
-        node_backgrounds.push(".node.pathmaking", ".node.fastest_path");
+        // pass
     }
 
     // Delete the background of every node with the specific class(es)
     document.querySelectorAll(...node_backgrounds).forEach(function(node){
+        node.removeAttribute('id'); // Remove the id
         node.removeAttribute('style'); // Remove the background color
-        node.className = "node"; // Remove the specific classes
+        node.className = "node border border-dark"; // Remove the specific classes
     });
 }
 
@@ -38,12 +39,13 @@ function clear_node_background(info='all'){
 // Delete the start and/or end position
 function clear_positions(){
     document.querySelectorAll("#start-node, #end-node").forEach(function(node){
-        node.className = "node"; // Remove the specific classes
+        node.className = "node border border-dark"; // Remove the specific classes
+        node.removeAttribute('id');
         node.removeAttribute('style');
     });
 
-    node_positions['start']['in_board'] = false;
-    node_positions['end']['in_board'] = false;
+    nodes_information['start']['in_board'] = false;
+    nodes_information['end']['in_board'] = false;
 }
 
 
@@ -56,9 +58,9 @@ function clear_board(){
 
 // Make the start or end position
 function make_position(node, position){
-    node.classList.add(...node_positions[position]['classes']); // Add the specific classes
-    node.id = node_positions[position]['id']; // Add the specific id
-    node_positions[position]['in_board'] = true;
+    node.classList.add(...nodes_information[position]['classes']); // Add the specific classes
+    node.id = nodes_information[position]['id']; // Add the specific id
+    nodes_information[position]['in_board'] = true;
     node.style.backgroundColor = (position == "start") ? "green" : "red";
 }
 
@@ -70,7 +72,7 @@ document.querySelectorAll(".node").forEach(function(node){
     // If the user hovers over the node
     node.addEventListener("mouseover", function(mouse_event){
         // When the user holds down the left mouse button, and the node is not the starting / ending position
-        if(mouse_event.buttons == 1 && node.id != node_positions['start']['id'] && node.id != node_positions['end']['id']){
+        if(mouse_event.buttons == 1 && node.id != nodes_information['start']['id'] && node.id != nodes_information['end']['id']){
             // Make the node a wall
             node.style.backgroundColor = "black";
             node.id = "wall";
@@ -81,11 +83,11 @@ document.querySelectorAll(".node").forEach(function(node){
     // If the user clicks on a node
     node.onclick = function(){ 
         // If the node is the start / end position
-        if(node.id == node_positions['start']['id'] || node.id == node_positions['end']['id']){
-            var position = (node.id == node_positions['start']['id']) ? "start" : "end"
+        if(node.id == nodes_information['start']['id'] || node.id == nodes_information['end']['id']){
+            var position = (node.id == nodes_information['start']['id']) ? "start" : "end"
 
-            node_positions[position]['in_board'] = false;
-            node.classList.remove(...node_positions[position]['classes'])
+            nodes_information[position]['in_board'] = false;
+            node.classList.remove(...nodes_information[position]['classes'])
             node.removeAttribute('id');
             node.removeAttribute('style');
         }
@@ -94,35 +96,18 @@ document.querySelectorAll(".node").forEach(function(node){
         else{
             if(node.id.value == undefined && !node.hasAttribute("style")){
                 // If there is not an starting position on the board
-                if(!node_positions['start']['in_board']){
+                if(!nodes_information['start']['in_board']){
                     make_position(node, "start"); // Make the node the starting position
                 }
                 
                 // If there is an starting position on the board
                 else{
                     // If there is not an ending position on the board
-                    if(!node_positions['end']['in_board']){
+                    if(!nodes_information['end']['in_board']){
                         make_position(node, "end"); // Make the node the ending position
                     }
                 }
             }
         }
-    }
-});
-
-// For every algorithm option inside the nav
-document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach(function(algorithm_button){
-    // If the user clicks on an algorithm option
-    algorithm_button.onclick = function(){
-        var algorithm_name = algorithm_button.innerText.toLowerCase(); // Algorithm name
-
-        document.getElementById("run-button").innerText = `Run ${algorithm_name}`; // Show the algorithm name inside the run button
-
-        // If the algorithm name includes a '*'
-        if(algorithm_name.includes("*")){
-            algorithm_name = algorithm_name.replace("*", "_star");
-        }
-
-        document.getElementById("run-button").onclick = window[`${algorithm_name}_start`]; // Starting function if the user clicks on the run button inside the nav
     }
 });
