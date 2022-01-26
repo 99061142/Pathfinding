@@ -46,25 +46,19 @@ nav button:focus{
 
 /* /Navigation styling */
 
-#nodes{
-    display: table; 
-    margin: 0 auto;
+
+/* Board styling */
+
+
+.node{
+    width: 17px;
+    height: 17px;
 }
-
-
-.node:not(#start-node):not(#end-node){
-    width: 15px;
-    height:15px;
-    padding: 7.5px;
-}  
 
 #start-node,
 #end-node{
-    width: 19px;
-    height:19px;
+    display: block;
 }
 
-.node{
-    float: left;
-    border: 2px solid;
-}
+
+/* /Board styling */
