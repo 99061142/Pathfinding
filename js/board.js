@@ -55,5 +55,6 @@ function start_position(start_node){
 
 
 function path(board, start){
-    // pass
+    console.log(board);
+    console.log(start);
 }

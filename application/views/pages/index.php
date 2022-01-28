@@ -1,32 +1,32 @@
 <div class="d-flex justify-content-around my-2">
-    <p>
-        <i class="fas fa-arrow-right"></i>
+    <p class="m-0">
+        <i class="fas fa-arrow-right border border-dark bg-success"></i>
         Starting point
     </p>
 
-    <p>
-        <i class="fas fa-home"></i>
+    <p class="m-0">
+        <i class="fas fa-home border border-dark bg-danger"></i>
         End point
     </p>
 
-    <p>    
-        <i class="fas fa-square"></i>
+    <div class="d-flex justify-content-center align-items-center">    
+        <div class="border border-dark mr-1" style="background-color: black; height: 18px; width: 18px;"></div>
         Walls
-    </p>
+    </div>
 
-    <p>
-        <i class="fas fa-square text-warning"></i>
+    <div class="d-flex justify-content-center align-items-center">    
+        <div class="border border-dark bg-warning mr-1" style="height: 18px; width: 18px;"></div>
         Fastest route
-    </p>
+    </div>
 </div>
 
 <p class="text-center">* Information about the algorithm *</p>
 
-<div class="d-flex justify-content-center my-2" id="nodes">
-    <?php for($row = 0; $row < 75; $row++){ ?>
+<div class="my-2 d-table" id="nodes">
+    <?php for($row = 0; $row < 33; $row++){ ?>
         <div>
-            <?php for($i = 0; $i < 32; $i++){ ?>
-                <div class="node border border-dark"></div>
+            <?php for($i = 0; $i < 65; $i++){ ?>
+                <div class="border border-dark float-left node"></div>
             <?php } ?>
         </div>
     <?php } ?>

@@ -1,12 +1,14 @@
+const standard_node_classes = "node border border-dark float-left node"; // Standard classes for the node
+
 const nodes_information = {
     start: {
-        classes: ["fas", "fa-arrow-right"],
+        classes: ["fas", "fa-arrow-right", "bg-success"],
         id: "start-node",
         in_board: false
     },
 
     end: {
-        classes: ["fas", "fa-home"],
+        classes: ["fas", "fa-home", "bg-danger"],
         id: "end-node",
         in_board: false 
     }
@@ -31,7 +33,7 @@ function clear_node_background(info='all'){
     document.querySelectorAll(...node_backgrounds).forEach(function(node){
         node.removeAttribute('id'); // Remove the id
         node.removeAttribute('style'); // Remove the background color
-        node.className = "node border border-dark"; // Remove the specific classes
+        node.className = standard_node_classes; // Remove the specific classes
     });
 }
 
@@ -39,7 +41,7 @@ function clear_node_background(info='all'){
 // Delete the start and/or end position
 function clear_positions(){
     document.querySelectorAll("#start-node, #end-node").forEach(function(node){
-        node.className = "node border border-dark"; // Remove the specific classes
+        node.className = standard_node_classes; // Remove the specific classes
         node.removeAttribute('id');
         node.removeAttribute('style');
     });
@@ -61,10 +63,7 @@ function make_position(node, position){
     node.classList.add(...nodes_information[position]['classes']); // Add the specific classes
     node.id = nodes_information[position]['id']; // Add the specific id
     nodes_information[position]['in_board'] = true;
-    node.style.backgroundColor = (position == "start") ? "green" : "red";
 }
-
-
 
 
 // For every node on the board

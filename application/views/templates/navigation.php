@@ -50,7 +50,7 @@
 
             <!-- Clear the path the algorithm made -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="clear_node_background('path')">Clear algorithm path</button>
+                <button class="buttton-as-anchor" onclick="">Clear algorithm path</button>
             </li>
             <!-- /Clear the path the algorithm made -->
         </ul>
