@@ -1,5 +1,6 @@
 const standard_node_classes = "node border border-dark float-left node"; // Standard classes for the node
 
+
 const nodes_information = {
     start: {
         classes: ["fas", "fa-arrow-right", "bg-success"],

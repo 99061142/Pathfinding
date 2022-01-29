@@ -55,5 +55,5 @@
             <!-- /Clear the path the algorithm made -->
         </ul>
     </div>
-</nav>
+</nav>  
 <div class="container">

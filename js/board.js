@@ -5,8 +5,10 @@ function make_path(){
     // If the start / end node is on the board
     if(start_node != null && end_node != null){
         board = make_board(); // Make the board
-        start = start_position(start_node); // Get the position of the starting node
-        path(board, start); // Make the path
+        start = get_position(start_node); // Get the position of the starting node
+        end = get_position(end_node);
+
+        path(board, start, end); // Make the path
     }
 }
 
@@ -21,19 +23,14 @@ function make_board(){
 
         // For every node inside the row
         nodes_row.querySelectorAll(".node").forEach(function(node){
-            // If the node is the start position, or empty
-            if(node.id == "" || node.id == "start-node"){
-                row_nodes.push(0);
-            }
-
-            // If the node is the end position
-            else if(node.id == "end-node"){
-                row_nodes.push(2);
-            }
-
-            // If the node is a wall
-            else{
+            // If the node is a wall or the start position
+            if(node.id == "wall" || node.id == "start-node"){
                 row_nodes.push(1);
+            }
+
+            // If the node is empty or the end position
+            else{
+                row_nodes.push(0);
             }
         });
 
@@ -44,17 +41,76 @@ function make_board(){
 }
 
 
-function start_position(start_node){
-    var parent = start_node.parentElement; // Get the row element of the node
+function get_position(node){
+    var parent = node.parentElement; // Parent of the node
 
-    var row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Get the index of the row
-    var index = Array.from(parent.children).indexOf(start_node); // Get the position index inside the row
+    var row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Row of the node
+    var col = Array.from(parent.children).indexOf(node); // Column of the node
 
-    return {row: row, index: index}; // Return the position of the start node
+    return [row, col];
 }
 
 
-function path(board, start){
-    console.log(board);
-    console.log(start);
+// Get the element of the node
+function get_element(row, col){
+    var row = document.getElementById('nodes').children[row]; // Row of the node
+    var element = row.children[col]; // Get the element
+
+    return element;
+}
+
+
+/// Change the background color
+function change_background(element, info){
+    // If the node is found, and not the fastest route
+    if(info == "found"){    
+        element.classList.add("bg-secondary");
+    }
+}
+
+
+// If the node is found
+function found_node(row, col){
+    element = get_element(row, col) // Get the element
+    change_background(element, "found") // Change the background color
+}
+
+
+// Wait an x amount of miliseconds
+function sleep(time){
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+
+// Check each node to until the ending node is found
+async function path(board, start, end){
+    var positions = [start] // Positions of the node(s)
+
+    var directions = [[-1, 0], [0, 1], [1, 0], [0, -1]] // Up, right, down and left
+
+    // Loop through every position
+    for(const [row, col] of positions){
+        // Check every direction
+        for(const [direction_row, direction_col] of directions){
+            row_num = row + direction_row // New row of the node
+            col_num = col + direction_col // New column of the node
+
+            // IF the ending position is found
+            if(row_num == end[0] && col_num == end[1]){
+                positions = []
+                break
+            }
+
+            // If the block is an empty node
+            if(board[row_num] && board[row_num][col_num] === 0){
+                found_node(row_num, col_num) // Change the backgroundcolor
+
+                positions.push([row_num, col_num]) // Let the node be checked the next round
+                
+                board[row_num][col_num] = 1 // Change the node to the wall value
+
+                await sleep(50) // Wait a few miliseconds
+            }
+        }
+    }
 }

@@ -23,9 +23,9 @@
 <p class="text-center">* Information about the algorithm *</p>
 
 <div class="my-2 d-table" id="nodes">
-    <?php for($row = 0; $row < 33; $row++){ ?>
+    <?php for($row = 0; $row < 10; $row++){ ?>
         <div>
-            <?php for($i = 0; $i < 65; $i++){ ?>
+            <?php for($i = 0; $i < 10; $i++){ ?>
                 <div class="border border-dark float-left node"></div>
             <?php } ?>
         </div>
