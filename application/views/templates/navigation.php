@@ -13,8 +13,9 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
                 <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
+                    <button class="dropdown-item">BFS</button>
                     <button class="dropdown-item">Dijkstra</button>
-                    <button class="dropdown-item">A*</button>
+                    <button class="dropdown-item">AStar</button>
                 </div>
             </li>
             <!-- /Algorithms -->

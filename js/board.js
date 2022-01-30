@@ -1,13 +1,12 @@
 function make_path(){
-    const start_node = document.getElementById("start-node") // Start node
-    const end_node = document.getElementById("end-node") // End node
+    const start_node = document.getElementById("start-node"); // Start node
+    const end_node = document.getElementById("end-node"); // End node
 
     // If the start / end node is on the board
     if(start_node != null && end_node != null){
-        board = make_board(); // Make the board
-        start = get_position(start_node); // Get the position of the starting node
-        end = get_position(end_node);
-
+        const board = make_board(); // Make the board
+        const start = get_position(start_node); // Get the position of the start node
+        const end = get_position(end_node); // Get the position of the end node 
         path(board, start, end); // Make the path
     }
 }
@@ -15,11 +14,11 @@ function make_path(){
 
 // Make the board
 function make_board(){
-    board = []; // Board
+    const board = []; // Board
 
     // For every row with nodes
     document.querySelectorAll("#nodes > div").forEach(function(nodes_row){
-        row_nodes = []; // Row with nodes
+        const row_nodes = []; // Row with nodes
 
         // For every node inside the row
         nodes_row.querySelectorAll(".node").forEach(function(node){
@@ -41,11 +40,12 @@ function make_board(){
 }
 
 
+// Get the position of the node inside the board
 function get_position(node){
-    var parent = node.parentElement; // Parent of the node
+    const parent = node.parentElement; // Parent of the node
 
-    var row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Row of the node
-    var col = Array.from(parent.children).indexOf(node); // Column of the node
+    const row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Row of the node
+    const col = Array.from(parent.children).indexOf(node); // Column of the node
 
     return [row, col];
 }
@@ -53,8 +53,8 @@ function get_position(node){
 
 // Get the element of the node
 function get_element(row, col){
-    var row = document.getElementById('nodes').children[row]; // Row of the node
-    var element = row.children[col]; // Get the element
+    const element_row = document.getElementById('nodes').children[row]; // Row of the node
+    const element = element_row.children[col]; // Get the element
 
     return element;
 }
@@ -64,19 +64,19 @@ function get_element(row, col){
 function change_background(element, info){
     // If the node is found, and not the fastest route
     if(info == "found"){    
-        element.classList.add("bg-secondary");
+        element.classList.add("bg-primary");
     }
 }
 
 
 // If the node is found
 function found_node(row, col){
-    element = get_element(row, col) // Get the element
+    const element = get_element(row, col) // Get the element
     change_background(element, "found") // Change the background color
 }
 
 
-// Wait an x amount of miliseconds
+// Wait an x amount of milliseconds
 function sleep(time){
     return new Promise(resolve => setTimeout(resolve, time));
 }
@@ -84,20 +84,21 @@ function sleep(time){
 
 // Check each node to until the ending node is found
 async function path(board, start, end){
-    var positions = [start] // Positions of the node(s)
+    const positions = [start]; // Positions of the node(s)
+    const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]] // Up, right, down and left
 
-    var directions = [[-1, 0], [0, 1], [1, 0], [0, -1]] // Up, right, down and left
+    var ending_found = false
 
     // Loop through every position
     for(const [row, col] of positions){
         // Check every direction
         for(const [direction_row, direction_col] of directions){
-            row_num = row + direction_row // New row of the node
-            col_num = col + direction_col // New column of the node
+            const row_num = row + direction_row // New row of the node
+            const col_num = col + direction_col // New column of the node
 
-            // IF the ending position is found
+            // Check if the ending position is found
             if(row_num == end[0] && col_num == end[1]){
-                positions = []
+                ending_found = true
                 break
             }
 
@@ -109,8 +110,13 @@ async function path(board, start, end){
                 
                 board[row_num][col_num] = 1 // Change the node to the wall value
 
-                await sleep(50) // Wait a few miliseconds
+                await sleep(25) // Wait an x amount of milliseconds
             }
+        }
+        
+        // If the ending position is found
+        if(ending_found){
+            break
         }
     }
 }
