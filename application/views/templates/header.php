@@ -13,11 +13,15 @@
         <!-- /Bootstrap -->
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
-        
-        <script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the functionallity to let the page work -->
-        <script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Let the user interact with the board -->
-        <script src="<?= base_url(); ?>js/board.js"></script> <!-- Find the fastest path -->
-
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css">
+
+        <script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the attributes / onclicks to let the page work -->
+        <script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Functions to change the styling for the board -->
+        <script src="<?= base_url(); ?>js/board.js"></script> <!-- Functions to get the path  -->
+        <script src="<?= base_url(); ?>js/code.js"></script> <!-- Functions that does NOT change the board / find the fastest path-->
+
+        <!-- Pathfinding algorithm codes -->
+        <script src="<?= base_url(); ?>js/bfs.js"></script>
+        <!-- /Pathfinding algorithm codes -->
     </head>
     <body>
