@@ -38,7 +38,7 @@ nav button:focus{
 
 /* Mouse styling for the elements inside the navigation */
 .nav-item,
-.nav-item > button,
+.nav-item > button:not(#run-button:disabled),
 .dropdown-item{
     cursor: pointer;
 }
