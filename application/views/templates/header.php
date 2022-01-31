@@ -13,9 +13,11 @@
         <!-- /Bootstrap -->
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
-        <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css"> <!-- Own styling -->
-
-        <script src="<?= base_url(); ?>js/homepage.js" defer></script> <!-- Let the user interact with the page -->
+        
+        <script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the functionallity to let the page work -->
+        <script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Let the user interact with the board -->
         <script src="<?= base_url(); ?>js/board.js"></script> <!-- Find the fastest path -->
+
+        <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css">
     </head>
     <body>
