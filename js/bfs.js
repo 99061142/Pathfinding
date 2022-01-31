@@ -1,7 +1,5 @@
 // Check each node to until the ending node is found
 async function path_bfs(board, start, end){
-    finding_path = true
-
     const positions = [start]; // Positions of the node(s)
     const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
 
@@ -39,5 +37,5 @@ async function path_bfs(board, start, end){
             break;
         }
     }
-    run_button_activation()
+    run_button_activation() // Change the run buttons styling
 }
