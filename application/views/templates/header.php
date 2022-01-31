@@ -17,7 +17,7 @@
 
         <script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the attributes / onclicks to let the page work -->
         <script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Functions to change the styling for the board -->
-        <script src="<?= base_url(); ?>js/board.js"></script> <!-- Functions to get the path  -->
+        <script src="<?= base_url(); ?>js/call-pathfinding.js"></script> <!-- Functions to get the path  -->
         <script src="<?= base_url(); ?>js/code.js"></script> <!-- Functions that does NOT change the board / find the fastest path-->
 
         <!-- Pathfinding algorithm codes -->
