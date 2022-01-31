@@ -27,11 +27,11 @@
 
 <p class="text-center">* Information about the algorithm *</p>
 
-<div class="my-2 d-table" id="nodes">
-    <?php for($row = 0; $row < 25; $row++){ ?>
+<div class="my-2 d-table" id="nodes" style="margin: auto;">
+    <?php for($row = 0; $row < 40; $row++){ ?>
         <div>
-            <?php for($i = 0; $i < 25; $i++){ ?>
-                <div class="border border-dark float-left node"></div>
+            <?php for($i = 0; $i < 40; $i++){ ?>
+                <div class="node border border-dark float-left"></div>
             <?php } ?>
         </div>
     <?php } ?>

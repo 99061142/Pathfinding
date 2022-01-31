@@ -49,16 +49,20 @@ nav button:focus{
 
 /* Board styling */
 
-.node:not(#start-node):not(#end-node){
+.node:not(#start):not(#end){
     width: 15px;
     height:15px;
     padding: 7.5px;
 }  
 
-#start-node,
-#end-node{
+#start,
+#end{
     width: 17px;
     height:17px;
+}
+
+#wall{
+    background-color: black;
 }
 
 
