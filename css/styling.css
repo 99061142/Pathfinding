@@ -25,6 +25,7 @@ nav,
     background-color: #28a745;
 }
 
+
 /* Button as anchor */
 .buttton-as-anchor{
     background-color: transparent;
@@ -63,6 +64,10 @@ nav button:focus{
 
 #wall{
     background-color: black;
+}
+
+#run-button:disabled{
+    background-color: #dc3545;
 }
 
 
