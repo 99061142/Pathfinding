@@ -14,8 +14,8 @@
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
                 <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
                     <button class="dropdown-item">BFS</button>
-                    <button class="dropdown-item">Dijkstra</button>
-                    <button class="dropdown-item">AStar</button>
+                    <button class="dropdown-item" disabled>Dijkstra</button>
+                    <button class="dropdown-item" disabled>AStar</button>
                 </div>
             </li>
             <!-- All the pathfinding algorithm options -->
@@ -25,7 +25,7 @@
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Layouts</a>
                 <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
                     <button class="dropdown-item" onclick=clear_board()>Normal</button>
-                    <button class="dropdown-item">Maze</button>
+                    <button class="dropdown-item" disabled>Maze</button>
                 </div>
             </li>
             <!-- Choose the layout of the board -->
@@ -33,7 +33,7 @@
 
             <!-- Run the algorithm -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick=make_path()>Run</button>
+                <button class="px-4 bg-green" id="run-button" disabled>Run</button>
             </li>
             <!-- /Run the algorithm -->
 
