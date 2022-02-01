@@ -1,3 +1,4 @@
+const button = document.getElementById("run-button");
 const standard_node_classes = "node border border-dark float-left"; // Standard classes for the node
 const speeds = {slow: 100, normal: 50, fast: 20, instant: 0} // Speed options to find the end position
 var speed = speeds['normal']; // Speed the user chose
@@ -9,18 +10,8 @@ document.querySelectorAll(".node").forEach(function(node){
     node.addEventListener("mouseover", function(mouse_event){
         // If the user holds down the left mouse button
         if(mouse_event.buttons == 1){
-            var empty_node = true
-
-            // Check if the node is not an important node
-            for(key in positions_information){
-                if(node.id == positions_information[key].id){
-                    empty_node = false
-                    break
-                }
-            }
-            
-            // If the node is empty
-            if(empty_node){
+            // If the node is empty, and the path is not being searched for
+            if(!node.id && !find_path){
                 node.id = "wall"; // Make the node a wall
             }
         }
@@ -70,9 +61,14 @@ document.querySelectorAll(".node").forEach(function(node){
 document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach(function(algorithm_button){
     // If the user clicks on an algorithm option
     algorithm_button.onclick = function(){
+        if(button.disabled && !find_path){
+            button.disabled = false
+        }
+
         var algorithm_name = algorithm_button.innerText // Algorithm name
 
-        document.getElementById("run-button").innerText = `Run ${algorithm_name}`; // Show the algorithm name inside the run button
+        button.setAttribute("onclick", `make_path('${algorithm_name.toLowerCase()}')`)
+        button.innerText = `Run ${algorithm_name}`; // Show the algorithm name inside the run button
     }
 });
 
