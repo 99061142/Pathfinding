@@ -1,4 +1,4 @@
-function make_path(){
+function make_path(algorithm_name){
     const start_node = document.getElementById("start"); // Start node
     const end_node = document.getElementById("end"); // End node
 
@@ -9,7 +9,10 @@ function make_path(){
         const board = make_board(); // Make the board
         const start = get_position(start_node); // Get the position of the start node
         const end = get_position(end_node); // Get the position of the end node     
-        path_bfs(board, start, end); // Make the path
+        
+        if(algorithm_name == "bfs"){
+            path_bfs(board, start, end); // Make the path
+        }
     }
 }
 
