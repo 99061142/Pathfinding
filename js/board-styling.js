@@ -16,23 +16,25 @@ const positions_information = {
 
 // Delete the specific information of the specific nodes
 function clear_specific_nodes(info='all'){
-    const node_backgrounds = []; // Specific Classes / id's that must get deleted
+    if(!find_path){
+        const node_backgrounds = []; // Specific Classes / id's that must get deleted
 
-    // If the walls / everything must be deleted 
-    if(info == "walls" || info == "all"){
-        node_backgrounds.push("#wall"); // Add the wall ID to the list
+        // If the walls / everything must be deleted 
+        if(info == "walls" || info == "all"){
+            node_backgrounds.push("#wall"); // Add the wall ID to the list
+        }
+
+        // If the path / everything must be deleted 
+        if(info == "path" || info == "all"){
+            node_backgrounds.push("#found"); // Add the path ID(s) to the list
+        }
+
+        if(info == "all"){
+            node_backgrounds.push("#start", "#end");
+        }
+
+        remove_attributes(node_backgrounds) // Remove the specific attributes of the element(s)
     }
-
-    // If the path / everything must be deleted 
-    if(info == "path" || info == "all"){
-        node_backgrounds.push("#found"); // Add the path ID(s) to the list
-    }
-
-    if(info == "all"){
-        node_backgrounds.push("#start", "#end");
-    }
-
-    remove_attributes(node_backgrounds) // Remove the specific attributes of the element(s)
 }
 
 
@@ -49,11 +51,13 @@ function remove_attributes(elements){
 
 // Clear all the changed nodes on the board
 function clear_board(){
-    clear_specific_nodes(); // Clear all the changed nodes
+    if(!find_path){
+        clear_specific_nodes(); // Clear all the changed nodes
 
-    // Change the value if the element is on the board
-    for(positions in positions_information){
-        positions_information[positions].used = false
+        // Change the value if the element is on the board
+        for(positions in positions_information){
+            positions_information[positions].used = false
+        }
     }
 }
 
