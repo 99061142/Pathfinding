@@ -12,13 +12,13 @@ function run_button_activation(){
         }
 
         find_path = true 
-        button.disabled = true
+        start_button.disabled = true
     }
     
     // If the path is found
     else{
         find_path = false
-        button.disabled = false
+        start_button.disabled = false
         path_found = true  
     }
 }
