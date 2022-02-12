@@ -33,7 +33,7 @@
 
             <!-- Run the algorithm -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" disabled>Run</button>
+                <button class="px-4 bg-green" id="run-button" onclick="make_path('bfs')" disabled>Run BFS</button>
             </li>
             <!-- /Run the algorithm -->
 

@@ -4,21 +4,14 @@ const standard_node_classes = "node border border-dark float-left"; // Standard 
 const speeds = {slow: 100, normal: 50, fast: 20, instant: 0} // Millisecond to wait for every loop through the pathfinding destinations 
 var speed = speeds.normal; // Millisecond wait time the user chose
 
-const important_nodes_id = []; // All the important nodes id (start, end etc...)
-
-// Add all the important id names to the list
-for(important_node_name in positions_information){
-    const important_node_id = positions_information[important_node_name].id;
-    important_nodes_id.push(important_node_id);
-}
-
+const start_end_ids = ["start", "end"]; // Start and end id
 
 // For every node on the board
 document.querySelectorAll(".node").forEach(function(node){
     // If the user hovers over the node
     node.addEventListener("mouseover", function(mouse_event){
         // If the node is not an important node, or already a wall
-        if(mouse_event.buttons == 1 && node.id != "wall" && !important_nodes_id.includes(node.id) && !find_path){
+        if(mouse_event.buttons == 1 && node.id != "wall" && !start_end_ids.includes(node.id) && !find_path){
             // If the node is not empty
             if(node.id){
                 node.className = standard_node_classes; // Delete the specific class information about the node
@@ -31,20 +24,29 @@ document.querySelectorAll(".node").forEach(function(node){
 
     // If the user clicks on the node
     node.onclick = () => { 
-        // If it is an important node
-        if(important_nodes_id.includes(node.id)){
-            positions_information[node.id]['used'] = false;
-            node.className = standard_node_classes; // Delete the specific class information about the node
-            node.removeAttribute('id');
-        }
+        if(!find_path){
+            // If it is an important node
+            if(start_end_ids.includes(node.id)){
+                positions_information[node.id]['used'] = false;
+                node.className = standard_node_classes; // Delete the specific class information about the node
+                node.removeAttribute('id');
 
-        // If the node is not an important node
-        else{   
-            // If there is no start or end position added to the board, it gets added (in order 1. start, 2. end)
-            for(important_position_name in positions_information){
-                if(!positions_information[important_position_name].used){
-                    make_important_position(node, important_position_name);
-                    break
+                start_button.disabled = true // Run button is disabled
+            }
+
+            // If the node is not an important node
+            else{   
+                // If there is no start or end position added to the board, it gets added (in order 1. start, 2. end)
+                for(start_end_id of start_end_ids){
+                    if(!positions_information[start_end_id].used){
+                        make_important_position(node, start_end_id);
+                        break
+                    }
+                }
+
+                // If the start and end position is on the board
+                if(positions_information['start'].used && positions_information['end'].used && start_button.disabled){
+                    start_button.disabled = false // Run button is enabled
                 }
             }
         }
