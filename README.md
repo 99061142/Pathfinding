@@ -1,23 +1,14 @@
-# Find the fastest path with the algorithm you choose
+# Pathfinding website
+
+## How to use it
+
+1. The user add an start / end point to the board (click on an empty block in the board).
+2. The user can make walls on the board (hold left click / go over the blocks on the board).
+3. Choose an algorithm out of the algorithms options inside the navigation bar.
+4. If the user added the start / end point, the button gets green and can be used.
+5. Click on the run button, to see how the algorithm find the path from the start / end point.
 
 
-## Done
+### Note
 
-### What can you do?
-
-* Place an start / end position on the board.
-* Place your own walls on the board (hover + mouse click).
-
-
-## In the making
-
-### What can you do?
-
-* Make a random maze (always a random start / end position).
-* Choose between multiple pathfinding algorithms.
-
-
-## What can you learn from it?
-
-* You can see the difference for every algorithm.
-* You can see which pathfinding algorithm is the fastest.
+This website is in the starting phase, it does NOT work properly. Some things are not made and it does sometimes not correctly respond to what the user is doing.
