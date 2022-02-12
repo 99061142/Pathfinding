@@ -18,6 +18,7 @@ document.querySelectorAll(".node").forEach(function(node){
     // If the user hovers over the node
     node.addEventListener("mouseover", function(mouse_event){
         // If the node is not an important node, or already a wall
+        if(mouse_event.buttons == 1 && node.id != "wall" && !important_nodes_id.includes(node.id) && !find_path){
             // If the node is not empty
             if(node.id){
                 node.className = standard_node_classes; // Delete the specific class information about the node
