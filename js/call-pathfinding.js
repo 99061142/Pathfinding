@@ -2,17 +2,15 @@ function make_path(algorithm_name){
     const start_node = document.getElementById("start"); // Start node
     const end_node = document.getElementById("end"); // End node
 
-    // If the start / end node is on the board
-    if(start_node != null && end_node != null){
+    // If the start / end position is on the board
+    if(positions_information['start'].used && positions_information['end'].used){
         run_button_activation()
 
         const board = make_board(); // Make the board
-        const start = get_position(start_node); // Get the position of the start node
-        const end = get_position(end_node); // Get the position of the end node     
-        
-        if(algorithm_name == "bfs"){
-            path_bfs(board, start, end); // Make the path
-        }
+        const start = get_position(start_node); // Get the start position
+        const end = get_position(end_node); // Get the end position
+
+        window[`path_${algorithm_name}`](board, start, end); 
     }
 }
 
@@ -27,21 +25,14 @@ function make_board(){
 
         // For every node inside the row
         nodes_row.querySelectorAll(".node").forEach(function(node){
-            // If the node is a wall or the start position
-            if(node.id == "wall" || node.id == "start"){
-                row_nodes.push(1);
-            }
-
-            // If the node is empty or the end position
-            else{
-                row_nodes.push(0);
-            }
+            // Give the column a number to specify what the element is (0 = empty 1 = start/end/wall)
+            const col_number = (start_end_ids.includes(node.id) || node.id == "wall") ? 1 : 0;
+            row_nodes.push(col_number); // Push the column number to the row list
         });
-
         board.push(row_nodes); // Push the row to the board list 
     });
 
-    return board; // Return the board
+    return board;
 }
 
 
@@ -66,19 +57,16 @@ function get_element(row, col){
 
 
 /// Change the background color
-function change_background(element, info){
-    // If the node is found, and not the fastest route
-    if(info == "found"){    
-        element.classList.add("bg-primary");
-        element.id = "found";
-    }
+function checked_node_background(element){
+    element.classList.add("bg-primary"); // Background color
+    element.id = "found"; // ID that the node is checked
 }
 
 
 // If the node is found
 function found_node(row, col){
     const element = get_element(row, col); // Get the element
-    change_background(element, "found"); // Change the background color
+    checked_node_background(element); // Change the background color
 }
 
 
