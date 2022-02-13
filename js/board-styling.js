@@ -10,7 +10,7 @@ function clear_specific_nodes(info='all'){
 
         // If the path / everything must be deleted 
         if(info == "path" || info == "all"){
-            node_backgrounds.push("#found"); // Add the path ID(s) to the list
+            node_backgrounds.push("#found", "#next"); // Add the path ID(s) to the list
         }
 
         // If everything must be deleted
