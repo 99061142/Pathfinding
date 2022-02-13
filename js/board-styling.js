@@ -46,6 +46,26 @@ function clear_board(){
 }
 
 
+function add_random_walls(){
+    board = make_board() // Get all the nodes
+
+    // For every row
+    for([row_num, row] of board.entries()){
+        // For every column
+        for([col_index, col_value] of row.entries()){
+            // If the column is not the start/end or an wall
+            if(!col_value){
+                // 33% Chance
+                if(Math.random() < 0.33){
+                    node = get_element(row_num, col_index); // Get the element of the node
+                    node.id = "wall"; // Make the node an wall
+                }
+            }
+        }
+    }
+}
+
+
 // Make the start or end position
 function make_important_position(node, position){
     node.classList.add(...positions_information[position].classes); // Add the specific classes
