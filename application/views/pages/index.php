@@ -15,12 +15,12 @@
     </div>
 
     <div class="d-flex justify-content-center align-items-center">    
-        <div class="border border-dark mr-1" id="found" style="height: 18px; width: 18px;"></div>
+        <div class="border border-dark mr-1" style="height: 18px; width: 18px; background-color: #007bff;"></div>
         Checked node
     </div>
     
     <div class="d-flex justify-content-center align-items-center">    
-        <div class="border border-dark mr-1" id="next" style="height: 18px; width: 18px;"></div>
+        <div class="border border-dark mr-1" style="height: 18px; width: 18px; background-color: slateblue;"></div>
         Next node
     </div>
 
