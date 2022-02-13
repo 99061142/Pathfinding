@@ -4,7 +4,23 @@ const standard_node_classes = "node border border-dark float-left"; // Standard 
 const speeds = {slow: 100, normal: 50, fast: 20, instant: 0} // Millisecond to wait for every loop through the pathfinding destinations 
 var speed = speeds.normal; // Millisecond wait time the user chose
 
+// Info about the positions the user can place
+const positions_information = {
+    start: {
+        classes: ["fas", "fa-arrow-right", "bg-success"],
+        id: "start",
+        used: false
+    },
+
+    end: {
+        classes: ["fas", "fa-home", "bg-danger"],
+        id: "end",
+        used: false 
+    }
+};
+
 const start_end_ids = ["start", "end"]; // Start and end id
+
 
 // For every node on the board
 document.querySelectorAll(".node").forEach(function(node){
@@ -37,7 +53,7 @@ document.querySelectorAll(".node").forEach(function(node){
             // If the node is not an important node
             else{   
                 // If there is no start or end position added to the board, it gets added (in order 1. start, 2. end)
-                for(start_end_id of start_end_ids){
+                for(const start_end_id of start_end_ids){
                     if(!positions_information[start_end_id].used){
                         make_important_position(node, start_end_id);
                         break

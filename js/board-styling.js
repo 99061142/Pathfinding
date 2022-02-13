@@ -1,23 +1,7 @@
-// Info about the positions the user can place
-const positions_information = {
-    start: {
-        classes: ["fas", "fa-arrow-right", "bg-success"],
-        id: "start",
-        used: false
-    },
-
-    end: {
-        classes: ["fas", "fa-home", "bg-danger"],
-        id: "end",
-        used: false 
-    }
-};
-
-
 // Delete the specific information of the specific nodes
 function clear_specific_nodes(info='all'){
     if(!find_path || path_found){
-        const node_backgrounds = []; // Specific Classes / id's that must get deleted
+        const node_backgrounds = []; // Id information for the specific nodes that must be updated
 
         // If the walls / everything must be deleted 
         if(info == "walls" || info == "all"){
@@ -29,6 +13,7 @@ function clear_specific_nodes(info='all'){
             node_backgrounds.push("#found"); // Add the path ID(s) to the list
         }
 
+        // If everything must be deleted
         if(info == "all"){
             node_backgrounds.push("#start", "#end");
         }
@@ -42,9 +27,8 @@ function clear_specific_nodes(info='all'){
 function remove_attributes(elements){
     // Delete the specific information of the nodes that must get changed
     document.querySelectorAll(elements).forEach(function(node){
-        node.removeAttribute('id'); // Remove the id
-        node.removeAttribute('style'); // Remove the background color
-        node.className = standard_node_classes; // Remove the specific classes
+        node.className = standard_node_classes;  // Delete the specific class information about the node
+        node.removeAttribute('id');
     });
 }
 
