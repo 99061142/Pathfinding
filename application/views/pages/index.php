@@ -15,8 +15,13 @@
     </div>
 
     <div class="d-flex justify-content-center align-items-center">    
-        <div class="border border-dark mr-1 bg-primary" style="height: 18px; width: 18px;"></div>
+        <div class="border border-dark mr-1" id="found" style="height: 18px; width: 18px;"></div>
         Checked node
+    </div>
+    
+    <div class="d-flex justify-content-center align-items-center">    
+        <div class="border border-dark mr-1" id="next" style="height: 18px; width: 18px;"></div>
+        Next node
     </div>
 
     <div class="d-flex justify-content-center align-items-center">    
