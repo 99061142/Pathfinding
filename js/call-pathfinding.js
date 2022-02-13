@@ -14,7 +14,7 @@ function make_path(algorithm_name){
         const start = get_position(start_node); // Get the start position
         const end = get_position(end_node); // Get the end position
 
-        window[`path_${algorithm_name}`](board, start, end); 
+        window[`path_${algorithm_name}`](board, start, end).then(run_button_switcher); 
     }
 }
 

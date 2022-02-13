@@ -3,8 +3,6 @@ async function path_bfs(board, start, end){
     const positions = [start]; // Positions of the node(s)
     const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
 
-    var ending_found = false;
-
     // Loop through every position
     for(const [row, col] of positions){
         // Check every direction
@@ -12,10 +10,9 @@ async function path_bfs(board, start, end){
             const row_num = row + direction_row; // Row of the node
             const col_num = col + direction_col; // Column of the node
 
-            // Check if the ending position is found
+            // If the node is the end position
             if(row_num == end[0] && col_num == end[1]){
-                ending_found = true;
-                break;
+                return
             }
 
             // If the block is an empty node
@@ -31,11 +28,5 @@ async function path_bfs(board, start, end){
                 }
             }
         }
-        
-        // If the ending position is found
-        if(ending_found){
-            break;
-        }
     }
-    run_button_switcher() // Change the run buttons styling
 }
