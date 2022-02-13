@@ -70,9 +70,12 @@ nav button:focus{
     background-color: #dc3545;
 }
 
-
 #found{
     background-color: #007bff;
+}
+
+#next{
+    background-color: slateblue;
 }
 
 
