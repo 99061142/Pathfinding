@@ -7,7 +7,7 @@ function make_path(algorithm_name){
     const end_node = document.getElementById("end"); // End node
 
     // If the start / end position is on the board
-    if(positions_information['start'].used && positions_information['end'].used){
+    if(positions_information['start'].used && positions_information['end'].used && !find_path){
         run_button_switcher()
 
         const board = make_board(); // Make the board
@@ -61,16 +61,21 @@ function get_element(row, col){
 
 
 /// Change the background color
-function checked_node_background(element){
-    element.classList.add("bg-primary"); // Background color
-    element.id = "found"; // ID that the node is checked
+function update_node_id(element, info){
+    element.id = info; // ID that the node is checked
 }
 
 
 // If the node is found
 function found_node(row, col){
     const element = get_element(row, col); // Get the element
-    checked_node_background(element); // Change the background color
+    update_node_id(element, "found"); // Change the background color
+}
+
+
+function next_node(row, col){
+    const element = get_element(row, col); // Get the element
+    update_node_id(element, "next"); // Change the background color
 }
 
 
