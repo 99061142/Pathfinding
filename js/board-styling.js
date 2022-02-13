@@ -16,7 +16,7 @@ const positions_information = {
 
 // Delete the specific information of the specific nodes
 function clear_specific_nodes(info='all'){
-    if(!find_path){
+    if(!find_path || path_found){
         const node_backgrounds = []; // Specific Classes / id's that must get deleted
 
         // If the walls / everything must be deleted 

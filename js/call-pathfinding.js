@@ -1,10 +1,14 @@
+var find_path = false // If the path is being searched for
+var path_found = false // If the previous searched path is found
+
+
 function make_path(algorithm_name){
     const start_node = document.getElementById("start"); // Start node
     const end_node = document.getElementById("end"); // End node
 
     // If the start / end position is on the board
     if(positions_information['start'].used && positions_information['end'].used){
-        run_button_activation()
+        run_button_switcher()
 
         const board = make_board(); // Make the board
         const start = get_position(start_node); // Get the start position
@@ -73,4 +77,27 @@ function found_node(row, col){
 // Wait an x amount of milliseconds
 function sleep(time){
     return new Promise(resolve => setTimeout(resolve, time));
+}
+
+
+// Check if run button can be used
+function run_button_switcher(){
+    // End of search
+    if(find_path){  
+        path_found = true // If the ending is found
+        find_path = false // If the ending is being searched for
+        start_button.disabled = false // Enable the button
+    }
+
+    // Start of search
+    else{
+        find_path = true // If the ending is being searched for
+        start_button.disabled = true // Disable the button
+
+        // If the previous path was being found (delete old nodes that were found)
+        if(path_found){ 
+            clear_specific_nodes("path"); // Delete every old node that were found
+            path_found = false // If the ending is found
+        }
+    }
 }

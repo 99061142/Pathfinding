@@ -9,8 +9,8 @@ async function path_bfs(board, start, end){
     for(const [row, col] of positions){
         // Check every direction
         for(const [direction_row, direction_col] of directions){
-            const row_num = row + direction_row; // New row of the node
-            const col_num = col + direction_col; // New column of the node
+            const row_num = row + direction_row; // Row of the node
+            const col_num = col + direction_col; // Column of the node
 
             // Check if the ending position is found
             if(row_num == end[0] && col_num == end[1]){
@@ -37,5 +37,5 @@ async function path_bfs(board, start, end){
             break;
         }
     }
-    run_button_activation() // Change the run buttons styling
+    run_button_switcher() // Change the run buttons styling
 }
