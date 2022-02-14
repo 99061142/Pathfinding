@@ -14,6 +14,7 @@
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
                 <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
                     <button class="dropdown-item">BFS</button>
+                    <button class="dropdown-item">DFS</button>
                     <button class="dropdown-item" disabled>Dijkstra</button>
                     <button class="dropdown-item" disabled>AStar</button>
                 </div>

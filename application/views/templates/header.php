@@ -21,6 +21,7 @@
 
         <!-- Pathfinding algorithm codes -->
         <script src="<?= base_url(); ?>js/bfs.js"></script>
+        <script src="<?= base_url(); ?>js/dfs.js"></script>
         <!-- /Pathfinding algorithm codes -->
     </head>
     <body>
