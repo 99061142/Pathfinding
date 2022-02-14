@@ -24,7 +24,6 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Layouts</a>
                 <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
-                    <button class="dropdown-item" onclick=clear_board()>Normal</button>
                     <button class="dropdown-item" disabled>Maze</button>
                     <button class="dropdown-item" onclick=add_random_walls()>Random walls</button>
                 </div>
