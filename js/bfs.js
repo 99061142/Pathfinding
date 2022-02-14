@@ -11,12 +11,14 @@ async function path_bfs(board, start, end){
             const col_num = col + direction_col; // Column of the node
 
             // If the node is the end position
-            if([row_num, col_num].toString() === end.toString()){
+            if([row_num, col_num].toString() == end.toString()){
                 return
             }
 
+            
+
             // If the block is an empty node
-            if(board[row_num] && board[row_num][col_num] === 0){
+            if(board[row_num] && board[row_num][col_num] == 0){
                 found_node(row_num, col_num); // Change the background color
 
                 positions.push([row_num, col_num]); // Let the node be checked the next round
@@ -29,12 +31,12 @@ async function path_bfs(board, start, end){
                     const next_col_num = col_num + direction_col // Next column of the node
 
                     // If there is a empty node next to the checked node
-                    if(board[next_row_num] && board[next_row_num][next_col_num] === 0){
+                    if(board[next_row_num] && board[next_row_num][next_col_num] == 0){
                         next_node(next_row_num, next_col_num); // Change the background color
                     }
                 }
 
-                if(speed > 0){
+                if(speed){
                     await sleep(speed); // Wait an x amount of milliseconds
                 }
             }
