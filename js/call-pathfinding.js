@@ -61,8 +61,10 @@ function get_element(row, col){
 
 
 /// Change the background color
-function update_node_id(element, info){
-    element.id = info; // ID that the node is checked
+function update_node_id(element, info){ 
+    if(element){
+        element.id = info; // ID that the node is checked
+    }
 }
 
 
