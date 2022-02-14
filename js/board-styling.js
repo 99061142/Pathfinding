@@ -43,6 +43,7 @@ function clear_board(){
             positions_information[positions].used = false
         }
     }
+    start_button.disabled = true
 }
 
 
@@ -55,7 +56,7 @@ function add_random_walls(){
         for([col_index, col_value] of row.entries()){
             // If the column is not the start/end or an wall
             if(!col_value){
-                // 33% Chance
+                // 33% chance
                 if(Math.random() < 0.33){
                     node = get_element(row_num, col_index); // Get the element of the node
                     node.id = "wall"; // Make the node an wall
