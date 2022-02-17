@@ -9,6 +9,12 @@
 5. Click on the run button, to see how the algorithm find the path from the start / end point.
 
 
+## Working algorithms
+
+* BFS
+
+
+
 ### Note
 
 This website is in the starting phase, it does NOT work properly. Some things are not made and it does sometimes not correctly respond to what the user is doing.
