@@ -58,7 +58,7 @@ function add_random_walls(){
                 // If the column is not the start/end or an wall
                 if(!col_value){
                     // 33% chance
-                    if(Math.random() < 0.33){
+                    if(Math.random() <= 0.33){
                         node = get_element(row_num, col_index); // Get the element of the node
                         node.id = "wall"; // Make the node an wall
                     }
@@ -74,4 +74,13 @@ function make_important_position(node, position){
     node.classList.add(...positions_information[position].classes); // Add the specific classes
     node.id = positions_information[position].id; // Add the specific id
     positions_information[position].used = true; // Value if the element is on the board
+}
+
+
+// Show the end path of the pathfinding algorithm
+function show_end_path(list){
+    // For every node to the end node (except the start)
+    for(let [row, col] of list.slice(1)){
+        fastest_node(row, col) // Change the node to the color of the fastest path
+    }
 }
