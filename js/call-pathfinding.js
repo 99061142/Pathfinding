@@ -74,6 +74,13 @@ function found_node(row, col){
     update_node_id(element, "found"); // Change the background color
 }
 
+// If the node is the fastest path
+function fastest_node(row, col){
+    const element = get_element(row, col); // Get the element
+    update_node_id(element, "fastest"); // Change the background color
+}
+
+
 
 function next_node(row, col){
     const element = get_element(row, col); // Get the element
