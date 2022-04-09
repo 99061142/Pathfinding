@@ -78,5 +78,9 @@ nav button:focus{
     background-color: slateblue;
 }
 
+#fastest{
+    background-color: #ffc107;
+}
+
 
 /* /Board styling */
