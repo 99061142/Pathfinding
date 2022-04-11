@@ -6,7 +6,7 @@
 2. The user can make walls on the board (hold left click / go over the blocks on the board).
 3. Choose an algorithm out of the algorithms options inside the navigation bar.
 4. If the user added the start / end point, the button gets green and can be used.
-5. Click on the run button, to see how the algorithm find the path from the start / end point.
+5. Click on the run button, to see how the algorithm find the fastest path from the start / end point.
 
 
 ## Working algorithms
