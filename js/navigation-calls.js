@@ -18,3 +18,14 @@ document.getElementById("speed-dropdown").querySelectorAll("button").forEach(fun
         speed = speeds[speed_name] // Update the speed value
     }
 });
+
+// Randomly creates walls inside the board
+function add_random_walls(){
+    // For every node inside the board
+    document.querySelectorAll(".node").forEach(function(node_element){
+        // 33% chance to make the wall IF the node is not the start/end/wall node
+        if(Math.random() <= 0.33 && !important_position_information[node_element.id] && node_element.id != "wall"){
+            node_element.id = "wall"
+        }
+    });
+}
