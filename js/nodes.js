@@ -1,15 +1,12 @@
-const standard_class_names = "node border border-dark float-left" // Standard class names for the node
-
 class Node{
-    constructor(element, row, col){
-        this.element = element
+    constructor(row, col){
         this.row = row
         this.col = col
         this.class_names = standard_class_names
         this.id = ""
     }
 
-    add_important_position(element, importancy){
+    add_important_position(importancy){
         // If the important position is not already used
         if(!important_position_information[importancy]['used']){
             important_position_information[importancy]['used'] = true
@@ -19,6 +16,8 @@ class Node{
             // If the start and end positions are added to the board
             if(important_position_information['start']['used'] && important_position_information['end']['used']){
                 run_button.disabled = false // Enable the run button for the pathfinding
+
+                important_position_information['both_used'] = true // If the start/end positions are both on the board
             }
 
             // If the start position must be added
@@ -37,6 +36,7 @@ class Node{
 
     delete_important_position(){
         run_button.disabled = true // Disable the run button for the pathfinding
+        important_position_information['both_used'] = false // If the board misses the start or end position
 
         important_position_information[this.id]['used'] = false
         important_position_information[this.id]['row'] = null
@@ -55,12 +55,20 @@ class Node{
 
 // Get the position of the node inside the board
 function node_position(node_element){
-    const parent = node_element.parentElement; // Parent of the node
+    const parent = node_element.parentElement // Parent of the node
 
-    const row = Array.from(document.getElementById("nodes").children).indexOf(parent); // Row of the node
-    const col = Array.from(parent.children).indexOf(node_element); // Column of the node
+    const row = Array.from(document.getElementById("nodes").children).indexOf(parent) // Row of the node
+    const col = Array.from(parent.children).indexOf(node_element) // Column of the node
 
-    return [row, col];
+    return [row, col]
+}
+
+function get_node_element(row, col){
+    const element_row = document.getElementById('nodes').children[row] // Row of the node
+
+    const element = element_row.children[col] // Get the element
+
+    return element
 }
 
 
@@ -68,7 +76,7 @@ function node_position(node_element){
 document.querySelectorAll("#nodes>div>div").forEach(function(node_element){
     const [row, col] = node_position(node_element) // Get the row and column of the element
 
-    const node = new Node(node_element, row, col) // Add the element to the class
+    const node = new Node(row, col) // Add the element to the class
 
     node_element.id = node.id // Add the standard id to the element
     node_element.className = node.class_names // Add the standard classes to the element
@@ -88,7 +96,7 @@ document.querySelectorAll("#nodes>div>div").forEach(function(node_element){
             // First add the start position then the end position on the board
             const importancy = important_position_information['start']['used'] ? "end" : "start"
 
-            node.add_important_position(node_element, importancy) // Change the node to the start or end position
+            node.add_important_position(importancy) // Change the node to the start or end position
 
             node_element.className = node.class_names
             node_element.id = node.id
