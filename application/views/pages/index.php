@@ -33,5 +33,13 @@
         </div>
     </div>
 
-    <div class="mt-4 d-table" id="nodes" style="margin: auto;"></div>
+    <div class="mt-4 d-table" id="nodes" style="margin: auto;">
+        <?php for($row = 0; $row < 35; $row++){ ?>
+            <div>
+                <?php for($col = 0; $col < 35; $col++){ ?>
+                    <div></div>
+                <?php } ?>
+            </div>
+        <?php } ?>
+    </div>
 </main>
