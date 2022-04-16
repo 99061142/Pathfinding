@@ -1,7 +1,7 @@
 function make_path(algorithm_name){
     // If the start / end position is on the board
     if(important_position_information['both_used']){
-        run_button.disabled = true
+        pathfinding_working(true)
 
         const board = make_board() // Get the 2d array of the board
 
@@ -16,10 +16,21 @@ function make_path(algorithm_name){
         ]
 
         window[`path_${algorithm_name}`](board, start, end).then(
-            x => run_button.disabled = false
+            pathfinding_working
         )
     }
 }
+
+function pathfinding_working(pathfinding_on=false){
+    if(pathfinding_on){
+        run_button.disabled = true
+        pathfinding_is_running = true
+    }else{
+        run_button.disabled = false
+        pathfinding_is_running = false    
+    }
+}
+
 
 // Make the board
 function make_board(){
