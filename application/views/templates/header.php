@@ -18,6 +18,8 @@
         <script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the attributes / onclicks to let the page work -->
         <script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Functions to change the styling for the board -->
         <script src="<?= base_url(); ?>js/call-pathfinding.js"></script> <!-- Functions to get the path  -->
+        <script src="<?= base_url(); ?>js/nodes.js" defer></script>
+
 
         <!-- Pathfinding algorithm codes -->
         <script src="<?= base_url(); ?>js/bfs.js"></script>
