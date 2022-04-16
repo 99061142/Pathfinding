@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css">
 
         <script src="<?= base_url(); ?>js/general-variables.js" defer></script>
+        <script src="<?= base_url(); ?>js/general-pathfinding.js" defer></script>
         <script src="<?= base_url(); ?>js/navigation-calls.js" defer></script>
         <script src="<?= base_url(); ?>js/nodes.js" defer></script>
 
