@@ -44,11 +44,14 @@ nav button:focus{
     cursor: pointer;
 }
 
+#run-button:disabled{
+    background-color: #dc3545;
+}
 
 /* /Navigation styling */
 
 
-/* Board styling */
+/* Node styling */
 
 .node:not(#start):not(#end){
     width: 15px;
@@ -66,10 +69,6 @@ nav button:focus{
     background-color: black;
 }
 
-#run-button:disabled{
-    background-color: #dc3545;
-}
-
 #found{
     background-color: #007bff;
 }
@@ -82,5 +81,4 @@ nav button:focus{
     background-color: #ffc107;
 }
 
-
-/* /Board styling */
+/* /Node styling */
