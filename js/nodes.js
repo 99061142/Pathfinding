@@ -1,21 +1,4 @@
 const standard_class_names = "node border border-dark float-left" // Standard class names for the node
-const run_button = document.getElementById("run-button") // Enable the run button for the pathfinding
-
-// Show if the important positions that can be on the board are placed (1 max on the board), and if both are used
-const important_position_information = {
-    start: {
-        row: null,
-        col: null,
-        used: false
-    },
-    
-    end: {
-        row: null,
-        col: null,
-        used: false
-    }
-}
-
 
 class Node{
     constructor(element, row, col){
@@ -63,7 +46,7 @@ class Node{
         this.id = ""
     }
 
-    add_wall(){
+    wall(){
         this.className = standard_class_names
         this.id = "wall"
     }
@@ -86,8 +69,6 @@ document.querySelectorAll("#nodes>div>div").forEach(function(node_element){
     const [row, col] = node_position(node_element) // Get the row and column of the element
 
     const node = new Node(node_element, row, col) // Add the element to the class
-
-    node.add_important_position(node_element, "start")
 
     node_element.id = node.id // Add the standard id to the element
     node_element.className = node.class_names // Add the standard classes to the element
@@ -118,7 +99,7 @@ document.querySelectorAll("#nodes>div>div").forEach(function(node_element){
     node_element.addEventListener("mouseover", function(mouse_event){
         // If the node is not an important node or a wall
         if(mouse_event.buttons == 1 && node_element.id != "wall" && !important_position_information[node.id]){
-            node.add_wall() // Change the node to the wall
+            node.wall() // Change the node to the wall
 
             node_element.className = node.class_names
             node_element.id = node.id
