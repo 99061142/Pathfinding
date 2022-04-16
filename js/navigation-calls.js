@@ -61,14 +61,16 @@ function clear_specific_nodes(info='all'){
 
 // Clear all the changed nodes on the board
 function clear_board(){
-    clear_specific_nodes() // Clear all the changed nodes
+    if(!pathfinding_is_running){
+        clear_specific_nodes() // Clear all the changed nodes
 
-    // Change the value if the element is on the board
-    for(important_position in important_position_information){
-        important_position_information[important_position]['used'] = false
-        important_position_information[important_position]['row'] = null
-        important_position_information[important_position]['col'] = null
+        // Change the value if the element is on the board
+        for(important_position in important_position_information){
+            important_position_information[important_position]['used'] = false
+            important_position_information[important_position]['row'] = null
+            important_position_information[important_position]['col'] = null
+        }
+
+        run_button.disabled = true
     }
-
-    run_button.disabled = true
 }

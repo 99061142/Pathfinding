@@ -1,6 +1,7 @@
 function make_path(algorithm_name){
     // If the start / end position is on the board
     if(important_position_information['both_used']){
+        clear_specific_nodes('path')
         pathfinding_working(true)
 
         const board = make_board() // Get the 2d array of the board
