@@ -15,7 +15,10 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
         <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css">
 
+        <script src="<?= base_url(); ?>js/general-variables.js" defer></script>
+        <script src="<?= base_url(); ?>js/navigation-calls.js" defer></script>
         <script src="<?= base_url(); ?>js/nodes.js" defer></script>
+
 
         <!--<script src="<?= base_url(); ?>js/starting-functionality.js" defer></script> <!-- Add the attributes / onclicks to let the page work -->
         <!--<script src="<?= base_url(); ?>js/board-styling.js"></script> <!-- Functions to change the styling for the board -->
