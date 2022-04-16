@@ -5,8 +5,6 @@ function make_path(algorithm_name){
 
         const board = make_board() // Get the 2d array of the board
 
-        console.log(important_position_information['start']['row'])
-
         const start = [
             important_position_information['start']['row'],
             important_position_information['start']['col']
@@ -18,30 +16,30 @@ function make_path(algorithm_name){
         ]
 
         window[`path_${algorithm_name}`](board, start, end).then(
-            run_button.disabled = false
+            x => run_button.disabled = false
         )
     }
 }
 
 // Make the board
 function make_board(){
-    const board = []; // Board
+    const board = [] // Board
 
     // For every row with nodes
     document.querySelectorAll("#nodes > div").forEach(function(nodes_row){
-        const row_nodes = []; // Row with nodes
+        const row_nodes = [] // Row with nodes
 
         // For every node inside the row
         nodes_row.querySelectorAll(".node").forEach(function(node_element){
             // Give the column a number to specify what the element is (0 = empty 1 = start/end/wall)
-            const col_number = (important_position_information[node_element.id] || node_element.id == "wall") ? 1 : 0;
-            row_nodes.push(col_number); // Push the column number to the row list
-        });
+            const col_number = (important_position_information[node_element.id] || node_element.id == "wall") ? 1 : 0
+            row_nodes.push(col_number) // Push the column number to the row list
+        })
 
-        board.push(row_nodes); // Push the row to the board list 
-    });
+        board.push(row_nodes) // Push the row to the board list 
+    })
 
-    return board;
+    return board
 }
 
 function change_importancy(row, col, importancy){
@@ -59,19 +57,12 @@ async function show_end_path(list){
         change_importancy(row, col, "fastest")
         
         if(speed){
-            await sleep(speed); // Wait an x amount of milliseconds
+            await sleep(speed) // Wait an x amount of milliseconds
         }
-    }
-}
-
-/// Change the background color
-function update_node_id(element, info){ 
-    if(element){
-        element.id = info; // ID that the node is checked
     }
 }
 
 // Wait an x amount of milliseconds
 function sleep(time){
-    return new Promise(resolve => setTimeout(resolve, time));
+    return new Promise(resolve => setTimeout(resolve, time))
 }
