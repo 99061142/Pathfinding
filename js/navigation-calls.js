@@ -29,3 +29,42 @@ function add_random_walls(){
         }
     });
 }
+
+// Delete the specific information of the specific nodes
+function clear_specific_nodes(info='all'){
+    const node_backgrounds = [] // Id information for the specific nodes that must be updated
+
+    // If the walls / everything must be deleted 
+    if(info == "walls" || info == "all"){
+        node_backgrounds.push(".node#wall")
+    }
+
+    // If the path / everything must be deleted 
+    if(info == "path" || info == "all"){
+        node_backgrounds.push(".node#found", ".node#next", ".node#fastest")
+    }
+
+    // If everything must be deleted
+    if(info == "all"){
+        node_backgrounds.push(".node#start", ".node#end")
+    }
+
+    document.querySelectorAll(node_backgrounds).forEach(function(node_element){
+        node_element.className = standard_class_names
+        node_element.removeAttribute('id')
+    });
+}
+
+// Clear all the changed nodes on the board
+function clear_board(){
+    clear_specific_nodes(); // Clear all the changed nodes
+
+    // Change the value if the element is on the board
+    for(important_position in important_position_information){
+        important_position_information[important_position]['used'] = false
+        important_position_information[important_position]['row'] = null
+        important_position_information[important_position]['col'] = null
+    }
+
+    run_button.disabled = true
+}
