@@ -11,8 +11,8 @@
         <ul class="navbar-nav">
             <!-- All the pathfinding algorithm options -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
-                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
+                <a class="dropdown-toggle" id="algorithms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Algorithms</a>
+                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="algorithms">
                     <button class="dropdown-item">BFS</button>
                     <button class="dropdown-item">DFS</button>
                     <button class="dropdown-item" disabled>Dijkstra</button>
@@ -23,8 +23,8 @@
 
             <!-- Choose the layout of the board -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Layouts</a>
-                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="changeDropdownMenu">
+                <a class="dropdown-toggle" id="layouts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Layouts</a>
+                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="layouts">
                     <button class="dropdown-item" disabled>Maze</button>
                     <button class="dropdown-item" onclick=add_random_walls()>Random walls</button>
                 </div>
@@ -50,17 +50,17 @@
             </li>
             <!-- /Reset all the walls on the board -->
 
-            <!-- Clear the path the algorithm made -->
+            <!-- Clear the path that the algorithm made -->
             <li class="nav-item">
                 <button class="buttton-as-anchor" onclick="clear_specific_nodes('path')">Clear algorithm path</button>
             </li>
-            <!-- /Clear the path the algorithm made -->
+            <!-- /Clear the path that the algorithm made -->
 
 
             <!-- Speed to find the path -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="changeDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Speed</a>
-                <div class="dropdown-menu mt-4" id="speed-dropdown" aria-labelledby="changeDropdownMenu">
+                <a class="dropdown-toggle" id="pathfinding-speed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Speed</a>
+                <div class="dropdown-menu mt-4" id="speed-dropdown" aria-labelledby="pathfinding-speed">
                     <button class="dropdown-item">Slow</button>
                     <button class="dropdown-item">Normal</button>
                     <button class="dropdown-item">Fast</button>
@@ -70,5 +70,4 @@
             <!-- /Speed to find the path -->
         </ul>
     </div>
-</nav>  
-<div class="container">
+</nav>
