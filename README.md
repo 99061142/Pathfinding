@@ -2,19 +2,19 @@
 
 ## How to use it
 
-1. The user add an start / end point to the board (click on an empty block in the board).
-2. The user can make walls on the board (hold left click / go over the blocks on the board).
-3. Choose an algorithm out of the algorithms options inside the navigation bar.
-4. If the user added the start / end point, the button gets green and can be used.
-5. Click on the run button, to see how the algorithm find the fastest path from the start / end point.
+1. Add an start / end position to the board (click on an empty node on the board).
+3. Choose an algorithm out of the algorithms options inside the navigation bar (click "Algorithms" to see all the options).
+5. Click on the run button to see how the algorithm find the fastest path from the start to end position (the board MUST have the start and end position).
+
+## What can you do
+* Make walls on the board (move over the board when you hold the left mouse button).
+* Create random walls on the board (click "layouts" on the board and then "random walls" (33% chance for a wall on each node)).
 
 
 ## Working algorithms
 
 * BFS
 
-
-
 ### Note
 
-This website is in the starting phase, it does NOT work properly. Some things are not made and it does sometimes not correctly respond to what the user is doing.
+* This website is in the starting phase, it does NOT work properly. Some things are not made and sometimes the website is not responding correctly.
