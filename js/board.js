@@ -320,8 +320,8 @@ document.querySelectorAll('td').forEach(node_element => {
                 board.set_standard_attributes(node_element) // Change the node to the start / end node
             }
 
-            // If it's an standard node
-            else if(board.is_standard_node(node_element)){
+            // If the board does not have the start or end position
+            else if(!board.start_position || !board.end_position){
                 // First add the start position then the end position  
                 const importancy = board.start_position ? "end" : "start"
 
