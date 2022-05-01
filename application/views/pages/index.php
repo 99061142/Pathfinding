@@ -1,45 +1,47 @@
 <main>
     <div class="container">
-        <div class="d-flex justify-content-around my-2">
-            <p class="m-0">
+        <div class="row">
+            <div class="col-sm">
                 <i class="fas fa-arrow-right border border-dark bg-success"></i>
-                Starting point
-            </p>
-
-            <p class="m-0">
-                <i class="fas fa-home border border-dark bg-danger"></i>
-                End point
-            </p>
-
-            <div class="d-flex justify-content-center align-items-center">    
-                <div id="wall" class="border border-dark mr-1" style="height: 18px; width: 18px;"></div>
-                Walls
+                <p class="d-inline-block">Starting point</p>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">    
-                <div id="found" class="border border-dark mr-1" style="height: 18px; width: 18px;"></div>
-                Checked node
+            <div class="col-sm">
+                <i class="fas fa-home border border-dark bg-danger"></i>
+                <p class="d-inline-block">End point</p>
+            </div>
+
+            <div class="col-sm">    
+                <div id="wall" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <p class="d-inline-block">Walls</p>
+            </div>
+
+            <div class="col-sm">    
+                <div id="found" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <p class="d-inline-block">Checked node</p>
             </div>
             
-            <div class="d-flex justify-content-center align-items-center">    
-                <div id="next" class="border border-dark mr-1" style="height: 18px; width: 18px;"></div>
-                Next node
+            <div class="col-sm">    
+                <div id="next" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <p class="d-inline-block">Next node</p>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">    
-                <div id="fastest" class="border border-dark mr-1" style="height: 18px; width: 18px;"></div>
-                Fastest route
+            <div class="col-sm">    
+                <div id="fastest" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <p class="d-inline-block">Fastest route</p>
             </div>
         </div>
     </div>
 
-    <div class="mt-4 d-table" id="nodes" style="margin: auto;">
-        <?php for($row = 0; $row < 35; $row++){ ?>
-            <div>
-                <?php for($col = 0; $col < 35; $col++){ ?>
-                    <div></div>
-                <?php } ?>
-            </div>
-        <?php } ?>
-    </div>
+    <table class="my-2 d-flex justify-content-center">
+        <tbody id="board">
+            <?php for($row = 0; $row < 35; $row++){ ?>
+                <tr>
+                    <?php for($col = 0; $col < 45; $col++){ ?>
+                        <td></td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 </main>
