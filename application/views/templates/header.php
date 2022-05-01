@@ -13,16 +13,14 @@
         <!-- /Bootstrap -->
 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
-        <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/styling.css">
+        <link rel="stylesheet" type="text/css" href="css/styling.css">
 
-        <script src="<?= base_url(); ?>js/general-variables.js" defer></script> <!-- General variables that gets used in multiple files -->
-        <script src="<?= base_url(); ?>js/general-pathfinding.js" defer></script> <!-- General functions for all the pathfinding calls -->
-        <script src="<?= base_url(); ?>js/navigation-calls.js" defer></script> <!-- Functionallity for the buttons inside the navigation -->
-        <script src="<?= base_url(); ?>js/nodes.js" defer></script> <!-- Functionallity for the board -->
+        <script src="js/index.js" defer></script> <!-- Functionallity for the page -->
+        <script src="js/board.js" defer></script> <!-- Functionallity for the board -->
 
-        <!-- Pathfinding algorithm codes -->
-        <script src="<?= base_url(); ?>js/bfs.js"></script>
-        <script src="<?= base_url(); ?>js/dfs.js"></script>
-        <!-- /Pathfinding algorithm codes -->
+        <!-- Pathfinding algorithms -->
+        <script src="js/algorithms/bfs.js"></script>
+        <script src="js/algorithms/dfs.js"></script>
+        <!-- /Pathfinding algorithms -->
     </head>
     <body>
