@@ -18,3 +18,4 @@
 ### Note
 
 * This website is in the starting phase, it does NOT work properly. Some things are not made and sometimes the website is not responding correctly.
+* The algorithm is not optimal but it gets optimal eventually
