@@ -34,7 +34,7 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick="BOARD.make_path('bfs')" disabled>Run DFS</button>
+                <button class="px-4 bg-green" id="run-button" onclick="BOARD.make_path('bfs')" disabled>Run BFS</button>
             </li>
             <!-- /Run button -->
 
