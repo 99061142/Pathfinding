@@ -1,41 +1,42 @@
 // Check each node until the ending node is found
-async function path_bfs(){
-    const positions = [[board.start_position]] // Positions of the node(s)
-    const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]] // Up, right, down and left
-
+async function pathBfs(){
+    const POSITIONS = [[BOARD.startPosition]] // Positions of the node(s)
+    const DIRECTIONS = [[-1, 0], [0, 1], [1, 0], [0, -1]] // Up, right, down and left
+    
     // Loop through every route to go to the new node
-    for(let route of positions){
-        const [this_row, this_col] = route.slice(-1)[0] // Last node inside the route to go to the next node
+    for(let route of POSITIONS){
+        const [THIS_ROW, THIS_COL] = route.slice(-1)[0] // Last node inside the route to go to the next node
 
         // For every movable direction
-        for(let [direction_row, direction_col] of directions){
-            const row = this_row + direction_row
-            const col = this_col + direction_col
-            const position = [row, col]
+        for(let [directionRow, directionCol] of DIRECTIONS){
+            const ROW = THIS_ROW + directionRow
+            const COL = THIS_COL + directionCol
+            const POSITION = [ROW, COL]
 
             // If the positon is the end position
-            if(board.is_end_position(position)){
-                return route
+            if(BOARD.isEndPosition(POSITION)){
+                return route.slice(1)
             }
 
             // If the node is empty
-            if(board.on_board(position)){
-                board.found(position)
+            if(BOARD.empty(POSITION)){
+                BOARD.found(POSITION)
 
                 // Go further with the found node when the loop gets called again 
-                const new_list = [...route, [row, col]]
-                positions.push(new_list)
+                const NEW_LIST = [...route, POSITION]
+                POSITIONS.push(NEW_LIST)
                 
                 // For every movable direction
-                for(let [direction_row, direction_col] of directions){
-                    const next_row = row + direction_row
-                    const next_col = col + direction_col
-                    const position = [next_row, next_col]
+                for(let [directionRow, directionCol] of DIRECTIONS){
+                    const NEXT_ROW = ROW + directionRow
+                    const NEXT_COL = COL + directionCol
+                    const POSITION = [NEXT_ROW, NEXT_COL]
 
-                    board.next(position)
+                    if(BOARD.empty(POSITION) && !BOARD.isEndPosition(POSITION)){
+                        BOARD.next(POSITION)
+                        await BOARD.sleep()
+                    }
                 }
-
-                await board.sleep()
             }
         }
     }
