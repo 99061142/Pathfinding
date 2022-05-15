@@ -1,7 +1,7 @@
 const RUN_BUTTON = document.getElementById("run-button");
 
 function capitalize(word) {
-    return word[0].toUpperCase() + word.slice(1).toLowerCase()
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
 }
 
 // For every algorithm option inside the navigation
@@ -9,7 +9,7 @@ document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach
     // If the user clicks on an algorithm option
     algorithmButton.onclick = () => {
         const ALGORITHM_NAME = algorithmButton.innerText;
-        const RUN_BUTTON_FUNCTION = `BOARD.make_path('${ALGORITHM_NAME}')`;
+        const RUN_BUTTON_FUNCTION = `BOARD.makePath('${ALGORITHM_NAME}')`;
 
         RUN_BUTTON.setAttribute("onclick", RUN_BUTTON_FUNCTION);
         RUN_BUTTON.innerText = `Run ${ALGORITHM_NAME}`;
