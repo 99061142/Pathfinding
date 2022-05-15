@@ -25,8 +25,8 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="board-layouts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Layouts</a>
                 <div class="dropdown-menu mt-4" aria-labelledby="board-layouts">
-                    <button class="dropdown-item" disabled>Maze</button>
-                    <button class="dropdown-item" onclick=board.random_walls()>Random walls</button>
+                    <button class="dropdown-item" onclick=BOARD.create_maze()>Maze</button>
+                    <button class="dropdown-item" onclick=BOARD.random_walls()>Random walls</button>
                 </div>
             </li>
             <!-- /Board layouts -->
@@ -34,25 +34,25 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick="board.make_path('bfs')" disabled>Run BFS</button>
+                <button class="px-4 bg-green" id="run-button" onclick="BOARD.make_path('bfs')" disabled>Run DFS</button>
             </li>
             <!-- /Run button -->
 
             <!-- Clear everything -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="board.clear_board()">Clear board</button>
+                <button class="buttton-as-anchor" onclick="BOARD.clear_board()">Clear board</button>
             </li>
             <!-- /Clear everything -->
 
             <!-- Clear walls -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="board.clear_walls()">Clear walls</button>
+                <button class="buttton-as-anchor" onclick="BOARD.clear_walls()">Clear walls</button>
             </li>
             <!-- /Clear walls -->
 
             <!-- Clear algorithm path -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="board.clear_algorithm_path()">Clear algorithm path</button>
+                <button class="buttton-as-anchor" onclick="BOARD.clear_algorithm_path()">Clear algorithm path</button>
             </li>
             <!-- /Clear algorithm path -->
 
