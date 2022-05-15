@@ -12,22 +12,22 @@
             </div>
 
             <div class="col-sm">    
-                <div id="wall" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <div id="wall" class="border border-dark d-inline-block p-2"></div>
                 <p class="d-inline-block">Walls</p>
             </div>
 
             <div class="col-sm">    
-                <div id="found" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <div id="found" class="border border-dark d-inline-block p-2"></div>
                 <p class="d-inline-block">Checked node</p>
             </div>
             
             <div class="col-sm">    
-                <div id="next" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <div id="next" class="border border-dark d-inline-block p-2"></div>
                 <p class="d-inline-block">Next node</p>
             </div>
 
             <div class="col-sm">    
-                <div id="fastest" class="border border-dark d-inline-block" style="height: 18px; width: 18px;"></div>
+                <div id="fastest" class="border border-dark d-inline-block p-2"></div>
                 <p class="d-inline-block">Fastest route</p>
             </div>
         </div>
@@ -35,9 +35,9 @@
 
     <table class="my-2 d-flex justify-content-center">
         <tbody id="board">
-            <?php for($row = 0; $row < 35; $row++){ ?>
-                <tr>
-                    <?php for($col = 0; $col < 45; $col++){ ?>
+            <?php for($row = 0; $row <= 15; $row++){ ?>
+                <tr id="row">
+                    <?php for($col = 0; $col <= 14; $col++){ ?>
                         <td></td>
                     <?php } ?>
                 </tr>
