@@ -1,23 +1,21 @@
-const run_button = document.getElementById("run-button")
+const RUN_BUTTON = document.getElementById("run-button");
 
 // For every algorithm option inside the navigation
-document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach(function(algorithm_button){
+document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach(algorithmButton => {
     // If the user clicks on an algorithm option
-    algorithm_button.onclick = () => {
-        const algorithm_name = algorithm_button.innerText
-        const run_button_function = `make_path('${algorithm_name.toLowerCase()}')`
+    algorithmButton.onclick = () => {
+        const ALGORITHM_NAME = algorithmButton.innerText;
+        const RUN_BUTTON_FUNCTION = `BOARD.make_path('${ALGORITHM_NAME.toLowerCase()}')`;
 
-        run_button.setAttribute("onclick", run_button_function)
-        run_button.innerText = `Run ${algorithm_name}`
+        RUN_BUTTON.setAttribute("onclick", RUN_BUTTON_FUNCTION);
+        RUN_BUTTON.innerText = `Run ${ALGORITHM_NAME}`;
     }
 })
 
 // For every speed option inside the navigation
-document.getElementById("speed-dropdown").querySelectorAll("button").forEach(function(speed_button){
+document.getElementById("speed-dropdown").querySelectorAll("button").forEach(speedButton => {
     // If the user clicks on an speed option
-    speed_button.onclick = () => {
-        const speed_type = speed_button.innerText.toLowerCase()
-
-        board.sleep_time = speed_type // Update the speed value
+    speedButton.onclick = () => {
+        BOARD.speed_time = speedButton.innerText.toLowerCase(); // Update the speed value
     }
 })
