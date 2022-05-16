@@ -1,344 +1,432 @@
-/*
-Explanation:
+class Node {
+    #standardClasses = "border border-dark float-left";
+    #importantNames = ['start', 'end'];
 
-Board list:
-* 1 = Start, end, wall and the found node.
-* 0 = empty, next and fastest node.
-
-Function naming / variable naming information:
-* Standard classes = every starting class that the node has.
-* Standard nodes = wall, found, next, fastest and empty node.
-* Important nodes = start and end node.
-* Empty position = the node is on the board and is empty in the board list (0).
-*/
-
-
-
-class Node{
-    #standard_classes = "border border-dark float-left"
-
-    element(position){
-        const [row, col] = position
-
-        const row_element = document.getElementById('board').children[row] // Element of the row
-
-        // Returns the element of the node if the row of the node was found
-        if(row_element){
-            return row_element.children[col]
+    element(position) {
+        const [ROW, COL] = position;
+        const ROW_ELEMENT = document.getElementById('board').children[ROW];
+        
+        // If row of node could be found
+        if(ROW_ELEMENT) {
+            return ROW_ELEMENT.children[COL]; // Node element
         }
     }
 
-    position(element){
-        const row_element = element.parentElement
+    position(element) {
+        const ROW_ELEMENT = element.parentElement;
 
-        const node_row = Array.from(document.getElementById('board').children).indexOf(row_element)
-        const node_col = Array.from(row_element.children).indexOf(element)
+        const ROW = Array.from(document.getElementById('board').children).indexOf(ROW_ELEMENT);
+        const COL = Array.from(ROW_ELEMENT.children).indexOf(element);
 
-        return [node_row, node_col]
+        return [ROW, COL]; // Return the position of the element
     }
 
-    empty(position){
-        const [row, col] = position
+    empty(position) {
+        const [ROW, COL] = position;
 
-        return this.list[row] && this.list[row][col] === 0 // If the position is on the board and empty
+        return this.list[ROW] && this.list[ROW][COL] === 0; // If position is empty on the board
     }   
 
-    get start_element(){
-        return document.getElementById("start")
+    isStartPosition(position) {
+        const [ROW, COL] = position;
+        const [END_ROW, END_COL] = this.startPosition;
+
+        return ROW === END_ROW && COL === END_COL; // If position is the same as the start position      
     }
 
-    get end_element(){
-        return document.getElementById("end")
+    get startElement() {
+        return document.getElementById("start");
     }
+    
+    get startPosition() {
+        const START_ELEMENT = this.startElement;
 
-    get start_position(){
-        const start_element = document.getElementById("start")
-
-        // Return the end position if it's on the board
-        if(start_element){
-            return this.position(start_element)
+        if(START_ELEMENT) {
+            return this.position(START_ELEMENT);
         }
     }
 
-    get end_position(){
-        const end_element = document.getElementById("end")
+    set startPosition(element) {
+        element.id = "start";
+        element.className += " fas fa-arrow-right bg-success";
+    }
 
-        // Return the end position if it's on the board
-        if(end_element){
-            return this.position(end_element)
+    isEndPosition(position) {
+        const [ROW, COL] = position;
+        const [END_ROW, END_COL] = this.endPosition;
+
+        return ROW === END_ROW && COL === END_COL; // If position is the same as the end position
+    }
+
+    get endElement() {
+        return document.getElementById("end");
+    }
+
+    get endPosition() {
+        const END_ELEMENT = this.endElement;
+
+        if(END_ELEMENT) {
+            return this.position(END_ELEMENT);
         }
     }
 
-    set start_position(element){
-        // Make the position on the board 1 so it isn't empty anymore
-        const [row, col] = this.position(element)
-        this.list[row][col] = 1
+    set endPosition(element) {
+        const POSITION = this.position(element);
+        
+        // If board position was not empty (ex: walls)
+        if(!this.empty(POSITION)) {
+            this.emptyBoardColumn(POSITION); // Empty board position
+        }
 
-        // Make the element the start node
-        element.id = "start"
-        element.className += " fas fa-arrow-right bg-success"
+        element.id = "end";
+        element.className += " fas fa-home bg-danger";
+
+        RUN_BUTTON.disabled = false;
     }
 
-    set end_position(element){
-        // Make the position on the board 1 so it isn't empty anymore
-        const [row, col] = this.position(element)
-        this.list[row][col] = 1 
 
-        run_button.disabled = false
+    setStandardAttributes(element) {
+        // Empty board position
+        const POSITION = this.position(element);
+        this.emptyBoardColumn(POSITION);
 
-        // Make the element the end node
-        element.id = "end"
-        element.className += " fas fa-home bg-danger"
-    }
+        element.className = this.#standardClasses;
+        
+        // If the end position was deleted
+        if(this.endPosition && this.isEndPosition(POSITION)) {
+            RUN_BUTTON.disabled = true
+        }
 
-    is_end_position(position){
-        const [row, col] = position
-        const [end_row, end_col] = this.end_position
-
-        return row == end_row && col == end_col // If the position is the same as the end position
-    }
-
-    set_standard_attributes(element){
-        element.className = this.#standard_classes
-
-        // If the element has an id
-        if(element.id){
-            element.removeAttribute('id') // Delete the id
+        if(element.id) {
+            element.removeAttribute('id');
         }
     }
 
-    wall(position){  
-        const element = this.element(position)
+    wall(position) {  
+        const ELEMENT = this.element(position);
 
-        // If the node is not the start or end node
-        if(element.id != "start" && element.id != "end"){
-            // Change the node to the wall node
-            element.className = this.#standard_classes
-            element.id = "wall"
+        // If the node is not important (ex: start/end position)
+        if(!this.#importantNames.includes(ELEMENT.id)) {
+            ELEMENT.className = this.#standardClasses;
+            ELEMENT.id = "wall";
+
+            this.fillBoardColumn(position); // Fill position on the board
         }
     }
 
-    found(position){  
-        // If the position is on the board
-        if(this.on_board(position)){
-            // Change the node to the next node
-            const [row, col] = position
-            const element = this.element(position)  
-
-            element.className = this.#standard_classes
-            element.id = "found"
-
-            this.list[row][col] = 1 // Make the position on the board 1 so it isn't empty anymore
-        }
+    found(position) {
+        const ELEMENT = this.element(position); 
+        ELEMENT.className = this.#standardClasses;
+        ELEMENT.id = "found";
     }
 
-    next(position){    
-        // If the position is on the board
-        if(this.on_board(position)){
-            // Change the node to the next node
-            const element = this.element(position)
+    next(position) {    
+        const ELEMENT = this.element(position);
 
-            element.className = this.#standard_classes
-            element.id = "next"
-        }
+        ELEMENT.className = this.#standardClasses;
+        ELEMENT.id = "next";
     }
 
-    fastest(position){  
-        // Change the node to the fastest node
-        const element = this.element(position)
+    fastest(position) {  
+        const ELEMENT = this.element(position);
 
-        element.className = this.#standard_classes
-        element.id = "fastest"
-    }
-
-    on_board(position){
-        return this.empty(position) // If the position is on the board
-    }
-
-    is_standard_node(element){
-        return !element.id && element.className == this.#standard_classes
-    }
-
-    is_important_node(element){
-        const important_ids = ['start', 'end']
-
-        return important_ids.includes(element.id)
+        ELEMENT.className = this.#standardClasses;
+        ELEMENT.id = "fastest";
     }
 }
 
 
-
-class Board extends Node{
+class Board extends Node {
     #speed_types = {
         slow: 50, 
         normal: 25, 
         fast: 5, 
         instant: 0
-    }
+    };
 
-    constructor(){
-        super()
-        this.name = 'Board'
-        this.list = this.make_board_list()
-        this.width = this.list[0].length
-        this.height = this.list.length
-        this.is_running = false
-        this.speed = this.#speed_types['fast']
+    constructor() {
+        super();
+        this.name = 'Board';
+        this.height = document.querySelectorAll('#row').length;
+        this.width = document.querySelectorAll('#row')[0].children.length;
+        this.list = this.createList();
+
+        this.isRunning = false;
+        this.speed = this.#speed_types['normal'];
     } 
 
-    set sleep_time(type_or_value){
-        // Get the speed value with the type the user gave as parameter
-        const speed_type = this.#speed_types[type_or_value]
+    createList() {
+        const LIST = [];
 
-        // If the user gave an number as paramater, or the speed value was found using the parameter type
-        if(!isNaN(type_or_value) || speed_type != undefined){
-            // Set the speed value the user gave / was found using the speed type the user gave
-            this.speed = (speed_type != undefined) ? speed_type : type_or_value
+        for(let i = 0; i < this.height; i++) {
+            LIST.push([]);
+
+            for(let j = 0; j < this.width; j++) {
+                LIST[LIST.length - 1].push(0);
+            }
+        }
+        return LIST;
+    }
+
+    set speedTime(typeOrValue) {
+        // Get the speed value with the type the user gave as parameter
+        const SPEED = this.#speed_types[typeOrValue];
+
+        // If the speed value could be found, or the parameter is a number
+        if(!isNaN(typeOrValue) || SPEED != undefined) {
+            this.speed = (SPEED != undefined) ? SPEED : typeOrValue;
         }
     }
     
-    sleep(){
-        if(this.speed){
-            return new Promise(resolve => setTimeout(resolve, this.speed))
+    sleep() {
+        if(this.speed) {
+            return new Promise(resolve => setTimeout(resolve, this.speed));
         }
     }
 
-    make_board_list(){
-        const list = [] // 2d list of the board
-
-        // For every row
-        document.querySelectorAll('tr').forEach(board_row => {
-            const row_columns = []
-
-            // For every node inside the row
-            board_row.querySelectorAll('td').forEach(node => {
-                // If the node has an id the number is 1 else 0
-                const row_column_number = (node.id) ? 1 : 0
-                row_columns.push(row_column_number)
-            })
-
-            list.push(row_columns)
-        })
-
-        return list
+    emptyBoardColumn(position) {
+        // Empty the board column 
+        const [ROW, COL] = position;
+        this.list[ROW][COL] = 0;
     }
 
-    position_is_empty(row, col){
-        return this.list[row] && !this.list[row][col] // If the node is empty and is on the board
+    fillBoardColumn(position) {
+        // Fill the board column 
+        const [ROW, COL] = position;
+        this.list[ROW][COL] = 1;
     }
 
-    clear_algorithm_path(){
-        const classes = ["td#found", "td#next", "td#fastest"]
-        this.clear_specific_elements(classes)
+    clearAlgorithmPath() {
+        // Clear specific nodes on the board
+        const classes = ["td#found", "td#next", "td#fastest"];
+        this.clearSpecificElements(classes);
     }
 
-    clear_walls(){
-        const classes = ["td#wall"]
-        this.clear_specific_elements(classes)
+    clearWalls() {
+        // Clear specific nodes on the board
+        const classes = ["td#wall"];
+        this.clearSpecificElements(classes);
     }
 
-    clear_board(){
-        const classes = ["#start", "#end"]
-        this.clear_specific_elements(classes)
+    clearBoard() {
+        // Clear specific nodes on the board
+        const classes = ["#start", "#end"];
+        this.clearSpecificElements(classes);
 
-        this.clear_algorithm_path()
-        this.clear_walls()
+        this.clearAlgorithmPath();
+        this.clearWalls();
     }
 
-    clear_specific_elements(classes){
-        if(!this.is_running){
-            // For every class that must be cleared
+    clearSpecificElements(classes) {
+        if(!this.isRunning) {
+            // For every class of the nodes that must be cleared
             document.querySelectorAll(classes).forEach(element => {
-                this.set_standard_attributes(element) // Change the node to the standard node
-            })
+                this.setStandardAttributes(element); // Change the node to the standard node
+            });
         }
     }
-
-    make_path(algorithm){
+    
+    makePath(algorithm) {
         // If the start and end position are on the board, and the board isn't running
-        if(this.start_position && this.end_position && !this.is_running){
-            this.clear_algorithm_path()
-            this.list = this.make_board_list() // Get the 2d list of the board
-            this.is_running = true
-            run_button.disabled = true 
+        if(this.startPosition && this.endPosition && !this.isRunning) {
+            this.clearAlgorithmPath();
+            this.isRunning = true;
+            RUN_BUTTON.disabled = true;
+
+            const AlGORITHM_FUNCTION_NAME = `path${capitalize(algorithm)}`
 
             // Start the pathfinding algorithm
-            window[`path_${algorithm}`]().then(route => {
+            window[AlGORITHM_FUNCTION_NAME]().then(route => {
                 // Make the fastest route
-                this.fastest_route(route).then(() => {
-                    this.is_running = false
-                    run_button.disabled = false
-                })
-            })
+                this.fastestRoute(route).then(() => {
+                    this.isRunning = false;
+                    RUN_BUTTON.disabled = false;
+                });
+            });
         }
     }
     
-    async fastest_route(route){
-        // If the fastest route could be made
-        if(route){
-            route = route.slice(1).reverse() // Delete the end position and reverse the list
+    async fastestRoute(route) {
+        // If a route from the start to end position can be made
+        if(route) {
+            for(let position of route.reverse()) {       
+                this.fastest(position); // Update node styling
 
-            // For every position inside the route
-            for(let position of route){       
-                this.fastest(position) // Make the node an fastest node
-
-                await this.sleep()
+                await this.sleep();
             }
         }
     }
 
-    random_walls(){
-        if(!this.is_running){
-            // For each node
-            document.querySelectorAll("td").forEach(element => {
-                // 33% chance to make the wall if it's an standard node
-                if(Math.random() <= 0.33 && !this.is_important_node(element)){
-                    // Make the node an wall node
-                    const position = this.position(element)                    
-                    this.wall(position)
+    randomWalls() {
+        if(!this.isRunning) {
+            document.querySelectorAll("#node").forEach(element => {
+                // 33% chance to make the wall if it's not an important node (ex: start/end position)
+                if(Math.random() <= 0.33 && !this.importantNames(element)) {
+                    // Update node styling
+                    const POSITION = this.position(element);              
+                    this.wall(POSITION);
                 }
-            })
+            });
+        }
+    }
+
+    mazeBorder() {
+        // For every row column on the board
+        for(let col = 0; col < this.width; col++) {
+            // Make a horizontal border, the first loop is for the TOP the second loop is for the BOTTOM
+            for(let i = 0; i <= 1; i++) {
+                const ROW = (!i) ? 0 : this.height - 1;
+                const POSITION = [ROW, col];
+
+                this.wall(POSITION);
+            }
+        }
+        
+        // For every row on the board
+        for(let row = 0; row < this.height; row++) {
+            // Make a vertical border, the first loop is for the LEFT the second loop is for the RIGHT
+            for(let i = 0; i <= 1; i++) {
+                const COL = (!i) ? 0 : this.width - 1;
+                const POSITION = [row, COL];
+
+                this.wall(POSITION);
+            }
+        } 
+    }
+
+    createMaze() {
+        if(!this.isRunning) {
+            this.clearAlgorithmPath();
+            this.mazeBorder();
         }
     }
 }
-const board = new Board()
-
+const BOARD = new Board();
 
 // For each node
-document.querySelectorAll('td').forEach(node_element => {  
-    board.set_standard_attributes(node_element)
+document.querySelectorAll('#row > *').forEach(nodeElement => {  
+    BOARD.setStandardAttributes(nodeElement); // Change the node to the standard node
 
-    node_element.onclick = () => { 
-        if(!board.is_running){
+    nodeElement.onclick = () => { 
+        if(!BOARD.isRunning) {
             // If it's the start or end node
-            if(board.start_element == node_element || board.end_element == node_element){
-                // If it's the end node
-                if(board.end_element == node_element){
-                    run_button.disabled = true
-                }
-
-                board.set_standard_attributes(node_element) // Change the node to the start / end node
+            if(nodeElement === BOARD.startElement || nodeElement === BOARD.endElement) {
+                BOARD.setStandardAttributes(nodeElement);
             }
 
-            // If the board does not have the start or end position
-            else if(!board.start_position || !board.end_position){
-                // First add the start position then the end position  
-                const importancy = board.start_position ? "end" : "start"
+            // If the board doesn't have the start or end position
+            else if(!BOARD.startPosition || !BOARD.endPosition) {
+                // Add the position that was not already added
+                const IMPORTANCY = BOARD.startPosition ? "end" : "start";
 
-                if(importancy == "start"){
-                    board.start_position = node_element
+                if(IMPORTANCY == "start") {
+                    BOARD.startPosition = nodeElement;
                 }else{
-                    board.end_position = node_element
+                    BOARD.endPosition = nodeElement;
                 }
             }
         }
     }
 
-    node_element.addEventListener("mouseover", mouse_event => {
+    nodeElement.addEventListener("mouseover", mouseEvent => {
         // When the user hovers over the node and is holding down the left mouse button
-        if(!board.is_running && mouse_event.buttons == 1){
-            const position = board.position(node_element)
-            board.wall(position) // Make the node a wall
+        if(mouseEvent.buttons === 1 && !BOARD.isRunning) {
+            // Update node styling
+            const POSITION = BOARD.position(nodeElement);
+            BOARD.wall(POSITION);
         }
-    })
-})
+    });
+});
+
+
+/*
+TESTING CODE:
+
+BOARD.create_maze()
+BOARD.end_position = BOARD.element([11,1])
+BOARD.start_position = BOARD.element([14,1])
+
+
+BOARD.wall([9,1])
+BOARD.wall([9,2])
+BOARD.wall([10,2])
+BOARD.wall([11,2])
+BOARD.wall([12,2])
+BOARD.wall([13,2])
+BOARD.wall([13,4])
+BOARD.wall([13,5])
+BOARD.wall([13,6])
+BOARD.wall([14,6])
+BOARD.wall([13,4])
+BOARD.wall([14,8])
+BOARD.wall([13,8])
+BOARD.wall([14,10])
+BOARD.wall([13,10])
+BOARD.wall([14,12])
+BOARD.wall([13,12])
+BOARD.wall([11,13])
+BOARD.wall([11,12])
+BOARD.wall([11,11])
+BOARD.wall([11,10])
+BOARD.wall([11,8])
+BOARD.wall([10,8])
+BOARD.wall([9,8])
+BOARD.wall([9,9])
+BOARD.wall([9,10])
+BOARD.wall([9,11])
+BOARD.wall([9,12])
+BOARD.wall([8,12])
+BOARD.wall([7,12])
+BOARD.wall([7,13])
+BOARD.wall([6,12])
+BOARD.wall([5,12])
+BOARD.wall([7,10])
+BOARD.wall([6,10])
+BOARD.wall([5,10])
+BOARD.wall([4,10])
+BOARD.wall([3,10])
+BOARD.wall([2,10])
+BOARD.wall([2,11])
+BOARD.wall([2,12])
+BOARD.wall([1,12])
+BOARD.wall([7,8])
+BOARD.wall([6,8])
+BOARD.wall([5,8])
+BOARD.wall([4,8])
+BOARD.wall([3,8])
+BOARD.wall([2,8])
+BOARD.wall([1,8])
+BOARD.wall([7,8])
+BOARD.wall([7,7])
+BOARD.wall([7,6])
+BOARD.wall([7,5])
+BOARD.wall([7,4])
+BOARD.wall([7,3])
+BOARD.wall([7,2])
+BOARD.wall([8,4])
+BOARD.wall([9,4])
+BOARD.wall([10,4])
+BOARD.wall([11,4])
+BOARD.wall([8,6])
+BOARD.wall([9,6])
+BOARD.wall([10,6])
+BOARD.wall([11,6])
+BOARD.wall([1,2])
+BOARD.wall([2,2])
+BOARD.wall([1,4])
+BOARD.wall([2,4])
+BOARD.wall([3,4])
+BOARD.wall([4,4])
+BOARD.wall([5,4])
+BOARD.wall([5,3])
+BOARD.wall([5,2])
+BOARD.wall([3,2])
+BOARD.wall([4,12])
+BOARD.wall([1,6])
+BOARD.wall([2,6])
+BOARD.wall([3,6])
+BOARD.wall([4,6])
+BOARD.wall([5,6])
+
+BOARD.make_path('dfs')
+*/
