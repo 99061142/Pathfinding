@@ -1,45 +1,59 @@
-// Check each node until the ending node is found
-async function pathBfs(){
-    const POSITIONS = [[BOARD.startPosition]]; // Positions of the node(s)
-    const DIRECTIONS = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
+class Bfs {
+    #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
+    
+    constructor() {
+        this.queue = [BOARD.startPosition]; // Positions to move from
+        this.visited = [BOARD.startPosition]; // ALl the positions that are visited
+        this.route = []; // Route from start to end position
+    }    
 
-    // Loop through every route to go to the new node
-    for(let route of POSITIONS){
-        const [THIS_ROW, THIS_COL] = route.slice(-1)[0]; // Last node inside the route to go to the next node
-
-        // For every movable direction
-        for(let [directionRow, directionCol] of DIRECTIONS){
-            const ROW = THIS_ROW + directionRow;
-            const COL = THIS_COL + directionCol;
-            const POSITION = [ROW, COL];
-
-            // If the positon is the end position
-            if(BOARD.isEndPosition(POSITION)){
-                return route.slice(1);
+    get head() {
+        return this.queue[0]; // Least added position
+    }
+    
+    positionVisited(position) {
+        // Returns if the position the path is on was already visited
+        for(let visitedPosition of this.visited) {
+            if(visitedPosition.toString() === position.toString()) {
+                return true;
             }
+        }
+        return false;
+    }
 
-            // If the node is empty
-            if(BOARD.empty(POSITION)){
-                if(!BOARD.isStartPosition(POSITION)){
-                    BOARD.found(POSITION);
-                }
+    async run() {
+        while(this.queue && this.queue.length) {
+            const [ROW, COL] = this.queue.shift(); // Position to move from
 
-                // Go further with the found node when the loop gets called again 
-                const NEW_LIST = [...route, POSITION]
-                POSITIONS.push(NEW_LIST);
-                
-                // For every movable direction
-                for(let [directionRow, directionCol] of DIRECTIONS){
-                    const NEXT_ROW = ROW + directionRow;
-                    const NEXT_COL = COL + directionCol;
-                    const POSITION = [NEXT_ROW, NEXT_COL];
+            for(let directionPosition of this.#directions) {
+                const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
+                const NEXT_ROW = ROW + DIRECTION_ROW;
+                const NEXT_COL = COL + DIRECTION_COL;
+                const POSITION = [NEXT_ROW, NEXT_COL];
 
-                    if(BOARD.empty(POSITION) && !BOARD.isEndPosition(POSITION) && !BOARD.isStartPosition(POSITION)){
+                if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) {    
+                    if(!BOARD.isEndPosition(POSITION)) { 
                         BOARD.next(POSITION);
                         await BOARD.sleep();
                     }
+                    this.queue.push(POSITION)
+                    this.visited.push(POSITION)
                 }
+            }
+            if(!this.head){ return } // Path couldn't go further
+            
+            // Return the path if the end position was found on the position the path is on
+            if(BOARD.isEndPosition(this.head)) {
+                return this.route
+            }
+            else{
+                BOARD.found(this.head)
             }
         }
     }
+}
+
+
+async function pathBfs() {
+    return new Bfs().run(); // Return the start to end path
 }
