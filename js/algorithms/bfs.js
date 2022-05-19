@@ -4,7 +4,7 @@ class Bfs {
     constructor() {
         this.queue = [BOARD.startPosition]; // Positions to move from
         this.visited = [BOARD.startPosition]; // ALl the positions that are visited
-        this.route = []; // Route from start to end position
+        this.path = []; // Route from start to end position
     }    
 
     get head() {
@@ -30,7 +30,8 @@ class Bfs {
                 const NEXT_ROW = ROW + DIRECTION_ROW;
                 const NEXT_COL = COL + DIRECTION_COL;
                 const POSITION = [NEXT_ROW, NEXT_COL];
-
+            
+                // If neighbour is empty and not visited
                 if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) {    
                     if(!BOARD.isEndPosition(POSITION)) { 
                         BOARD.next(POSITION);
@@ -44,11 +45,9 @@ class Bfs {
             
             // Return the path if the end position was found on the position the path is on
             if(BOARD.isEndPosition(this.head)) {
-                return this.route
+                return this.path
             }
-            else{
-                BOARD.found(this.head)
-            }
+            BOARD.found(this.head)
         }
     }
 }
