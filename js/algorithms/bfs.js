@@ -12,19 +12,19 @@ class Bfs {
     }
     
     positionVisited(position) {
-        // Returns if the position the path is on was already visited
+        // Returns if the position was already visited
         for(let visitedPosition of this.visited) {
-            if(visitedPosition.toString() === position.toString()) {
-                return true;
-            }
+            if(String(visitedPosition) === String(position)) { return true; }
         }
         return false;
     }
 
     async run() {
+        // If queue isn't empty
         while(this.queue && this.queue.length) {
             const [ROW, COL] = this.queue.shift(); // Position to move from
 
+            // For every optional direction
             for(let directionPosition of this.#directions) {
                 const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
                 const NEXT_ROW = ROW + DIRECTION_ROW;
@@ -42,11 +42,8 @@ class Bfs {
                 }
             }
             if(!this.head){ return; } // Path couldn't go further
+            if(BOARD.isEndPosition(this.head)) { return this.path; } // End position is found
             
-            // Return the path if the end position was found on the position the path is on
-            if(BOARD.isEndPosition(this.head)) {
-                return this.path;
-            }
             BOARD.found(this.head);
         }
     }
