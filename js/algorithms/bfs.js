@@ -37,17 +37,17 @@ class Bfs {
                         BOARD.next(POSITION);
                         await BOARD.sleep();
                     }
-                    this.queue.push(POSITION)
-                    this.visited.push(POSITION)
+                    this.queue.push(POSITION);
+                    this.visited.push(POSITION);
                 }
             }
-            if(!this.head){ return } // Path couldn't go further
+            if(!this.head){ return; } // Path couldn't go further
             
             // Return the path if the end position was found on the position the path is on
             if(BOARD.isEndPosition(this.head)) {
-                return this.path
+                return this.path;
             }
-            BOARD.found(this.head)
+            BOARD.found(this.head);
         }
     }
 }
