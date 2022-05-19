@@ -20,14 +20,13 @@
 
 ### Doesn't include start to end route.
 
+* BFS.
 * DFS.
 
 
 ## NEXT UPDATES
 
 * Show the route from the start to end for the BFS / DFS algorithms.
-* Make the BFS code OOP (classes).
-
 
 ## Note
 
