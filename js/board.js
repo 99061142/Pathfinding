@@ -307,7 +307,6 @@ class Board extends Node {
     }
 }
 const BOARD = new Board();
-console.log(BOARD.nodesElements)
 
 // For each node
 document.querySelectorAll(BOARD.nodesTag).forEach(nodeElement => {  
@@ -345,12 +344,9 @@ document.querySelectorAll(BOARD.nodesTag).forEach(nodeElement => {
 });
 
 
-/*
-TESTING CODE:
-
-BOARD.create_maze()
-BOARD.end_position = BOARD.element([11,1])
-BOARD.start_position = BOARD.element([14,1])
+BOARD.createMaze()
+BOARD.endPosition = BOARD.element([11,1])
+BOARD.startPosition = BOARD.element([14,1])
 
 
 BOARD.wall([9,1])
@@ -434,5 +430,4 @@ BOARD.wall([3,6])
 BOARD.wall([4,6])
 BOARD.wall([5,6])
 
-BOARD.make_path('dfs')
-*/
+BOARD.makePath('dfs')
