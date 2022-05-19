@@ -20,6 +20,6 @@ document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach
 document.getElementById("speed-dropdown").querySelectorAll("button").forEach(speedButton => {
     // If the user clicks on an speed option
     speedButton.onclick = () => {
-        BOARD.speed_time = speedButton.innerText.toLowerCase(); // Update the speed value
+        BOARD.speedTime = speedButton.innerText.toLowerCase(); // Update the speed value
     }
 })
