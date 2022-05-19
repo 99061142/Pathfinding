@@ -27,6 +27,7 @@
                 <div class="dropdown-menu mt-4" aria-labelledby="board-layouts">
                     <button class="dropdown-item" onclick=BOARD.createMaze()>Maze</button>
                     <button class="dropdown-item" onclick=BOARD.randomWalls()>Random walls</button>
+                    <button class="dropdown-item" onclick=testDFS()>DFS layout</button>
                 </div>
             </li>
             <!-- /Board layouts -->
@@ -34,7 +35,7 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick="BOARD.makePath('bfs')" disabled>Run BFS</button>
+                <button class="px-4 bg-green" id="run-button" onclick="BOARD.makePath('dfs')" disabled>Run DFS</button>
             </li>
             <!-- /Run button -->
 
