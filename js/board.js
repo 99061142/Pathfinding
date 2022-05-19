@@ -2,6 +2,10 @@ class Node {
     #standardClasses = "border border-dark float-left";
     #importantNames = ['start', 'end'];
 
+    get importantNames() {
+        return this.#importantNames
+    }
+
     element(position) {
         const [ROW, COL] = position;
         const ROW_ELEMENT = document.getElementById('board').children[ROW];
@@ -146,7 +150,8 @@ class Board extends Node {
 
     constructor() {
         super();
-        this.name = 'Board';
+        this.nodesTag = "td"   
+        this.name = "Board";
         this.height = document.querySelectorAll('#row').length;
         this.width = document.querySelectorAll('#row')[0].children.length;
         this.list = this.createList();
@@ -259,9 +264,9 @@ class Board extends Node {
 
     randomWalls() {
         if(!this.isRunning) {
-            document.querySelectorAll("#node").forEach(element => {
+            document.querySelectorAll(this.nodesTag).forEach(element => {
                 // 33% chance to make the wall if it's not an important node (ex: start/end position)
-                if(Math.random() <= 0.33 && !this.importantNames(element)) {
+                if(Math.random() <= 0.33 && !this.importantNames.includes(element.id)) {
                     // Update node styling
                     const POSITION = this.position(element);              
                     this.wall(POSITION);
@@ -302,9 +307,10 @@ class Board extends Node {
     }
 }
 const BOARD = new Board();
+console.log(BOARD.nodesElements)
 
 // For each node
-document.querySelectorAll('#row > *').forEach(nodeElement => {  
+document.querySelectorAll(BOARD.nodesTag).forEach(nodeElement => {  
     BOARD.setStandardAttributes(nodeElement); // Change the node to the standard node
 
     nodeElement.onclick = () => { 
