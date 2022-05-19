@@ -21,7 +21,7 @@
 ### Doesn't include start to end route.
 
 * BFS.
-* DFS.
+* DFS. (To use DFS use the "DFS layout" in the "Layouts" bar. DFS won't work on an empty board for now.)
 
 
 ## NEXT UPDATES
