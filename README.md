@@ -26,7 +26,8 @@
 
 ## NEXT UPDATES
 
-* Show the route from the start to end for the BFS / DFS algorithms.
+* Fix the DFS route to show it on an empty board too.
+* Show the route from the start to end for the BFS algorithm.
 
 ## Note
 
