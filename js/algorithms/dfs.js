@@ -12,16 +12,37 @@ class Dfs {
     }
 
     positionVisited(position) {
-        // Returns if the position the path is on was already visited
+        // Returns if the position was already visited
         for(let visitedPosition of this.visited) {
-            if(visitedPosition.toString() === position.toString()) {
-                return true;
-            }
+            if(String(visitedPosition) === String(position)) { return true; }
         }
         return false;
     }
 
-    async run() {
+    canMove(position) {
+        const [ROW, COL] = position;
+        
+        // Check if the position can move to 1 of the optional directions
+        for(let directionPosition of this.#directions) {
+            const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
+            const NEXT_ROW = ROW + DIRECTION_ROW;
+            const NEXT_COL = COL + DIRECTION_COL;
+            const POSITION = [NEXT_ROW, NEXT_COL];   
+
+            // If position is empty and not already visited
+            if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) { return true; }     
+        }
+        return false
+    }
+
+    PathPositionIndex(currentPosition) {
+        for(let [i, position] of this.path.entries()) {
+            // Return the index of the current position inside the path list
+            if(String(position) === String(currentPosition)){ return i; }
+        }
+    }
+
+    async run() {        
         // If queue isn't empty
         while(this.queue && this.queue.length) {
             const [ROW, COL] = this.queue.pop(); // Position to move from
@@ -34,21 +55,33 @@ class Dfs {
 
                 // If neighbour is empty and not visited
                 if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) {            
-                    if(!BOARD.isEndPosition(POSITION)) {
+                    if(!BOARD.isEndPosition(POSITION)){ 
                         BOARD.next(POSITION);
-                        await BOARD.sleep();        
+                        await BOARD.sleep(); 
                     }
-                    this.queue.push(POSITION);
-                    this.visited.push(POSITION);
+                    this.queue.push(POSITION);    
                 }
             }
             if(!this.head) { return; } // Path couldn't go further
+            if(BOARD.isEndPosition(this.head)) { return this.path; } // End position was found
 
-            // Return the path if the end position was found on the position the path is on
-            if(BOARD.isEndPosition(this.head)) {
-                return this.path;
-            }
             BOARD.found(this.head);
+            this.path.push(this.head)
+            this.visited.push(this.head)
+
+            // If the position can't move further
+            if(!this.canMove(this.head)) {
+                const REVERSED_PATH = [...this.path].reverse()
+
+                // For every position inside the path
+                for(let position of REVERSED_PATH){                         
+                    if(this.canMove(position)) { break; } // If the position can move further
+
+                    // Delete position out of the path list
+                    const PATH_POSITION_INDEX = this.PathPositionIndex(position);
+                    this.path.splice(PATH_POSITION_INDEX, 1);
+                }
+            }
         }
     }
 }
