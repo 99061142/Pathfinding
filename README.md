@@ -17,16 +17,16 @@
 
 ### Include start to end route.
 
+* BFS
 * DFS
 
 ### Doesn't include start to end route.
 
-* BFS.
+* None
 
 
 ## NEXT UPDATES
 
-* Show the route from the start to end for the BFS algorithm.
 
 ## Note
 
