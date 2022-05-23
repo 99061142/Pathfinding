@@ -121,12 +121,25 @@ class Dfs {
                 const POSITION = [NEXT_ROW, NEXT_COL];
 
                 // If neighbour is empty and not visited and position wasn't queued already
-                if(BOARD.empty(POSITION) && !this.positionVisited(POSITION) && !this.isQueued(POSITION)) { 
-                    if(!BOARD.isEndPosition(POSITION)) {
-                        BOARD.next(POSITION);
-                        await BOARD.sleep();
+                if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) { 
+                    if(!this.isQueued(POSITION)){
+                        if(!BOARD.isEndPosition(POSITION)) {
+                            BOARD.next(POSITION);
+                            await BOARD.sleep();
+                        }
+                        this.queue.push(POSITION);
                     }
-                    this.queue.push(POSITION);
+
+                    else{  
+                        // Delete the firstly added end position out of the queue and add the new one
+                        // We do this because it could happen that the end position was already found
+                        // but put in the queue because the path could go to another direction first
+                        if(BOARD.isEndPosition(POSITION)) {
+                            const ENDING_PATH_INDEX = this.PathPositionIndex(POSITION);
+                            this.path.splice(ENDING_PATH_INDEX, 1);
+                            this.queue.push(POSITION);
+                        }
+                    }
                 }
             }
 
