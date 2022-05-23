@@ -74,6 +74,8 @@ class Dfs {
     }
 
     fastestPath() {
+        this.deleteAfterEndPositions(); // Delete the positions that were found after the end position
+
         for(let position of this.path.reverse()) {
             // Index and position of the next position
             var nextIndex = this.PathPositionIndex(position) + 1;
@@ -130,7 +132,7 @@ class Dfs {
                         this.queue.push(POSITION);
                     }
 
-                    else{  
+                    else {  
                         // Delete the firstly added end position out of the queue and add the new one
                         // We do this because it could happen that the end position was already found
                         // but put in the queue because the path could go to another direction first
@@ -142,20 +144,13 @@ class Dfs {
                     }
                 }
             }
-
             if(!this.head) { return; } // Path couldn't go further
+            if(BOARD.isEndPosition(this.head)){ return this.fastestPath(); } // End position was found
 
-            if(!BOARD.isEndPosition(this.head)) {
-                BOARD.found(this.head);
-                await BOARD.sleep();
-
-                this.visited.push(this.head); // Position is visited
-                if(this.canMove(this.head)) { this.path.push(this.head); } // If the position can move further
-            }
-            else { 
-                this.deleteAfterEndPositions(); // Delete the positions that were found after the end position
-                return this.fastestPath(); 
-            } 
+            BOARD.found(this.head);
+            this.visited.push(this.head); // Position is visited
+            if(this.canMove(this.head)) { this.path.push(this.head); } // If the position can move further
+            await BOARD.sleep();
         }
     }
 }
