@@ -1,5 +1,5 @@
 class Dfs {
-    #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
+    #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Left, down, right, up
     
     constructor() {
         this.queue = [BOARD.startPosition];
@@ -14,10 +14,83 @@ class Dfs {
     positionVisited(position) {
         // Returns if the position was already visited
         for(let visitedPosition of this.visited) {
-            if(String(visitedPosition) === String(position)) { return true; }
+            if(String(position) === String(visitedPosition)) { return true; }
         }
         return false;
     }
+
+    PathPositionIndex(position) {
+        // Returns the index of the position inside the path list
+        for(let [i, pathPosition] of this.path.entries()) {
+            if(String(pathPosition) === String(position)) { return i; } // If position is inside the path list
+        }
+    }
+
+    isQueued(position) {        
+        for(let queuedPosition of this.queue) {
+            if(String(position) === String(queuedPosition)) { return true; } // If position is in the queue     
+        }
+        return false;
+    }
+
+    neighbourIsEnd(position) {
+        const [ROW, COL] = position;
+
+        // Check if 1 of the optional directions is the end position
+        for(let directionPosition of this.#directions) {
+            const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
+            const NEXT_ROW = ROW + DIRECTION_ROW;
+            const NEXT_COL = COL + DIRECTION_COL;
+            const POSITION = [NEXT_ROW, NEXT_COL];   
+            
+            if(String(POSITION) === String(BOARD.endPosition)){ return true; } // If a neighbour is the end position
+        }    
+        return false;        
+    }
+
+    isNeighbour(positionOne, positionTwo){
+        const [ROW, COL] = positionOne;
+
+        // Check if 1 of the optional directions is the end position
+        for(let directionPosition of this.#directions) {
+            const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
+            const NEXT_ROW = ROW + DIRECTION_ROW;
+            const NEXT_COL = COL + DIRECTION_COL;
+            const POSITION = [NEXT_ROW, NEXT_COL];   
+            
+            if(String(POSITION) === String(positionTwo)){ return true; } // If the second position is a neighbour of the first position
+        }    
+        return false;
+    }
+
+    deleteAfterEndPositions() {
+        for(let [i, position] of this.path.entries()) {
+            // If the neighbour is the end position
+            if(this.neighbourIsEnd(position)) {                 
+                this.path.splice(i + 1, this.path.length + 1); // Delete every position after the end position
+                break; 
+            }
+        }
+    }
+
+    fastestPath() {
+        for(let position of this.path.reverse()) {
+            // Index and position of the next position
+            var nextIndex = this.PathPositionIndex(position) + 1;
+            var next = this.path[nextIndex];
+
+            // While the next position isn't a neighbour of the current position
+            while(next && !this.isNeighbour(position, next)) {
+                this.path.splice(nextIndex, 1); // Delete the next position
+
+                // Index and position of the next position
+                nextIndex = this.PathPositionIndex(position) + 1;
+                next = this.path[nextIndex];
+            }
+        }
+        return this.path;
+    }
+
 
     canMove(position) {
         const [ROW, COL] = position;
@@ -29,59 +102,45 @@ class Dfs {
             const NEXT_COL = COL + DIRECTION_COL;
             const POSITION = [NEXT_ROW, NEXT_COL];   
 
-            // If position is empty and not already visited
-            if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) { return true; }     
+            // If the position isn't visited, isn't in the queue and is empty
+            if(BOARD.empty(POSITION) && !this.positionVisited(POSITION) && !this.isQueued(POSITION)) { return true; }     
         }
-        return false
+        return false;
     }
 
-    PathPositionIndex(currentPosition) {
-        for(let [i, position] of this.path.entries()) {
-            // Return the index of the current position inside the path list
-            if(String(position) === String(currentPosition)){ return i; }
-        }
-    }
-
-    async run() {        
+    async run() {      
         // If queue isn't empty
         while(this.queue && this.queue.length) {
             const [ROW, COL] = this.queue.pop(); // Position to move from
 
+            // For every optional direction
             for(let directionPosition of this.#directions) {
                 const [DIRECTION_ROW, DIRECTION_COL] = directionPosition;
                 const NEXT_ROW = ROW + DIRECTION_ROW;
                 const NEXT_COL = COL + DIRECTION_COL;
                 const POSITION = [NEXT_ROW, NEXT_COL];
 
-                // If neighbour is empty and not visited
-                if(BOARD.empty(POSITION) && !this.positionVisited(POSITION)) {            
-                    if(!BOARD.isEndPosition(POSITION)){ 
+                // If neighbour is empty and not visited and position wasn't queued already
+                if(BOARD.empty(POSITION) && !this.positionVisited(POSITION) && !this.isQueued(POSITION)) { 
+                    if(!BOARD.isEndPosition(POSITION)) {
                         BOARD.next(POSITION);
-                        await BOARD.sleep(); 
+                        await BOARD.sleep();
                     }
-                    this.queue.push(POSITION);    
+                    this.queue.push(POSITION);
                 }
             }
+
             if(!this.head) { return; } // Path couldn't go further
-            if(BOARD.isEndPosition(this.head)) { return this.path; } // End position was found
 
-            BOARD.found(this.head);
-            this.path.push(this.head)
-            this.visited.push(this.head)
-
-            // If the position can't move further
-            if(!this.canMove(this.head)) {
-                const REVERSED_PATH = [...this.path].reverse()
-
-                // For every position inside the path
-                for(let position of REVERSED_PATH){                         
-                    if(this.canMove(position)) { break; } // If the position can move further
-
-                    // Delete position out of the path list
-                    const PATH_POSITION_INDEX = this.PathPositionIndex(position);
-                    this.path.splice(PATH_POSITION_INDEX, 1);
-                }
+            if(!BOARD.isEndPosition(this.head)) {
+                BOARD.found(this.head);
+                this.visited.push(this.head); // Position is visited
+                if(this.canMove(this.head)) { this.path.push(this.head); } // If the position can move further
             }
+            else { 
+                this.deleteAfterEndPositions(); // Delete the positions that were found after the end position
+                return this.fastestPath(); 
+            } 
         }
     }
 }
