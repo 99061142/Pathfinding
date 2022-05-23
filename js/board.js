@@ -88,7 +88,6 @@ class Node {
         RUN_BUTTON.disabled = false;
     }
 
-
     setStandardAttributes(element) {
         // Empty board position
         const POSITION = this.position(element);
@@ -254,9 +253,8 @@ class Board extends Node {
     async fastestRoute(route) {
         // If a route from the start to end position can be made
         if(route) {
-            for(let position of route.reverse()) {       
+            for(let [i, position] of route.entries()) { 
                 this.fastest(position); // Update node styling
-
                 await this.sleep();
             }
         }
@@ -335,98 +333,17 @@ document.querySelectorAll(BOARD.nodesTag).forEach(nodeElement => {
 
     nodeElement.addEventListener("mouseover", mouseEvent => {
         // When the user hovers over the node and is holding down the left mouse button
-        if(mouseEvent.buttons === 1 && !BOARD.isRunning) {
-            // Update node styling
-            const POSITION = BOARD.position(nodeElement);
-            BOARD.wall(POSITION);
+        
+        if(!BOARD.isRunning) {
+            if(mouseEvent.buttons === 1) {
+                // Update node styling
+                const POSITION = BOARD.position(nodeElement);
+                BOARD.wall(POSITION);    
+            }
+            
+            else if(mouseEvent.buttons === 4 && !BOARD.importantNames.includes(nodeElement.id)) {
+                BOARD.setStandardAttributes(nodeElement); // Update node styling
+            }
         }
     });
 });
-
-function testDFS() {
-    BOARD.createMaze()
-    BOARD.endPosition = BOARD.element([1,1])
-    BOARD.startPosition = BOARD.element([14,1])
-
-
-    BOARD.wall([9,1])
-    BOARD.wall([9,2])
-    BOARD.wall([10,2])
-    BOARD.wall([11,2])
-    BOARD.wall([12,2])
-    BOARD.wall([13,2])
-    BOARD.wall([13,4])
-    BOARD.wall([13,5])
-    BOARD.wall([13,6])
-    BOARD.wall([14,6])
-    BOARD.wall([13,4])
-    BOARD.wall([14,8])
-    BOARD.wall([13,8])
-    BOARD.wall([14,10])
-    BOARD.wall([13,10])
-    BOARD.wall([14,12])
-    BOARD.wall([13,12])
-    BOARD.wall([11,13])
-    BOARD.wall([11,12])
-    BOARD.wall([11,11])
-    BOARD.wall([11,10])
-    BOARD.wall([11,8])
-    BOARD.wall([10,8])
-    BOARD.wall([9,8])
-    BOARD.wall([9,9])
-    BOARD.wall([9,10])
-    BOARD.wall([9,11])
-    BOARD.wall([9,12])
-    BOARD.wall([8,12])
-    BOARD.wall([7,12])
-    BOARD.wall([7,13])
-    BOARD.wall([6,12])
-    BOARD.wall([5,12])
-    BOARD.wall([7,10])
-    BOARD.wall([6,10])
-    BOARD.wall([5,10])
-    BOARD.wall([4,10])
-    BOARD.wall([3,10])
-    BOARD.wall([2,10])
-    BOARD.wall([2,11])
-    BOARD.wall([2,12])
-    BOARD.wall([1,12])
-    BOARD.wall([7,8])
-    BOARD.wall([6,8])
-    BOARD.wall([5,8])
-    BOARD.wall([4,8])
-    BOARD.wall([3,8])
-    BOARD.wall([2,8])
-    BOARD.wall([1,8])
-    BOARD.wall([7,8])
-    BOARD.wall([7,7])
-    BOARD.wall([7,6])
-    BOARD.wall([7,5])
-    BOARD.wall([7,4])
-    BOARD.wall([7,3])
-    BOARD.wall([7,2])
-    BOARD.wall([8,4])
-    BOARD.wall([9,4])
-    BOARD.wall([10,4])
-    BOARD.wall([11,4])
-    BOARD.wall([8,6])
-    BOARD.wall([9,6])
-    BOARD.wall([10,6])
-    BOARD.wall([11,6])
-    BOARD.wall([1,2])
-    BOARD.wall([2,2])
-    BOARD.wall([1,4])
-    BOARD.wall([2,4])
-    BOARD.wall([3,4])
-    BOARD.wall([4,4])
-    BOARD.wall([5,4])
-    BOARD.wall([5,3])
-    BOARD.wall([5,2])
-    BOARD.wall([3,2])
-    BOARD.wall([4,12])
-    BOARD.wall([1,6])
-    BOARD.wall([2,6])
-    BOARD.wall([3,6])
-    BOARD.wall([4,6])
-    BOARD.wall([5,6])
-}
