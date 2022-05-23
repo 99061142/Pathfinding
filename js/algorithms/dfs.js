@@ -1,5 +1,5 @@
 class Dfs {
-    #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Left, down, right, up
+    #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Left, down, right and up
     
     constructor() {
         this.queue = [BOARD.startPosition];
@@ -93,7 +93,6 @@ class Dfs {
         return this.path;
     }
 
-
     canMove(position) {
         const [ROW, COL] = position;
         
@@ -131,21 +130,10 @@ class Dfs {
                         }
                         this.queue.push(POSITION);
                     }
-
-                    else {  
-                        // Delete the firstly added end position out of the queue and add the new one
-                        // We do this because it could happen that the end position was already found
-                        // but put in the queue because the path could go to another direction first
-                        if(BOARD.isEndPosition(POSITION)) {
-                            const ENDING_PATH_INDEX = this.PathPositionIndex(POSITION);
-                            this.path.splice(ENDING_PATH_INDEX, 1);
-                            this.queue.push(POSITION);
-                        }
-                    }
                 }
             }
             if(!this.head) { return; } // Path couldn't go further
-            if(BOARD.isEndPosition(this.head)){ return this.fastestPath(); } // End position was found
+            if(BOARD.isEndPosition(this.head)) { return this.fastestPath(); } // End position was found
 
             BOARD.found(this.head);
             this.visited.push(this.head); // Position is visited
