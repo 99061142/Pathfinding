@@ -25,7 +25,7 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="board-layouts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Layouts</a>
                 <div class="dropdown-menu mt-4" aria-labelledby="board-layouts">
-                    <button class="dropdown-item" onclick=BOARD.createMaze()>Maze</button>
+                    <button class="dropdown-item" onclick=BOARD.createMaze() disabled>Maze</button>
                     <button class="dropdown-item" onclick=BOARD.randomWalls()>Random walls</button>
                 </div>
             </li>
