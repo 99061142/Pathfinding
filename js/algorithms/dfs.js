@@ -134,6 +134,8 @@ class Dfs {
 
             if(!BOARD.isEndPosition(this.head)) {
                 BOARD.found(this.head);
+                await BOARD.sleep();
+
                 this.visited.push(this.head); // Position is visited
                 if(this.canMove(this.head)) { this.path.push(this.head); } // If the position can move further
             }
