@@ -9,6 +9,7 @@
 
 ## What can you do
 * Make walls on the board (move over the board when you hold the left mouse button).
+* Delete walls on the board (move over the board when you hold the scroll wheel).
 * Create random walls on the board (click "layouts" on the board and then "random walls" (33% chance for a wall on each node)).
 
 
@@ -25,7 +26,6 @@
 
 ## NEXT UPDATES
 
-* Fix the DFS route to show it on an empty board too.
 * Show the route from the start to end for the BFS algorithm.
 
 ## Note
