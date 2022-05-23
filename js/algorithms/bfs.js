@@ -30,10 +30,10 @@ class Bfs {
             parent = this.path[position];
 
             // Add the positions to the route
-            ROUTE.push(position);
+            if(position){ ROUTE.push(position); }
             if(parent) { ROUTE.push(parent); }
         }
-
+        
         ROUTE.pop(); // Delete the start position
         return ROUTE; // Return the fastest route
     }
