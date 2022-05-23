@@ -25,7 +25,7 @@ class Bfs {
         var parent = BOARD.endPosition;
 
         // If the current or parent position isn't the end position 
-        while(String(parent) !== String(BOARD.startPosition) && String(position) !== String(BOARD.startPosition)) {
+        while(parent !== undefined) {
             position = this.path[parent];
             parent = this.path[position];
 
