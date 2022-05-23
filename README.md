@@ -16,12 +16,11 @@
 
 ### Include start to end route.
 
-* None.
+* DFS
 
 ### Doesn't include start to end route.
 
 * BFS.
-* DFS. (To use DFS use the "DFS layout" in the "Layouts" bar. DFS won't work on an empty board for now.)
 
 
 ## NEXT UPDATES
