@@ -253,7 +253,7 @@ class Board extends Node {
     async fastestRoute(route) {
         // If a route from the start to end position can be made
         if(route) {
-            for(let [i, position] of route.entries()) { 
+            for(let position of route) { 
                 this.fastest(position); // Update node styling
                 await this.sleep();
             }
