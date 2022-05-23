@@ -20,7 +20,7 @@ class Bfs {
     }
 
     fastestPath() {
-        const ROUTE = []; // Route from start to end
+        const ROUTE = [];
         var position = [];
         var parent = BOARD.endPosition;
 
@@ -31,7 +31,7 @@ class Bfs {
 
             // Add the positions to the route
             ROUTE.push(position);
-            ROUTE.push(parent);
+            if(parent) { ROUTE.push(parent); }
         }
 
         ROUTE.pop(); // Delete the start position
