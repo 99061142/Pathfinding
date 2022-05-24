@@ -23,3 +23,19 @@ document.getElementById("speed-dropdown").querySelectorAll("button").forEach(spe
         BOARD.speedTime = speedButton.innerText.toLowerCase(); // Update the speed value
     }
 })
+
+document.addEventListener("keypress", e => {
+    const KEY = e.key.toLowerCase(); // Character
+
+    switch(KEY) {
+        case "s":
+            // Start the pathfinding
+            RUN_BUTTON.onclick()
+            break
+
+        case "c":
+            // Clear the board
+            BOARD.clearBoard()
+            break
+    }
+});
