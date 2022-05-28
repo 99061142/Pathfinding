@@ -27,8 +27,8 @@ class Bfs {
             const POSITION = this.path[parent]; // Current position
             parent = this.path[POSITION]; // Parent position
 
-            PATH.push(POSITION);
-            PATH.push(parent);
+            if(POSITION){ PATH.push(POSITION); }
+            if(parent){ PATH.push(parent); }
         }
         return PATH.slice(0, -1); // Return the fastest path
     }
