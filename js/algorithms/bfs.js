@@ -18,6 +18,10 @@ class Bfs {
         return this.queue.shift();
     }
 
+    visited(position) {
+        return String(position) !== String(BOARD.startPosition) && !this.path.hasOwnProperty(String(position));
+    }
+
     fastestPath() {
         const PATH = [];
         let parent = BOARD.endPosition;
@@ -43,12 +47,11 @@ class Bfs {
                 const NEXT_ROW = ROW + directionRow;
                 const NEXT_COL = COL + directionCol;
                 const POSITION = [NEXT_ROW, NEXT_COL];
-                const POSITION_STR = String(POSITION);
             
                 // If neighbour is empty and not visited
-                if(BOARD.empty(POSITION) && POSITION_STR !== String(BOARD.startPosition) && !this.path.hasOwnProperty(POSITION_STR)) {    
+                if(BOARD.empty(POSITION) && this.visited(POSITION)) {    
                     if(!BOARD.isEndPosition(POSITION)) { await BOARD.next(POSITION); }
-                    this.path[POSITION_STR] = [ROW, COL]; // Add the position and the parent of the position
+                    this.path[String(POSITION)] = [ROW, COL]; // Add the position and the parent of the position
                     this.enqueue(POSITION);
                 }    
             }        
