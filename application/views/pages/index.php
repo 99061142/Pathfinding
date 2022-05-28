@@ -35,10 +35,10 @@
 
     <table class="my-2 d-flex justify-content-center">
         <tbody id="board">
-            <?php for($row = 0; $row <= 15; $row++){ ?>
+            <?php for($row = 0; $row <= 36; $row++){ ?>
                 <tr id="row">
-                    <?php for($col = 0; $col <= 14; $col++){ ?>
-                        <td></td>
+                    <?php for($col = 0; $col <= 36; $col++){ ?>
+                        <td class="node"></td>
                     <?php } ?>
                 </tr>
             <?php } ?>
