@@ -59,8 +59,8 @@
 
             <!-- Speed options -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="pathfinding-speed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed</a>
-                <div class="dropdown-menu mt-4" id="speed-dropdown" aria-labelledby="pathfinding-speed">
+                <a class="dropdown-toggle" id="speed-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed: Normal</a>
+                <div class="dropdown-menu mt-4" id="speed-dropdown" aria-labelledby="speed-nav">
                     <button class="dropdown-item">Slow</button>
                     <button class="dropdown-item">Normal</button>
                     <button class="dropdown-item">Fast</button>
