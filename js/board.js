@@ -1,5 +1,5 @@
 class Node {
-    #standardClasses = "border border-dark float-left";
+    #standardClasses = "node border border-dark float-left";
     #importantNames = ['start', 'end'];
 
     get importantNames() {
@@ -10,10 +10,8 @@ class Node {
         const [ROW, COL] = position;
         const ROW_ELEMENT = document.getElementById('board').children[ROW];
         
-        // If row of node could be found
-        if(ROW_ELEMENT) {
-            return ROW_ELEMENT.children[COL]; // Node element
-        }
+        // Return the element of the column
+        if(ROW_ELEMENT) { return ROW_ELEMENT.children[COL]; }
     }
 
     position(element) {
@@ -45,9 +43,7 @@ class Node {
     get startPosition() {
         const START_ELEMENT = this.startElement;
 
-        if(START_ELEMENT) {
-            return this.position(START_ELEMENT);
-        }
+        if(START_ELEMENT) { return this.position(START_ELEMENT); }
     }
 
     set startPosition(element) {
@@ -69,19 +65,10 @@ class Node {
     get endPosition() {
         const END_ELEMENT = this.endElement;
 
-        if(END_ELEMENT) {
-            return this.position(END_ELEMENT);
-        }
+        if(END_ELEMENT) { return this.position(END_ELEMENT); }
     }
 
     set endPosition(element) {
-        const POSITION = this.position(element);
-        
-        // If board position was not empty (ex: walls)
-        if(!this.empty(POSITION)) {
-            this.emptyBoardColumn(POSITION); // Empty board position
-        }
-
         element.id = "end";
         element.className += " fas fa-home bg-danger";
 
@@ -123,11 +110,13 @@ class Node {
         ELEMENT.id = "found";
     }
 
-    next(position) {    
+    async next(position) {    
         const ELEMENT = this.element(position);
 
         ELEMENT.className = this.#standardClasses;
         ELEMENT.id = "next";
+
+        await this.sleep();
     }
 
     fastest(position) {  
@@ -140,23 +129,22 @@ class Node {
 
 
 class Board extends Node {
-    #speed_types = {
-        slow: 50, 
-        normal: 25, 
-        fast: 5, 
-        instant: 0
-    };
-
     constructor() {
         super();
-        this.nodesTag = "td"   
         this.name = "Board";
         this.height = document.querySelectorAll('#row').length;
         this.width = document.querySelectorAll('#row')[0].children.length;
         this.list = this.createList();
 
         this.isRunning = false;
-        this.speed = this.#speed_types['normal'];
+
+        this.speedTypes = {
+            slow: 50, 
+            normal: 25, 
+            fast: 5, 
+            instant: 0
+        };
+        this.speed = this.speedTypes['normal'];
     } 
 
     createList() {
@@ -174,7 +162,7 @@ class Board extends Node {
 
     set speedTime(typeOrValue) {
         // Get the speed value with the type the user gave as parameter
-        const SPEED = this.#speed_types[typeOrValue];
+        const SPEED = this.speedTypes[typeOrValue];
 
         // If the speed value could be found, or the parameter is a number
         if(!isNaN(typeOrValue) || SPEED != undefined) {
@@ -236,8 +224,8 @@ class Board extends Node {
             this.clearAlgorithmPath();
             this.isRunning = true;
             RUN_BUTTON.disabled = true;
-
-            const AlGORITHM_FUNCTION_NAME = `path${capitalize(algorithm)}`
+            
+            const AlGORITHM_FUNCTION_NAME = `path${capitalize(algorithm)}`;
 
             // Start the pathfinding algorithm
             window[AlGORITHM_FUNCTION_NAME]().then(route => {
@@ -262,7 +250,7 @@ class Board extends Node {
 
     randomWalls() {
         if(!this.isRunning) {
-            document.querySelectorAll(this.nodesTag).forEach(element => {
+            document.querySelectorAll(".node").forEach(element => {
                 // 33% chance to make the wall if it's not an important node (ex: start/end position)
                 if(Math.random() <= 0.33 && !this.importantNames.includes(element.id)) {
                     // Update node styling
@@ -307,7 +295,7 @@ class Board extends Node {
 const BOARD = new Board();
 
 // For each node
-document.querySelectorAll(BOARD.nodesTag).forEach(nodeElement => {  
+document.querySelectorAll(".node").forEach(nodeElement => {  
     BOARD.setStandardAttributes(nodeElement); // Change the node to the standard node
 
     nodeElement.onclick = () => { 
