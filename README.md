@@ -27,6 +27,8 @@
 
 ## NEXT UPDATES
 
+* Fix the DFS route so that the route doesn't make a 2x2 block inside the path. (this only happens often, but when it happens it isn't the "fastest" path anymore.)
+* Make the DFS code smaller.
 
 ## Note
 
