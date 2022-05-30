@@ -22,7 +22,7 @@ class Dfs {
     positionvisited(position) {
         return this.visited.map(String).includes(String(position));
     }
-    
+
     positionIndexInPath(position) {
         return this.path.map(String).indexOf(String(position));
     }
@@ -136,6 +136,5 @@ class Dfs {
 
 
 async function pathDfs() {
-    BOARD.speedTime = 'instant'
     return new Dfs().run(); // Return the start to end path
 }
