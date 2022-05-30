@@ -21,8 +21,9 @@ document.getElementById("algorithm-dropdown").querySelectorAll("button").forEach
 document.getElementById("speed-dropdown").querySelectorAll("button").forEach(speedButton => {
     // If the user clicks on an speed option
     speedButton.onclick = () => {
+        // Update the speed
         const SPEED_TYPE = speedButton.innerText;
-        BOARD.speedTime = SPEED_TYPE.toLowerCase(); // Update the speed value
+        BOARD.speedTime = SPEED_TYPE.toLowerCase();
 
         for(let speedType in BOARD.speedTypes) {
             speedType = capitalize(speedType);
