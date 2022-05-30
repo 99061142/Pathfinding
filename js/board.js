@@ -127,8 +127,8 @@ class Board extends Node {
     }
 
     set speedTime(time) {
-        if(time in this.speedTypes) { this.speedTime = this.speedTypes[time]; }
-        else if(Number.isInteger(time)) { this.speedTime = time; }
+        if(time in this.speedTypes) { this.speed = this.speedTypes[time]; }
+        else if(Number.isInteger(time)) { this.speed = time; }
     }
     
     sleep() {
