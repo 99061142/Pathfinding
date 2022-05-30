@@ -1,22 +1,15 @@
 class Node {
     #standardClasses = "node border border-dark float-left";
-    #importantNames = ['start', 'end'];
-
-    get importantNames() {
-        return this.#importantNames
-    }
 
     element(position) {
         const [ROW, COL] = position;
         const ROW_ELEMENT = document.getElementById('board').children[ROW];
         
-        // Return the element of the column
-        if(ROW_ELEMENT) { return ROW_ELEMENT.children[COL]; }
+        if(ROW_ELEMENT) { return ROW_ELEMENT.children[COL]; } // Return the element of the column
     }
 
     position(element) {
         const ROW_ELEMENT = element.parentElement;
-
         const ROW = Array.from(document.getElementById('board').children).indexOf(ROW_ELEMENT);
         const COL = Array.from(ROW_ELEMENT.children).indexOf(element);
 
@@ -30,10 +23,7 @@ class Node {
     }   
 
     isStartPosition(position) {
-        const [ROW, COL] = position;
-        const [END_ROW, END_COL] = this.startPosition;
-
-        return ROW === END_ROW && COL === END_COL; // If position is the same as the start position      
+        return String(position) === String(this.startPosition);
     }
 
     get startElement() {
@@ -41,9 +31,7 @@ class Node {
     }
     
     get startPosition() {
-        const START_ELEMENT = this.startElement;
-
-        if(START_ELEMENT) { return this.position(START_ELEMENT); }
+        if(this.startElement) { return this.position(this.startElement); }
     }
 
     set startPosition(element) {
@@ -52,10 +40,7 @@ class Node {
     }
 
     isEndPosition(position) {
-        const [ROW, COL] = position;
-        const [END_ROW, END_COL] = this.endPosition;
-
-        return ROW === END_ROW && COL === END_COL; // If position is the same as the end position
+        return String(position) === String(this.endPosition);
     }
 
     get endElement() {
@@ -63,9 +48,7 @@ class Node {
     }
 
     get endPosition() {
-        const END_ELEMENT = this.endElement;
-
-        if(END_ELEMENT) { return this.position(END_ELEMENT); }
+        if(this.endElement) { return this.position(this.endElement); }
     }
 
     set endPosition(element) {
@@ -80,23 +63,17 @@ class Node {
         const POSITION = this.position(element);
         this.emptyBoardColumn(POSITION);
 
-        element.className = this.#standardClasses;
-        
-        // If the end position was deleted
-        if(this.endPosition && this.isEndPosition(POSITION)) {
-            RUN_BUTTON.disabled = true
-        }
+        if(this.isEndPosition(POSITION)) { RUN_BUTTON.disabled = true; } // If the position is the end position
 
-        if(element.id) {
-            element.removeAttribute('id');
-        }
+        element.className = this.#standardClasses;
+        element.removeAttribute('id');
     }
 
     wall(position) {  
         const ELEMENT = this.element(position);
 
-        // If the node is not important (ex: start/end position)
-        if(!this.#importantNames.includes(ELEMENT.id)) {
+        // If the node is not important
+        if(!this.importantNames.includes(ELEMENT.id)) {
             ELEMENT.className = this.#standardClasses;
             ELEMENT.id = "wall";
 
@@ -112,7 +89,6 @@ class Node {
 
     async next(position) {    
         const ELEMENT = this.element(position);
-
         ELEMENT.className = this.#standardClasses;
         ELEMENT.id = "next";
 
@@ -121,7 +97,6 @@ class Node {
 
     fastest(position) {  
         const ELEMENT = this.element(position);
-
         ELEMENT.className = this.#standardClasses;
         ELEMENT.id = "fastest";
     }
@@ -132,12 +107,12 @@ class Board extends Node {
     constructor() {
         super();
         this.name = "Board";
+        this.columnType = "td";
         this.height = document.querySelectorAll('#row').length;
         this.width = document.querySelectorAll('#row')[0].children.length;
-        this.list = this.createList();
-
+        this.list = Array.from({length: this.height}, () => [])
         this.isRunning = false;
-
+        this.importantNames = ['start', 'end'];
         this.speedTypes = {
             slow: 50, 
             normal: 25, 
@@ -147,88 +122,63 @@ class Board extends Node {
         this.speed = this.speedTypes['normal'];
     } 
 
-    createList() {
-        const LIST = [];
-
-        for(let i = 0; i < this.height; i++) {
-            LIST.push([]);
-
-            for(let j = 0; j < this.width; j++) {
-                LIST[LIST.length - 1].push(0);
-            }
-        }
-        return LIST;
+    get speedTime() {
+        return this.speed
     }
 
-    set speedTime(typeOrValue) {
-        // Get the speed value with the type the user gave as parameter
-        const SPEED = this.speedTypes[typeOrValue];
-
-        // If the speed value could be found, or the parameter is a number
-        if(!isNaN(typeOrValue) || SPEED != undefined) {
-            this.speed = (SPEED != undefined) ? SPEED : typeOrValue;
-        }
+    set speedTime(time) {
+        if(time in this.speedTypes) { this.speedTime = this.speedTypes[time]; }
+        else if(Number.isInteger(time)) { this.speedTime = time; }
     }
     
     sleep() {
-        if(this.speed) {
-            return new Promise(resolve => setTimeout(resolve, this.speed));
-        }
+        if(this.speedTime) { return new Promise(resolve => setTimeout(resolve, this.speedTime)); }
     }
 
     emptyBoardColumn(position) {
-        // Empty the board column 
         const [ROW, COL] = position;
         this.list[ROW][COL] = 0;
     }
 
     fillBoardColumn(position) {
-        // Fill the board column 
         const [ROW, COL] = position;
         this.list[ROW][COL] = 1;
     }
 
     clearAlgorithmPath() {
-        // Clear specific nodes on the board
-        const classes = ["td#found", "td#next", "td#fastest"];
-        this.clearSpecificElements(classes);
+        const CLASSES = ["#found", "#next", "#fastest"];
+        this.clearSpecificElements(CLASSES);
     }
 
     clearWalls() {
-        // Clear specific nodes on the board
-        const classes = ["td#wall"];
-        this.clearSpecificElements(classes);
+        const CLASSES = ["#wall"];
+        this.clearSpecificElements(CLASSES);
     }
 
     clearBoard() {
-        // Clear specific nodes on the board
-        const classes = ["#start", "#end"];
-        this.clearSpecificElements(classes);
-
+        const CLASSES = ["#start", "#end"];
+        this.clearSpecificElements(CLASSES);
         this.clearAlgorithmPath();
         this.clearWalls();
     }
 
     clearSpecificElements(classes) {
         if(!this.isRunning) {
-            // For every class of the nodes that must be cleared
-            document.querySelectorAll(classes).forEach(element => {
-                this.setStandardAttributes(element); // Change the node to the standard node
-            });
+            classes = classes.map(classes => `${this.columnType}${classes}`);
+
+            // Change every node with the class to the standard attributes
+            document.querySelectorAll(classes).forEach(element => { this.setStandardAttributes(element); });
         }
     }
-    
+
     makePath(algorithm) {
-        // If the start and end position are on the board, and the board isn't running
-        if(this.startPosition && this.endPosition && !this.isRunning) {
+        if(!this.isRunning && this.startPosition && this.endPosition) {
             this.clearAlgorithmPath();
             this.isRunning = true;
             RUN_BUTTON.disabled = true;
-            
-            const AlGORITHM_FUNCTION_NAME = `path${capitalize(algorithm)}`;
 
             // Start the pathfinding algorithm
-            window[AlGORITHM_FUNCTION_NAME]().then(route => {
+            window[`path${capitalize(algorithm)}`]().then(route => {
                 // Make the fastest route
                 this.fastestRoute(route).then(() => {
                     this.isRunning = false;
@@ -237,12 +187,11 @@ class Board extends Node {
             });
         }
     }
-    
+
     async fastestRoute(route) {
-        // If a route from the start to end position can be made
         if(route) {
             for(let position of route) { 
-                this.fastest(position); // Update node styling
+                this.fastest(position);
                 await this.sleep();
             }
         }
@@ -250,12 +199,10 @@ class Board extends Node {
 
     randomWalls() {
         if(!this.isRunning) {
-            document.querySelectorAll(".node").forEach(element => {
-                // 33% chance to make the wall if it's not an important node (ex: start/end position)
-                if(Math.random() <= 0.33 && !this.importantNames.includes(element.id)) {
-                    // Update node styling
-                    const POSITION = this.position(element);              
-                    this.wall(POSITION);
+            document.querySelectorAll(this.columnType).forEach(element => {
+                // 33% chance to make the wall if it's not an important node
+                if(!this.importantNames.includes(element.id) && Math.random() <= 0.33) {          
+                    this.wall(this.position(element));
                 }
             });
         }
@@ -295,7 +242,7 @@ class Board extends Node {
 const BOARD = new Board();
 
 // For each node
-document.querySelectorAll(".node").forEach(nodeElement => {  
+document.querySelectorAll(BOARD.columnType).forEach(nodeElement => {  
     BOARD.setStandardAttributes(nodeElement); // Change the node to the standard node
 
     nodeElement.onclick = () => { 
