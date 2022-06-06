@@ -11,8 +11,8 @@
         <ul class="navbar-nav">
             <!-- Pathfinding algorithm options -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="algorithms" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Algorithms</a>
-                <div class="dropdown-menu mt-4" id="algorithm-dropdown" aria-labelledby="algorithms">
+                <a class="dropdown-toggle" id="algorithms-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Algorithms</a>
+                <div class="dropdown-menu mt-4" id="algorithm-options" aria-labelledby="algorithms-dropdown">
                     <button class="dropdown-item">BFS</button>
                     <button class="dropdown-item">DFS</button>
                     <button class="dropdown-item" disabled>Dijkstra</button>
@@ -25,8 +25,8 @@
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" id="board-layouts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Layouts</a>
                 <div class="dropdown-menu mt-4" aria-labelledby="board-layouts">
-                    <button class="dropdown-item" onclick=BOARD.createMaze() disabled>Maze</button>
-                    <button class="dropdown-item" onclick=BOARD.randomWalls()>Random walls</button>
+                    <button class="dropdown-item" id="maze" disabled>Maze</button>
+                    <button class="dropdown-item" id="random-walls">Random walls</button>
                 </div>
             </li>
             <!-- /Board layouts -->
@@ -34,33 +34,33 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" onclick="BOARD.makePath('bfs')" disabled>Run BFS</button>
+                <button class="px-4 bg-green" id="run-button" value="bfs" disabled>Run </button>
             </li>
             <!-- /Run button -->
 
             <!-- Clear everything -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="BOARD.clearBoard()">Clear board</button>
+                <button class="buttton-as-anchor" id="clear-board">Clear board</button>
             </li>
             <!-- /Clear everything -->
 
             <!-- Clear walls -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="BOARD.clearWalls()">Clear walls</button>
+                <button class="buttton-as-anchor" id="clear-walls">Clear walls</button>
             </li>
             <!-- /Clear walls -->
 
             <!-- Clear algorithm path -->
             <li class="nav-item">
-                <button class="buttton-as-anchor" onclick="BOARD.clearAlgorithmPath()">Clear algorithm path</button>
+                <button class="buttton-as-anchor" id="clear-path">Clear algorithm path</button>
             </li>
             <!-- /Clear algorithm path -->
 
 
             <!-- Speed options -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="speed-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed: Normal</a>
-                <div class="dropdown-menu mt-4" id="speed-dropdown" aria-labelledby="speed-nav">
+                <a class="dropdown-toggle" id="speed-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed: </a>
+                <div class="dropdown-menu mt-4" id="speed-options" aria-labelledby="speed-dropdown">
                     <button class="dropdown-item">Slow</button>
                     <button class="dropdown-item">Normal</button>
                     <button class="dropdown-item">Fast</button>
