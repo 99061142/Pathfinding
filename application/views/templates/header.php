@@ -15,12 +15,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"> <!-- Font awesome -->
         <link rel="stylesheet" type="text/css" href="css/styling.css">
 
-        <script src="js/index.js" defer></script> <!-- Functionallity for the page -->
-        <script src="js/board.js" defer></script> <!-- Functionallity for the board -->
-
-        <!-- Pathfinding algorithms -->
-        <script src="js/algorithms/bfs.js"></script>
-        <script src="js/algorithms/dfs.js"></script>
-        <!-- /Pathfinding algorithms -->
+        <script src="js/index.js"></script>
+        <script type="module" src="js/boardFunctionality.js"></script>
     </head>
     <body>
