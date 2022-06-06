@@ -1,10 +1,11 @@
-class Dfs {
+export class Dfs {
     #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Left, down, right and up
     
-    constructor() {
-        this.queue = [BOARD.startPosition];
-        this.visited = [BOARD.startPosition];
+    constructor(board) {
+        this.queue = [board.startPosition];
+        this.visited = [board.startPosition];
         this.path = [];
+        this.board = board
     }    
 
     get head() {
@@ -40,7 +41,7 @@ class Dfs {
             const NEXT_COL = COL + DIRECTION_COL;
             const POSITION = [NEXT_ROW, NEXT_COL];   
             
-            if(String(POSITION) === String(BOARD.endPosition)){ return true; } // If the neighbour is the end position
+            if(String(POSITION) === String(this.board.endPosition)){ return true; } // If the neighbour is the end position
         }    
         return false;        
     }
@@ -69,7 +70,7 @@ class Dfs {
             const NEIGHBOUR_POSITION = [NEXT_ROW, NEXT_COL];   
 
             // If the position is empty, and not already visited or queued
-            if(BOARD.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION)) { return true; }     
+            if(this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION)) { return true; }     
         }
         return false;
     }
@@ -118,23 +119,18 @@ class Dfs {
                 const POSITION = [NEXT_ROW, NEXT_COL];
 
                 // If neighbour is empty and not visited or queued
-                if(BOARD.empty(POSITION) && !this.positionvisited(POSITION) && !this.queued(POSITION)) { 
-                    if(!BOARD.isEndPosition(POSITION)) { await BOARD.next(POSITION); }
+                if(this.board.empty(POSITION) && !this.positionvisited(POSITION) && !this.queued(POSITION)) { 
+                    if(!this.board.isEndPosition(POSITION)) { await this.board.next(POSITION); }
                     this.queue.push(POSITION);
                 }
             }
             if(!this.head) { return; } // Path couldn't go further
-            if(BOARD.isEndPosition(this.head)) { return this.fastestPath(); } // End position was found
+            if(this.board.isEndPosition(this.head)) { return this.fastestPath(); } // End position was found
 
-            BOARD.found(this.head);
+            this.board.found(this.head);
             this.visited.push(this.head); // Position is visited
             if(this.canMove(this.head)) { this.path.push(this.head); } // If the position can move further
-            await BOARD.sleep();
+            await this.board.sleep();
         }
     }
-}
-
-
-async function pathDfs() {
-    return new Dfs().run(); // Return the start to end path
 }

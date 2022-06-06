@@ -1,9 +1,10 @@
-class Bfs {
+export class Bfs {
     #directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // Up, right, down and left
     
-    constructor() {
-        this.queue = [BOARD.startPosition]; // Positions to move from
+    constructor(board) {
+        this.queue = [board.startPosition]; // Positions to move from
         this.path = {}; // Position of a node and the parent of it
+        this.board = board;
     }    
 
     get head() {
@@ -19,15 +20,15 @@ class Bfs {
     }
 
     visited(position) {
-        return String(position) !== String(BOARD.startPosition) && !this.path.hasOwnProperty(String(position));
+        return String(position) !== String(this.board.startPosition) && !this.path.hasOwnProperty(String(position));
     }
 
     fastestPath() {
         const PATH = [];
-        let parent = BOARD.endPosition;
+        let parent = this.board.endPosition;
 
         // Get the fastest path from the end to start position
-        while(String(PATH[PATH.length - 1]) !== String(BOARD.startPosition)) {    
+        while(String(PATH[PATH.length - 1]) !== String(this.board.startPosition)) {    
             const POSITION = this.path[parent]; // Current position
             parent = this.path[POSITION]; // Parent position
 
@@ -47,22 +48,17 @@ class Bfs {
                 const NEXT_ROW = ROW + directionRow;
                 const NEXT_COL = COL + directionCol;
                 const POSITION = [NEXT_ROW, NEXT_COL];
-            
+
                 // If neighbour is empty and not visited
-                if(BOARD.empty(POSITION) && this.visited(POSITION)) {    
-                    if(!BOARD.isEndPosition(POSITION)) { await BOARD.next(POSITION); }
+                if(this.board.empty(POSITION) && this.visited(POSITION)) {    
+                    if(!this.board.isEndPosition(POSITION)) { await this.board.next(POSITION); }
                     this.path[String(POSITION)] = [ROW, COL]; // Add the position and the parent of the position
                     this.enqueue(POSITION);
                 }    
-            }        
+            }    
             if(!this.head){ return; } // Path couldn't go further
-            if(BOARD.isEndPosition(this.head)) { return this.fastestPath(); } // Is end position
-            BOARD.found(this.head);
+            if(this.board.isEndPosition(this.head)) { return this.fastestPath(); }
+            this.board.found(this.head);
         }
     }
-}
-
-
-async function pathBfs() {
-    return new Bfs().run(); // Return the start to end path
 }
