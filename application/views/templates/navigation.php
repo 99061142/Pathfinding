@@ -15,7 +15,7 @@
                 <div class="dropdown-menu mt-4" id="algorithm-options" aria-labelledby="algorithms-dropdown">
                     <button class="dropdown-item">BFS</button>
                     <button class="dropdown-item">DFS</button>
-                    <button class="dropdown-item" disabled>Dijkstra</button>
+                    <button class="dropdown-item">Dijkstra</button>
                     <button class="dropdown-item" disabled>AStar</button>
                 </div>
             </li>
@@ -34,7 +34,7 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" value="bfs" disabled>Run </button>
+                <button class="px-4 bg-green" id="run-button" value="dijkstra" disabled>Run </button>
             </li>
             <!-- /Run button -->
 

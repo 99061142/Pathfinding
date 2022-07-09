@@ -1,6 +1,7 @@
 import { Node } from './node.js';
 import { Bfs } from './algorithms/bfs.js';
 import { Dfs } from './algorithms/dfs.js';
+import { Dijkstra } from './algorithms/dijkstra.js';
 
 export class Board extends Node {
     #height = document.querySelectorAll('#row').length;
@@ -89,6 +90,8 @@ export class Board extends Node {
                 return new Bfs(this);
             case "dfs":
                 return new Dfs(this);
+            case "dijkstra":
+                return new Dijkstra(this);
         }
     }
 
