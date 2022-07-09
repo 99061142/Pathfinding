@@ -15,9 +15,19 @@ class BoardFunctionality extends Navigation {
 
     nodeOnclick(nodeElement) {
         nodeElement.onclick = () => { 
-            if(nodeElement === this.startElement || nodeElement === this.endElement) { this.setStandardAttributes(nodeElement); } // Delete start or end position
-            else if(!this.startElement) { this.startPosition = nodeElement; } // Add start position
-            else if(!this.endElement) { this.endPosition = nodeElement; } // Add end position
+            if(!this.isRunning) {
+                if(!this.startElement && nodeElement != this.endElement){
+                    this.startPosition = nodeElement
+                }
+                else if(!this.endElement && nodeElement != this.startElement) {
+                    this.endPosition = nodeElement
+                }else if(nodeElement.id) {
+                    this.setStandardAttributes(nodeElement)
+                }else {
+                    const POSITION = this.position(nodeElement)
+                    this.wall(POSITION);
+                }
+            }
         }
     }
 
