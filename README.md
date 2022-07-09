@@ -20,10 +20,9 @@
 * BFS
 * DFS
 
-### Doesn't include start to end route.
+### Not working properly (can't use this algorithm)
 
-* None
-
+* Dijkstra
 
 ## NEXT UPDATES
 
