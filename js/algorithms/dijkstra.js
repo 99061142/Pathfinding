@@ -4,29 +4,16 @@ export class Dijkstra {
     constructor(board) {
         this.board = board;
         this.visited = [];
-        this.unvisited = this.unvisitedPositions();
-        this.path = this.path();
+        this.unvisited = this.getUnvisitedPositionsList;
+        this.path = this.getPathList;
     }
 
-    positionUnvisited(position) {
-        return this.unvisited.includes(String(position));
+    positionvisited(position) {
+        return this.visited.includes(String(position));
     }
 
-    get head() {
-        let lowestDistanceInformation = {}
-
-        for(let position in this.path){
-            let positionDistance = this.path[String(position)].distance;
-
-            if(!lowestDistanceInformation.hasOwnProperty('distance') || this.positionUnvisited(position) && positionDistance < lowestDistanceInformation.distance ) {
-                lowestDistanceInformation.position = position;
-                lowestDistanceInformation.distance = positionDistance;
-            }
-        }
-        return lowestDistanceInformation.position.split(',').map(Number);
-    }
-
-    unvisitedPositions() {
+    get getUnvisitedPositionsList() {
+        // Make a list of all the nodes that are not visited
         let list = [];
 
         this.board.nodes.forEach(nodeElement => {
@@ -36,7 +23,8 @@ export class Dijkstra {
         return list
     }
 
-    path() {
+    get getPathList() {
+        // Make a list that stores all the node distances and parent nodes
         let list = {};
         
         for(let position of this.unvisited) {
@@ -50,39 +38,42 @@ export class Dijkstra {
         return list
     }
 
-    positionDistance(position) {
-        let distance = this.board.element(position).dataset.distance;
-        return Number(distance);
-    }
+    get head() {
+        // Return start position if not visited
+        if(!this.positionvisited(String(this.board.startPosition))) { return this.board.startPosition; }
 
-    distance(position, previous){
-        return this.positionDistance(position) + this.path[String(previous)].distance;
-    }
-
-    addToPath(position, previous) {
-        this.addToVisited(position);
-        const PREVIOUS = previous ? String(previous) : null;
-
-        this.path[String(position)] = {
-            distance: this.distance(position, previous),
-            previous: PREVIOUS
+        let smallestDistanceInformation = {
+            distance: 1000000,
+            position: null
         }
+        
+        // Get the position with the smallest distance
+        for(let position in this.path){
+            let positionDistance = this.path[String(position)].distance;
+
+            if(!this.positionvisited(position) && positionDistance < smallestDistanceInformation.distance) { 
+                smallestDistanceInformation.position = position;
+                smallestDistanceInformation.distance = positionDistance;
+            }
+        }
+
+        return smallestDistanceInformation.position ? smallestDistanceInformation.position.split(',').map(Number) : null;
     }
 
-    addToVisited(position) {
-        this.visited.push(String(position));
-    }
-    
-    deleteFromUnvisited(position) {
-        const INDEX = this.unvisited.indexOf(String(position));
-        this.unvisited.splice(INDEX, 1);
-    }
-
-    isVisited(position) {
-        return this.visited.includes(String(position)) || this.board.isStartPosition(position) || this.board.isEndPosition(position);
+    distance(parent, child) {
+        // Get the distance from current child to the start position
+        const CHILD_DISTANCE = Number(this.board.element(child).dataset.distance);
+        const PARENT_DISTANCE = this.path[String(parent)].distance;   
+        const DISTANCE = PARENT_DISTANCE ? CHILD_DISTANCE + PARENT_DISTANCE : CHILD_DISTANCE
+        return DISTANCE
     }
 
-    fastestPath() {
+    addToPath(parent, child) {
+        this.path[String(child)].distance = this.distance(parent, child);
+        this.path[String(child)].previous = String(parent);
+    }
+
+    get getFastestPath() {
         let path = [];   
         let position = String(this.board.endPosition);
 
@@ -96,20 +87,22 @@ export class Dijkstra {
 
     async run() {
         while(this.unvisited && this.unvisited.length) {
+            let position = this.head
+    
             for(let direction of this.#directions) {
-                const NEIGHBOUR_POSITION = neighbourPosition(this.head, direction);
+                let neighbour = neighbourPosition(position, direction);
                 
-                if(this.board.element(NEIGHBOUR_POSITION) && !this.isVisited(NEIGHBOUR_POSITION) && this.board.empty(NEIGHBOUR_POSITION)) {
-                    await this.board.next(NEIGHBOUR_POSITION);
-                    this.addToPath(NEIGHBOUR_POSITION, this.head);
-                }
-                if(this.board.isEndPosition(NEIGHBOUR_POSITION)) {
-                    this.addToPath(NEIGHBOUR_POSITION, this.head);
-                    return this.fastestPath();
+                // If neighbour is empty and not visited
+                if(this.board.element(neighbour) && !this.positionvisited(neighbour) && this.board.empty(neighbour)) {
+                    this.addToPath(position, neighbour)
+                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
                 }
             }
-            this.deleteFromUnvisited(this.head);
-            this.board.found(this.head);
+            this.visited.push(String(position));
+
+            if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
+            if(!this.board.isStartPosition(position)) { this.board.found(position); }
+            if(!this.head){ return; } // Path couldn't go further
             await this.board.sleep();
         }
     }
