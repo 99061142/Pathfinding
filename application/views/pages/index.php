@@ -38,7 +38,7 @@
             <?php for($row = 0; $row <= 36; $row++){ ?>
                 <tr id="row">
                     <?php for($col = 0; $col <= 36; $col++){ ?>
-                        <td class="node border border-dark float-left"></td>
+                        <td data-distance="1" class="node border border-dark float-left"></td>
                     <?php } ?>
                 </tr>
             <?php } ?>
