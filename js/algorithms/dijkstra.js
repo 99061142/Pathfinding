@@ -48,15 +48,13 @@ export class Dijkstra {
         }
         
         // Get the position with the smallest distance
-        for(let position in this.path){
-            let positionDistance = this.path[String(position)].distance;
-
-            if(!this.positionvisited(position) && positionDistance < smallestDistanceInformation.distance) { 
+        for(let position of this.unvisited){
+            let positionDistance = this.path[position].distance;
+            if(positionDistance < smallestDistanceInformation.distance) { 
                 smallestDistanceInformation.position = position;
                 smallestDistanceInformation.distance = positionDistance;
             }
         }
-
         return smallestDistanceInformation.position ? smallestDistanceInformation.position.split(',').map(Number) : null;
     }
 
@@ -85,6 +83,13 @@ export class Dijkstra {
         return path.slice(1, -1)
     }
 
+    positionIsVisited(position) {
+        this.visited.push(String(position));
+
+        const POSITION_INDEX = this.unvisited.indexOf(String(position));
+        this.unvisited.splice(POSITION_INDEX, 1);
+    }
+
     async run() {
         while(this.unvisited && this.unvisited.length) {
             let position = this.head
@@ -98,8 +103,7 @@ export class Dijkstra {
                     if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
                 }
             }
-            this.visited.push(String(position));
-
+            this.positionIsVisited(position);
             if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
             if(!this.board.isStartPosition(position)) { this.board.found(position); }
             if(!this.head){ return; } // Path couldn't go further
