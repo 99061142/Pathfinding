@@ -12,12 +12,12 @@ export class Dfs {
         return this.queue[this.queue.length - 1]; // Last added position
     }
 
-    queue(position) {
+    enqueue(position) {
         this.queue.push(position);
     }
 
     dequeue() {
-        this.queue.pop();
+        return this.queue.pop();
     }
 
     positionvisited(position) {
@@ -33,95 +33,75 @@ export class Dfs {
     }
 
     neighbourIsEnd(position) {
-        const [ROW, COL] = position;
-
-        // Check if 1 of the optional directions is the end position
-        for(let [DIRECTION_ROW, DIRECTION_COL] of this.#directions) {
-            const NEXT_ROW = ROW + DIRECTION_ROW;
-            const NEXT_COL = COL + DIRECTION_COL;
-            const POSITION = [NEXT_ROW, NEXT_COL];   
-            
-            if(String(POSITION) === String(this.board.endPosition)){ return true; } // If the neighbour is the end position
-        }    
-        return false;        
+        // Return if a neighbour is the end position
+        return this.#directions.some(direction => {
+            const NEIGHBOUR_POSITION = neighbourPosition(position, direction);
+            return this.board.isEndPosition(NEIGHBOUR_POSITION);
+        });
     }
 
     isNeighbour(positionOne, positionTwo){
-        const [ROW, COL] = positionOne;
-
-        // Check if positionTwo is an neighbour of positionOne
-        for(let [DIRECTION_ROW, DIRECTION_COL] of this.#directions) {
-            const NEXT_ROW = ROW + DIRECTION_ROW;
-            const NEXT_COL = COL + DIRECTION_COL;
-            const POSITION = [NEXT_ROW, NEXT_COL];   
-            
-            if(String(POSITION) === String(positionTwo)){ return true; } // If positionTwo is an neighbour of positionOne
-        }    
-        return false;
+        // Check if the position is a neighbour of the other position
+        return this.#directions.some(direction => {
+            const NEIGHBOUR_POSITION = neighbourPosition(positionOne, direction);
+            return String(NEIGHBOUR_POSITION) === String(positionTwo);
+        });
     }
 
     canMove(position) {
-        const [ROW, COL] = position;
-        
         // Check if the position can move to 1 of the possible directions
-        for(let [DIRECTION_ROW, DIRECTION_COL] of this.#directions) {
-            const NEXT_ROW = ROW + DIRECTION_ROW;
-            const NEXT_COL = COL + DIRECTION_COL;
-            const NEIGHBOUR_POSITION = [NEXT_ROW, NEXT_COL];   
-
-            // If the position is empty, and not already visited or queued
-            if(this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION)) { return true; }     
-        }
-        return false;
+        return this.#directions.some(direction => {
+            const NEIGHBOUR_POSITION = neighbourPosition(position, direction);
+            return this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION);
+        });
     }
 
-    pathToEndPosition() {
-        for(let position of this.path) {
-            // If the neighbour is the end position
-            if(this.neighbourIsEnd(position)) {  
-                const INDEX = this.positionIndexInPath(position) + 1;
+    firstNeigbourOfEndPosition() {
+        // Return the first neighbour of the end position
+        return this.path.find(position => { return this.neighbourIsEnd(position); });
+    }
 
-                this.path.splice(INDEX, this.path.length); // Delete every position after the end position
-                break; 
-            }
+    pathToEndPosition() {    
+        // Return the path to the end position
+        const NEIGHBOUR_OF_END_POSITION = this.firstNeigbourOfEndPosition();
+        this.path.splice(this.nextPositionIndex(NEIGHBOUR_OF_END_POSITION), this.path.length);
+    }
+
+    nextPositionIndex(position) {
+        return this.positionIndexInPath(position) + 1;
+    }
+
+    nextPosition(position) {
+        return this.path[this.nextPositionIndex(position)];
+    }
+
+    deleteIncorrectPositions() {
+        for(let position of this.path.reverse()) {
+            // Delete every next position if it isn't a neighbour of the current position
+            while(this.nextPosition(position) && !this.isNeighbour(position, this.nextPosition(position))) {
+                this.path.splice(this.nextPositionIndex(position), 1);
+            } 
         }
     }
 
     fastestPath() {
-        this.pathToEndPosition(); // Get the path until the end position
-        
-        for(let position of this.path.reverse()) {
-            // Index and position of the next position
-            let nextIndex = this.positionIndexInPath(position) + 1;
-            let next = this.path[nextIndex];
-        
-            // While the next position isn't a neighbour of the position
-            while(next && !this.isNeighbour(position, next)) {
-                this.path.splice(nextIndex, 1); // Delete the next position
-
-                // Index and position of the next position
-                nextIndex = this.positionIndexInPath(position) + 1;
-                next = this.path[nextIndex];
-            }
-        }
+        this.pathToEndPosition();
+        this.deleteIncorrectPositions();
         return this.path; 
     }
 
     async run() {      
-        // If queue isn't empty
         while(this.queue && this.queue.length) {
-            const [ROW, COL] = this.queue.pop(); // Position to move from
+            const POSITION = this.dequeue();
 
             // For every optional direction
-            for(let [DIRECTION_ROW, DIRECTION_COL] of this.#directions) {
-                const NEXT_ROW = ROW + DIRECTION_ROW;
-                const NEXT_COL = COL + DIRECTION_COL;
-                const POSITION = [NEXT_ROW, NEXT_COL];
+            for(let direction of this.#directions) {
+                const NEIGHBOUR_POSITION = neighbourPosition(POSITION, direction);
 
                 // If neighbour is empty and not visited or queued
-                if(this.board.empty(POSITION) && !this.positionvisited(POSITION) && !this.queued(POSITION)) { 
-                    if(!this.board.isEndPosition(POSITION)) { await this.board.next(POSITION); }
-                    this.queue.push(POSITION);
+                if(this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION)) { 
+                    if(!this.board.isEndPosition(NEIGHBOUR_POSITION)) { await this.board.next(NEIGHBOUR_POSITION); }
+                    this.enqueue(NEIGHBOUR_POSITION);
                 }
             }
             if(!this.head) { return; } // Path couldn't go further
