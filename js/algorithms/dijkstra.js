@@ -3,110 +3,115 @@ export class Dijkstra {
 
     constructor(board) {
         this.board = board;
-        this.visited = [];
-        this.unvisited = this.getUnvisitedPositionsList;
-        this.path = this.getPathList;
+        this.path = this.createPathList();
+        this.unvisited = this.nodePositions;
+        this.queue = [board.startPosition];
     }
 
-    positionvisited(position) {
-        return this.visited.includes(String(position));
+    get nodePositions() {
+        return Object.keys(this.path).map(position => position.split(',').map(Number)); // Return every position on the board
     }
 
-    get getUnvisitedPositionsList() {
-        // Make a list of all the nodes that are not visited
-        let list = [];
-
-        this.board.nodes.forEach(nodeElement => {
+    createPathList() {
+        // Set every position distance and parent position
+        let list = [...this.board.nodes].reduce((path, nodeElement) => {
             let position = String(this.board.position(nodeElement));
-            list.push(position);
-        });
-        return list
+
+            path[position] = {
+                distance: Infinity,
+                parent: null
+            }
+            return path;
+        }, {});
+        
+        list[this.board.startPosition].distance = 0; // Set start position distance to 0
+        return list;
     }
 
-    get getPathList() {
-        // Make a list that stores all the node distances and parent nodes
-        let list = {};
-        
-        for(let position of this.unvisited) {
-            let distance = this.board.isStartPosition(position) ? 0 : 1000000;
+    isqueued(position) {
+        return this.queue.map(String).includes(String(position));
+    }
 
-            list[String(position)] = {
-                distance: distance,
-                previous: null
-            }
-        }
-        return list
+    enqueue(position) {
+        if(!this.isqueued(position)) { this.queue.push(position); }
+    }
+
+    dequeue(position) {
+        const INDEX = this.queue.indexOf(position);
+        this.queue.splice(INDEX, 1);
+    }
+
+    positionVisited(position) {
+        return !this.unvisited.map(String).includes(String(position));
+    }
+
+    removeUnvisitedPosition(position) {
+        const INDEX = this.unvisited.map(String).indexOf(String(position));
+        this.unvisited.splice(INDEX, 1);
     }
 
     get head() {
-        // Return start position if not visited
-        if(!this.positionvisited(String(this.board.startPosition))) { return this.board.startPosition; }
-
-        let smallestDistanceInformation = {
-            distance: 1000000,
-            position: null
-        }
-        
-        // Get the position with the smallest distance
-        for(let position of this.unvisited){
-            let positionDistance = this.path[position].distance;
-            if(positionDistance < smallestDistanceInformation.distance) { 
-                smallestDistanceInformation.position = position;
-                smallestDistanceInformation.distance = positionDistance;
-            }
-        }
-        return smallestDistanceInformation.position ? smallestDistanceInformation.position.split(',').map(Number) : null;
+        // Get the position that has the lowest distance from the start position
+        return this.queue.reduce((lowestPositionDistance, position) => {
+            if(this.path[lowestPositionDistance].distance > this.path[position].distance) { return position; }
+            return lowestPositionDistance;
+        });
     }
 
-    distance(parent, child) {
-        // Get the distance from current child to the start position
-        const CHILD_DISTANCE = Number(this.board.element(child).dataset.distance);
-        const PARENT_DISTANCE = this.path[String(parent)].distance;   
-        const DISTANCE = PARENT_DISTANCE ? CHILD_DISTANCE + PARENT_DISTANCE : CHILD_DISTANCE
-        return DISTANCE
+    distance(parent, position) {
+        // Get the distance from current position to the start position
+        const CHILD_DISTANCE = Number(this.board.element(position).dataset.distance);
+        const PARENT_DISTANCE = this.path[String(parent)].distance;
+        const DISTANCE = PARENT_DISTANCE + CHILD_DISTANCE; 
+        return DISTANCE;
     }
 
-    addToPath(parent, child) {
-        this.path[String(child)].distance = this.distance(parent, child);
-        this.path[String(child)].previous = String(parent);
+    addPathInformation(parent, position) {
+        this.path[String(position)] = {
+            distance: this.distance(parent, position),
+            parent: String(parent)
+        }
     }
 
     get getFastestPath() {
-        let path = [];   
+        let path = [];
         let position = String(this.board.endPosition);
-
+        
         while(position) {
             position = position.split(',').map(Number);
             path.push(position);
-            position = this.path[String(position)].previous;
+            position = this.path[String(position)].parent;
         }
-        return path.slice(1, -1)
+        return path.slice(1, -1);
     }
 
-    positionIsVisited(position) {
-        this.visited.push(String(position));
+    canMove(position) {
+        if(!this.board.isStartPosition(position) && this.board.element(position) && !this.positionVisited(position) && this.board.empty(position)) { return true; }
+        return false;
+    }
 
-        const POSITION_INDEX = this.unvisited.indexOf(String(position));
-        this.unvisited.splice(POSITION_INDEX, 1);
+    addPositionVisited(position) {
+        this.removeUnvisitedPosition(position);
+        this.dequeue(position);
     }
 
     async run() {
-        while(this.unvisited && this.unvisited.length) {
-            let position = this.head
-    
+        while(this.queue.length) {
+            let position = this.head;
+            if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
+
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(position, direction);
-                
+
                 // If neighbour is empty and not visited
-                if(this.board.element(neighbour) && !this.positionvisited(neighbour) && this.board.empty(neighbour)) {
-                    this.addToPath(position, neighbour)
+                if(this.canMove(neighbour)) {
+                    this.addPathInformation(position, neighbour);
+                    this.enqueue(neighbour);
                     if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
                 }
             }
-            this.positionIsVisited(position);
-            if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
+            this.addPositionVisited(position);
             if(!this.board.isStartPosition(position)) { this.board.found(position); }
-            if(!this.head){ return; } // Path couldn't go further
             await this.board.sleep();
         }
     }
