@@ -17,9 +17,11 @@ export class Dijkstra {
         let list = [...this.board.nodes].reduce((path, nodeElement) => {
             let position = String(this.board.position(nodeElement));
 
-            path[position] = {
-                distance: Infinity,
-                parent: null
+            if(nodeElement.id !== 'wall') {            
+                path[position] = {
+                    distance: Infinity,
+                    parent: null
+                }
             }
             return path;
         }, {});
