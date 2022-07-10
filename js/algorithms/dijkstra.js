@@ -69,9 +69,12 @@ export class Dijkstra {
     }
 
     addPathInformation(parent, position) {
-        this.path[String(position)] = {
-            distance: this.distance(parent, position),
-            parent: String(parent)
+        // If the current position to the start position distance is shorter than the current stored distance
+        if(this.distance(parent, position) < this.path[String(position)].distance) {
+            this.path[String(position)] = {
+                distance: this.distance(parent, position),
+                parent: String(parent)
+            }
         }
     }
 
@@ -98,6 +101,7 @@ export class Dijkstra {
     }
 
     async run() {
+        //for(let i = 0; i < 9; i++) {
         while(this.queue.length) {
             let position = this.head;
             if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
