@@ -56,14 +56,14 @@ export class Node {
         // Change the element to the end node
         element.id = "end";
         element.className += " fas fa-home bg-danger";
-
+        
         if(this.startPosition) { this.runButton.disabled = false; }
     }
 
     setStandardAttributes(element) {
         // Disable the button when the start or end position is not on the board
         if(element === this.startElement || element === this.endElement){ this.runButton.disabled = true; }
-
+        
         // set the position on the board to empty
         const POSITION = this.position(element);
         this.emptyBoardColumn(POSITION);
@@ -71,6 +71,7 @@ export class Node {
         // set the element to the standard attributes
         element.className = this.standardClasses;
         element.id = "";
+        element.dataset.distance = 1;
     }
 
     wall(position) {  
@@ -81,8 +82,21 @@ export class Node {
             // Change the element to a wall
             ELEMENT.className = this.standardClasses;
             ELEMENT.id = "wall";
+            this.fillBoardColumn(POSITION); // set the position on the board to filled
+        }
+    }
 
-            this.fillBoardColumn(position); // set the position on the board to filled
+    weight(position) {
+        const ELEMENT = this.element(position);
+
+        // If the node is not important
+        if(!this.importantNames.includes(ELEMENT.id)) {
+            this.emptyBoardColumn(position); // set the position on the board to empty
+
+            // Change the element to a weight
+            ELEMENT.id = "weight";
+            ELEMENT.className += " fas fa-solid fa-weight-hanging";
+            ELEMENT.dataset.distance = 5;
         }
     }
 

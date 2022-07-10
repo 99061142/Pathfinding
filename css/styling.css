@@ -53,14 +53,15 @@ nav button:focus{
 
 /* Node styling */
 
-td:not(#start):not(#end){
+td:not(#start):not(#end):not(#weight){
     width: 15px;
     height:15px;
     padding: 7.5px;
 }  
 
 #start,
-#end{
+#end,
+#weight{
     width: 17px;
     height:17px;
 }

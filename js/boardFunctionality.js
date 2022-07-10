@@ -21,10 +21,13 @@ class BoardFunctionality extends Navigation {
                 }
                 else if(!this.endElement && nodeElement != this.startElement) {
                     this.endPosition = nodeElement
-                }else if(nodeElement.id) {
+                }else if(nodeElement.id && nodeElement.id != 'wall') {
                     this.setStandardAttributes(nodeElement)
+                }else if(nodeElement.id == 'wall') {
+                    const POSITION = this.position(nodeElement);
+                    this.weight(POSITION)
                 }else {
-                    const POSITION = this.position(nodeElement)
+                    const POSITION = this.position(nodeElement);
                     this.wall(POSITION);
                 }
             }
@@ -33,10 +36,10 @@ class BoardFunctionality extends Navigation {
 
     nodeMouseover(nodeElement) {
         nodeElement.addEventListener("mouseover", mouseEvent => {
-            // Node to wall
             if(!this.isRunning && mouseEvent.buttons === 1) { 
                 const POSITION = this.position(nodeElement);
-                this.wall(POSITION); 
+                if(nodeElement.id == "wall") { this.weight(POSITION); }
+                else { this.wall(POSITION); }
             }
         });
     }
