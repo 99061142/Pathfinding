@@ -4,9 +4,8 @@ import { Dfs } from './algorithms/dfs.js';
 import { Dijkstra } from './algorithms/dijkstra.js';
 
 export class Board extends Node {
-    #height = document.querySelectorAll('#row').length;
-    #width = document.querySelectorAll('#row')[0].children.length;
-
+    #height = document.querySelectorAll('#board > tr').length;
+    #width = document.querySelectorAll('#board > tr')[0].children.length;
     constructor() {
         super();
         this.columnType = "td";

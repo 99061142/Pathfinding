@@ -41,7 +41,7 @@
     <table class="my-2 d-flex justify-content-center">
         <tbody id="board">
             <?php for($row = 0; $row <= 36; $row++){ ?>
-                <tr id="row">
+                <tr>
                     <?php for($col = 0; $col <= 36; $col++){ ?>
                         <td data-distance="1" class="node border border-dark float-left"></td>
                     <?php } ?>
