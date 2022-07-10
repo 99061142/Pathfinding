@@ -17,6 +17,11 @@
             </div>
 
             <div class="col-sm">    
+                <i class="fas fa-solid fa-weight-hanging border border-dark"></i>
+                <p class="d-inline-block">Weight wall</p>
+            </div>
+
+            <div class="col-sm">    
                 <div class="border border-dark d-inline-block p-2" id="found"></div>
                 <p class="d-inline-block">Checked node</p>
             </div>
