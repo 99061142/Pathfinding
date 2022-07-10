@@ -50,6 +50,7 @@ export class Bfs {
             if(!this.head){ return; } // Path couldn't go further
             if(this.board.isEndPosition(this.head)) { return this.fastestPath(); }
             this.board.found(this.head);
+            await this.board.sleep();
         }
     }
 }
