@@ -82,7 +82,7 @@ export class Node {
             // Change the element to a wall
             ELEMENT.className = this.standardClasses;
             ELEMENT.id = "wall";
-            this.fillBoardColumn(POSITION); // set the position on the board to filled
+            this.fillBoardColumn(position); // set the position on the board to filled
         }
     }
 
