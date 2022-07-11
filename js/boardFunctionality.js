@@ -1,6 +1,8 @@
 import { Navigation } from "./navigation.js";
 
 class BoardFunctionality extends Navigation {
+    #weightedAlgorithm = ["dijkstra", "astar"];
+
     constructor() {
         super();
         this.addEventlisteners();
@@ -19,7 +21,7 @@ class BoardFunctionality extends Navigation {
     }
 
     mouseoverMiddleClick(nodeElement) {
-        if(nodeElement.id != 'wall') {
+        if(nodeElement.id != 'wall' && this.#weightedAlgorithm.includes(this.runButton.value)) {
             const POSITION = this.position(nodeElement);
             this.weight(POSITION);
         }
@@ -55,8 +57,10 @@ class BoardFunctionality extends Navigation {
     }
 
     clickMiddleClick(nodeElement) {
-        const POSITION = this.position(nodeElement);
-        this.weight(POSITION);
+        if(this.#weightedAlgorithm.includes(this.runButton.value)){
+            const POSITION = this.position(nodeElement);
+            this.weight(POSITION);
+        }
     }
 
     nodeOnclick(nodeElement) {
