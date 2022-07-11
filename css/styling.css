@@ -53,7 +53,7 @@ nav button:focus{
 
 /* Node styling */
 
-td:not(#start):not(#end):not(#weight){
+td:not(#start):not(#end):not(#weight):not(#weightNext):not(#weightFound):not(#weightFastest){
     width: 15px;
     height:15px;
     padding: 7.5px;
@@ -61,7 +61,10 @@ td:not(#start):not(#end):not(#weight){
 
 #start,
 #end,
-#weight{
+#weight,
+#weightNext,
+#weightFound,
+#weightFastest{
     width: 17px;
     height:17px;
 }
@@ -70,15 +73,15 @@ td:not(#start):not(#end):not(#weight){
     background-color: black;
 }
 
-#found{
+#found, #weightFound{
     background-color: #007bff;
 }
 
-#next{
+#next, #weightNext{
     background-color: slateblue;
 }
 
-#fastest{
+#fastest, #weightFastest{
     background-color: #ffc107;
 }
 

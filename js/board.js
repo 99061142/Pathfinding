@@ -94,9 +94,16 @@ export class Board extends Node {
         }
     }
 
+    standardWeightStyling() {
+        document.querySelectorAll(this.columnType + "[id*='weight']").forEach(element => {
+            element.id = "weight";
+        });
+    }
+
     makePath(algorithm) {
         if(this.canRun()) {
             this.clearAlgorithmPath();
+            this.standardWeightStyling();
             this.isRunning = true;
             this.runButton.disabled = true;
 
@@ -113,7 +120,9 @@ export class Board extends Node {
     async fastestRoute(route) { 
         if(route) {
             for(let position of route) { 
-                await this.fastest(position);
+                const ELEMENT = this.element(position);
+                if(ELEMENT.id.includes("weight")) { await this.weightFastest(ELEMENT); }
+                else { await this.fastest(ELEMENT); }
             }
         }
     }

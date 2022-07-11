@@ -100,6 +100,22 @@ export class Node {
         }
     }
 
+    async weightNext(position) {
+        const ELEMENT = this.element(position);
+        ELEMENT.id = "weightNext";
+    }
+
+    async weightFound(position) {
+        const ELEMENT = this.element(position);
+        ELEMENT.id = "weightFound";
+    }
+
+    async weightFastest(element) {
+        element.id = "weightFastest";
+        await this.sleep(); // wait for the animation to finish
+    }
+
+
     found(position) {
         // Change the element to a found node
         const ELEMENT = this.element(position); 
@@ -116,11 +132,10 @@ export class Node {
         await this.sleep(); // wait for the animation to finish
     }
 
-    async fastest(position) {  
+    async fastest(element) {
         // Change the element to a fastest node
-        const ELEMENT = this.element(position);
-        ELEMENT.className = this.standardClasses;
-        ELEMENT.id = "fastest";
+        element.className = this.standardClasses;
+        element.id = "fastest";
 
         await this.sleep(); // wait for the animation to finish
     }

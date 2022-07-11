@@ -113,11 +113,17 @@ export class Dijkstra {
                 if(this.canMove(neighbour)) {
                     this.addPathInformation(position, neighbour);
                     this.enqueue(neighbour);
-                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
+                    if(!this.board.isEndPosition(neighbour)) { 
+                        if(this.board.element(neighbour).id.includes("weight")) { await this.board.weightNext(neighbour); }
+                        else { await this.board.next(neighbour); }
+                    }
                 }
             }
             this.addPositionVisited(position);
-            if(!this.board.isStartPosition(position)) { this.board.found(position); }
+            if(!this.board.isStartPosition(position)) { 
+                if(!this.board.element(position).id.includes("weight")) { this.board.found(position); }
+                else{ this.board.weightFound(position); }
+            }
             await this.board.sleep();
         }
     }
