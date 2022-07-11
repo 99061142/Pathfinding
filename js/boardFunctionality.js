@@ -64,7 +64,6 @@ class BoardFunctionality extends Navigation {
     }
 
     nodeOnclick(nodeElement) {
-        // when the user presses the middle mouse button while hovering over a node,
         nodeElement.addEventListener("mousedown", mouseEvent => {
             if(!this.isRunning) {
                 switch(mouseEvent.buttons){
