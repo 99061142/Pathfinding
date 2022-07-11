@@ -16,7 +16,7 @@
                     <button class="dropdown-item">BFS</button>
                     <button class="dropdown-item">DFS</button>
                     <button class="dropdown-item">Dijkstra</button>
-                    <button class="dropdown-item" disabled>AStar</button>
+                    <button class="dropdown-item">AStar</button>
                 </div>
             </li>
             <!-- /Pathfinding algorithm options -->
@@ -30,7 +30,6 @@
                 </div>
             </li>
             <!-- /Board layouts -->
-
 
             <!-- Run button -->
             <li class="nav-item">
