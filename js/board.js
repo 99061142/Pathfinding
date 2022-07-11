@@ -2,10 +2,12 @@ import { Node } from './node.js';
 import { Bfs } from './algorithms/bfs.js';
 import { Dfs } from './algorithms/dfs.js';
 import { Dijkstra } from './algorithms/dijkstra.js';
+import { Astar } from './algorithms/astar.js';
 
 export class Board extends Node {
     #height = document.querySelectorAll('#board > tr').length;
     #width = document.querySelectorAll('#board > tr')[0].children.length;
+
     constructor() {
         super();
         this.columnType = "td";
@@ -91,6 +93,8 @@ export class Board extends Node {
                 return new Dfs(this);
             case "dijkstra":
                 return new Dijkstra(this);
+            case "astar":
+                return new Astar(this);
         }
     }
 
