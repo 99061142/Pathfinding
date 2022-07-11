@@ -13,11 +13,11 @@
 
             <div class="col-sm">    
                 <div class="border border-dark d-inline-block p-2" id="wall"></div>
-                <p class="d-inline-block">Walls</p>
+                <p class="d-inline-block">Wall</p>
             </div>
 
             <div class="col-sm">    
-                <i class="fas fa-solid fa-weight-hanging border border-dark"></i>
+                <i class="fas fa-solid fa-weight-hanging border border-dark" id="weight"></i>
                 <p class="d-inline-block">Weight wall</p>
             </div>
 
