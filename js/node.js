@@ -33,6 +33,8 @@ export class Node {
     }
 
     set startPosition(element) {
+        if(element.id == 'weight') { return; } // Don't set the start position if the element is a weight
+        
         // Change the element to the start node
         element.id = "start";
         element.className += " fas fa-arrow-right bg-success";
@@ -53,6 +55,8 @@ export class Node {
     }
 
     set endPosition(element) {
+        if(element.id == 'weight') { return; } // Don't set the end position if the element is a weight
+
         // Change the element to the end node
         element.id = "end";
         element.className += " fas fa-home bg-danger";
@@ -71,7 +75,7 @@ export class Node {
         // set the element to the standard attributes
         element.className = this.standardClasses;
         element.id = "";
-        element.dataset.distance = 1;
+        element.dataset.distance = 10;
     }
 
     wall(position) {  
@@ -96,7 +100,7 @@ export class Node {
             // Change the element to a weight
             ELEMENT.id = "weight";
             ELEMENT.className += " fas fa-solid fa-weight-hanging";
-            ELEMENT.dataset.distance = 5;
+            ELEMENT.dataset.distance = 50;
         }
     }
 
