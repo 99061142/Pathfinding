@@ -33,7 +33,7 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" value="dijkstra" disabled>Run </button>
+                <button class="px-4 bg-green" id="run-button" value="bfs" disabled>Run </button>
             </li>
             <!-- /Run button -->
 
