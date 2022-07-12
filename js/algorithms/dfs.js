@@ -21,7 +21,7 @@ export class Dfs {
     }
 
     positionvisited(position) {
-        return this.visited.map(String).includes(String(position));
+        return this.visited.map(String).includes(String(position)) || this.queued(position);
     }
 
     positionIndexInPath(position) {
@@ -35,24 +35,24 @@ export class Dfs {
     neighbourIsEnd(position) {
         // Return if a neighbour is the end position
         return this.#directions.some(direction => {
-            const NEIGHBOUR_POSITION = neighbourPosition(position, direction);
-            return this.board.isEndPosition(NEIGHBOUR_POSITION);
+            let neighbour = neighbourPosition(position, direction);
+            return this.board.isEndPosition(neighbour);
         });
     }
 
     isNeighbour(positionOne, positionTwo){
         // Check if the position is a neighbour of the other position
         return this.#directions.some(direction => {
-            const NEIGHBOUR_POSITION = neighbourPosition(positionOne, direction);
-            return String(NEIGHBOUR_POSITION) === String(positionTwo);
+            let neighbour = neighbourPosition(positionOne, direction);
+            return String(neighbour) === String(positionTwo);
         });
     }
 
     canMove(position) {
         // Check if the position can move to 1 of the possible directions
         return this.#directions.some(direction => {
-            const NEIGHBOUR_POSITION = neighbourPosition(position, direction);
-            return this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION);
+            let neighbour = neighbourPosition(position, direction);
+            return this.board.empty(neighbour) && !this.positionvisited(neighbour);
         });
     }
 
@@ -92,16 +92,16 @@ export class Dfs {
 
     async run() {      
         while(this.queue && this.queue.length) {
-            const POSITION = this.dequeue();
+            let position = this.dequeue();
 
             // For every optional direction
             for(let direction of this.#directions) {
-                const NEIGHBOUR_POSITION = neighbourPosition(POSITION, direction);
+                let neighbour = neighbourPosition(position, direction);
 
-                // If neighbour is empty and not visited or queued
-                if(this.board.empty(NEIGHBOUR_POSITION) && !this.positionvisited(NEIGHBOUR_POSITION) && !this.queued(NEIGHBOUR_POSITION)) { 
-                    if(!this.board.isEndPosition(NEIGHBOUR_POSITION)) { await this.board.next(NEIGHBOUR_POSITION); }
-                    this.enqueue(NEIGHBOUR_POSITION);
+                // If neighbour is empty and not visited
+                if(this.board.empty(neighbour) && !this.positionvisited(neighbour)) { 
+                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
+                    this.enqueue(neighbour);
                 }
             }
             if(!this.head) { return; } // Path couldn't go further
