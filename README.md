@@ -16,15 +16,17 @@
 
 ## Algorithms
 
-### Include start to end route.
+### Include start to end route
 
 * BFS
 * DFS
 * Dijkstra
+* A* (Slow on open grid but working)
 
-### Not working properly (can't use this algorithm)
+### Algorithm not working properly
 
-* A*
+* None
+
 
 ## Note
 
