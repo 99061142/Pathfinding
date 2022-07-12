@@ -27,7 +27,7 @@ export class Navigation extends Board {
         }
         else {
             // Replace the current algorithm with the new one
-            this.runButton.innerText = this.runButton.innerText.replace(this.runButton.value.toUpperCase(), algorithm);
+            this.runButton.innerText = this.runButton.innerText.replace(this.runButton.value.toUpperCase(), algorithm.toUpperCase());
         }
     }
 
