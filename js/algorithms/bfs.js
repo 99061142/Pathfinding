@@ -24,26 +24,26 @@ export class Bfs {
     }
 
     fastestPath() {
-        const PATH = [];
+        let path = [];
         let parent = this.board.endPosition;
 
         while(parent) {
-            PATH.push(parent);
+            path.push(parent);
             parent = this.path[String(parent)];
         }
-        return PATH.slice(1, -1);
+        return path.slice(1, -1);
     }
 
     async run() {
         while(this.queue && this.queue.length) {
             for(let direction of this.#directions) {
-                const NEIGHBOUR_POSITION = neighbourPosition(this.head, direction);
+                let neighbour = neighbourPosition(this.head, direction);
 
                 // If neighbour is empty and not visited
-                if(this.board.empty(NEIGHBOUR_POSITION) && !this.visited(NEIGHBOUR_POSITION)) {    
-                    if(!this.board.isEndPosition(NEIGHBOUR_POSITION)) { await this.board.next(NEIGHBOUR_POSITION); }
-                    this.path[String(NEIGHBOUR_POSITION)] = this.head; // Add the position and the parent of the position
-                    this.enqueue(NEIGHBOUR_POSITION);
+                if(this.board.empty(neighbour) && !this.visited(neighbour)) {    
+                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
+                    this.path[String(neighbour)] = this.head; // Add the position and the parent of the position
+                    this.enqueue(neighbour);
                 }    
             }    
             this.dequeue(); // Remove head from queue
