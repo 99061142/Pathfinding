@@ -21,9 +21,10 @@
 * BFS
 * DFS
 * Dijkstra
-* A*
 
 ### Not working properly (can't use this algorithm)
+
+* A*
 
 * None
 
