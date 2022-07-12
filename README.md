@@ -26,8 +26,6 @@
 
 * A*
 
-* None
-
 ## Note
 
 * This website is in the starting phase, it does NOT work properly. Some things are not made and sometimes the website is not responding correctly.
