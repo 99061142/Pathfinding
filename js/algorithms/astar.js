@@ -13,7 +13,7 @@ export class Astar {
     }
 
     createPathList() {
-        // Set every position distance and parent position
+        // Add every position on the board to the path list
         let list = [...this.board.nodes].reduce((path, nodeElement) => {
             let position = String(this.board.position(nodeElement));
 
@@ -53,13 +53,14 @@ export class Astar {
     }
 
     get head() {
-        // Get the position that has the lowest distance from the start position
         return this.queue.reduce((lowestPositionDistance, position) => {
-            let lowestPositionTotalDistance = this.path[lowestPositionDistance].distance + this.manhattanDistance(lowestPositionDistance)
-            let currentPositionTotalDistance = this.path[position].distance + this.manhattanDistance(position)
-            if(lowestPositionTotalDistance > currentPositionTotalDistance) { return position; }
+            let lowestPositionTotalDistance = this.path[String(lowestPositionDistance)].distance + this.manhattanDistance(lowestPositionDistance);
+            let positionTotalDistance = this.path[String(position)].distance + this.manhattanDistance(position);
+
+            // If the current position has the lowest distance + manhattan distance
+            if(positionTotalDistance < lowestPositionTotalDistance) { return position; }
             return lowestPositionDistance;
-        });
+        })
     }
 
     manhattanDistance(position) {
@@ -69,18 +70,19 @@ export class Astar {
 
         while(!this.board.isEndPosition(currentCheckPosition)) {
             let [newRow, newCol] = currentCheckPosition;
-
+            
             if(newRow != endRow && newCol != endCol) { distance += 1.4; } 
-            else { distance += 1; }
+            else if(newRow != endRow || newCol != endCol) { distance += 1; }
 
             if(newRow > endRow) { newRow -= 1; }
             else if(newRow < endRow) { newRow += 1; }
+            
             if(newCol > endCol) { newCol -= 1; }
             else if(newCol < endCol) { newCol += 1; }
 
             currentCheckPosition = [newRow, newCol];
         }
-        return Math.round(distance * 10) / 10; // 1 decimal place
+        return Math.round(distance * 100) / 10; // 1 decimal
     }
 
     distance(parent, position) {
@@ -92,14 +94,12 @@ export class Astar {
     }
 
     addPathInformation(parent, position) {
-        const TOTAL_DISTANCE = this.distance(parent, position) + this.manhattanDistance(position)
-        // If the current position to the start position distance is shorter than the current stored distance
-        if(TOTAL_DISTANCE  < this.path[String(position)].distance) {
-            this.path[String(position)] = {
-                parent: String(parent),
-                distance: this.distance(parent, position)
-            }
+
+        // If the current position has the lowest distance to the the start position
+        if(this.distance(parent, position) < this.path[String(position)].distance) {
+            this.path[String(position)].distance = this.distance(parent, position);
         }
+        this.path[String(position)].parent = String(parent);
     }
 
     get getFastestPath() {
@@ -115,8 +115,9 @@ export class Astar {
     }
 
     canMove(position) {
-        if(!this.board.isStartPosition(position) && this.board.element(position) && !this.positionVisited(position) && this.board.empty(position)) { return true; }
-        return false;
+        // Return if the position is empty and not already visited / in the queue
+        if(this.board.isStartPosition(position) || !this.board.element(position) || this.positionVisited(position) || !this.board.empty(position) || this.isqueued(position)) { return false; }
+        return true;
     }
 
     addPositionVisited(position) {
@@ -125,15 +126,13 @@ export class Astar {
     }
 
     async run() {
-        //for(let i = 0; i < 9; i++) {
-        while(this.queue.length) {
+        while(this.queue.length && !this.isqueued(this.board.endPosition)) {
             let position = this.head;
-            if(this.board.isEndPosition(position)) { return this.getFastestPath; } 
 
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(position, direction);
 
-                // If neighbour is empty and not visited
+                // If neighbour is empty and not visited / in queue
                 if(this.canMove(neighbour)) {
                     this.addPathInformation(position, neighbour);
                     this.enqueue(neighbour);
@@ -143,6 +142,7 @@ export class Astar {
                     }
                 }
             }
+            
             this.addPositionVisited(position);
             if(!this.board.isStartPosition(position)) { 
                 if(!this.board.element(position).id.includes("weight")) { this.board.found(position); }
@@ -150,5 +150,6 @@ export class Astar {
             }
             await this.board.sleep();
         }
+        return this.getFastestPath;
     }
 }
