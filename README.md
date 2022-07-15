@@ -21,12 +21,10 @@
 * BFS
 * DFS
 * Dijkstra
-* A* (Slow on open grid but working)
 
 ### Algorithm not working properly
 
-* None
-
+* A*
 
 ## Note
 
