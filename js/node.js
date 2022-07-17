@@ -78,29 +78,30 @@ export class Node {
         element.dataset.distance = 10;
     }
 
-    wall(position) {  
-        const ELEMENT = this.element(position);
-
+    wall(element) {  
         // If the node is not important
-        if(!this.importantNames.includes(ELEMENT.id)) {
+        if(!this.importantNames.includes(element.id)) {
+            // set the position on the board to filled
+            let position = this.position(element);
+            this.fillBoardColumn(position);
+
             // Change the element to a wall
-            ELEMENT.className = this.standardClasses;
-            ELEMENT.id = "wall";
-            this.fillBoardColumn(position); // set the position on the board to filled
+            element.className = this.standardClasses;
+            element.id = "wall";
         }
     }
 
-    weight(position) {
-        const ELEMENT = this.element(position);
-
+    weight(element) {
         // If the node is not important
-        if(!this.importantNames.includes(ELEMENT.id)) {
-            this.emptyBoardColumn(position); // set the position on the board to empty
+        if(!this.importantNames.includes(element.id)) {
+            // set the position on the board to empty
+            let position = this.position(element);
+            this.emptyBoardColumn(position);
 
             // Change the element to a weight
-            ELEMENT.id = "weight";
-            ELEMENT.className += " fas fa-solid fa-weight-hanging";
-            ELEMENT.dataset.distance = 50;
+            element.id = "weight";
+            element.className += " fas fa-solid fa-weight-hanging";
+            element.dataset.distance = 50;
         }
     }
 

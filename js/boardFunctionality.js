@@ -16,14 +16,12 @@ class BoardFunctionality extends Navigation {
     }
 
     mouseoverLeftClick(nodeElement) {
-        const POSITION = this.position(nodeElement);
-        this.wall(POSITION);
+        this.wall(nodeElement);
     }
 
     mouseoverMiddleClick(nodeElement) {
-        if(nodeElement.id != 'wall' && this.#weightedAlgorithm.includes(this.runButton.value)) {
-            const POSITION = this.position(nodeElement);
-            this.weight(POSITION);
+        if(nodeElement.id != "wall" && this.#weightedAlgorithm.includes(this.runButton.value)) {
+            this.weight(nodeElement);
         }
     }
 
@@ -43,23 +41,15 @@ class BoardFunctionality extends Navigation {
     }
 
     clickLeftClick(nodeElement) {
-        if(!this.startElement && nodeElement != this.endElement){
-            this.startPosition = nodeElement
-        }
-        else if(!this.endElement && nodeElement != this.startElement) {
-            this.endPosition = nodeElement
-        }else if(nodeElement.id) {
-            this.setStandardAttributes(nodeElement)
-        }else {
-            const POSITION = this.position(nodeElement);
-            this.wall(POSITION);
-        }
+        if(nodeElement.id) { return this.setStandardAttributes(nodeElement); }
+        if(!this.startElement){ return this.startPosition = nodeElement; }
+        if(!this.endElement) { return this.endPosition = nodeElement; }
+        this.wall(nodeElement);
     }
 
     clickMiddleClick(nodeElement) {
         if(this.#weightedAlgorithm.includes(this.runButton.value)){
-            const POSITION = this.position(nodeElement);
-            this.weight(POSITION);
+            this.weight(nodeElement);
         }
     }
 
