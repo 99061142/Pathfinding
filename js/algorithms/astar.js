@@ -10,7 +10,7 @@ export class Astar {
     }
 
     createPathList() {
-        // Add every position on the board to the path list
+        // Add every board node to the path list
         let list = [...this.board.nodes].reduce((path, nodeElement) => {
             let position = String(this.board.position(nodeElement));
 
@@ -27,17 +27,13 @@ export class Astar {
         return list;
     }
 
-    positionWeight(position) {
-        return this.board.element(position).dataset.distance;
-    }
-
     toStartDistance(position) {
-        // Distance from current pos to start pos
+        // Distance from current position to start position
         let [row, col] = position;
         let [startRow, startCol] = this.board.startPosition;
         let rowDif = Math.abs(startRow - row);
         let colDif = Math.abs(startCol - col);
-        let distance = Math.floor(this.positionWeight(position) / 5);
+        let distance = 0;
 
         while(rowDif || colDif) {
             distance += (rowDif && colDif) ? 1.4 : 1;
@@ -48,7 +44,7 @@ export class Astar {
     }
 
     toEndDistance(position) {
-        // Distance from current pos to end pos
+        // Distance from current position to end position  
         let [row, col] = position;
         let [endRow, endCol] = this.board.endPosition;
         let rowDif = Math.abs(endRow - row);
@@ -71,20 +67,20 @@ export class Astar {
         let dict;
 
         /* Get the position with the lowest distance cost or 
-        get the position with the lowest toEndDistance if there are multiple positions with the same cost */
+        get the position with the lowest toEndDistance if there are multiple positions with the same distance cost */
         this.queue.forEach(position => {
             let positionFCost = this.fCost(position);
-            let positionHCost = this.toEndDistance(position);
+            let endCost = this.toEndDistance(position);
             
-            if(!dict || positionFCost < dict.distance || positionFCost == dict.distance && positionHCost < dict.toEndDistance) {
+            if(!dict || positionFCost < dict.distance || positionFCost == dict.distance && endCost < dict.toEndDistance) {
                 dict = {
                     position: position,
                     distance: positionFCost,
-                    toEndDistance: positionHCost
+                    toEndDistance: endCost
                 }; 
             }
         });
-        return dict.position
+        return dict.position;
     }
 
     enqueue(position) {
@@ -97,19 +93,13 @@ export class Astar {
     }
 
     addPathInformation(position, parentPosition) {
-        this.path[String(position)] = {
-            distance: this.toStartDistance(position, parentPosition),
-            parent: String(parentPosition)
-        };
+        let pathPosition = this.path[String(position)];
+        pathPosition.distance = this.fCost(position);
+        pathPosition.parent = String(parentPosition);
     }
 
     isVisited(position) {
         return this.visited.map(String).includes(String(position))
-    }
-
-    canMoveTo(position) {
-        if(!this.board.element(position) || !this.board.empty(position) || this.isVisited(position) || this.board.isStartPosition(position)) { return false; }
-        return true;
     }
 
     isQueued(position) {
@@ -128,6 +118,25 @@ export class Astar {
         return path.slice(1, -1);
     }
 
+    getClosestNeighbour(position) {
+        let pathPosition = this.path[String(position)];
+
+        for(let direction of this.#directions) {
+            let neighbour = neighbourPosition(position, direction)
+
+            // If the position is visited
+            if(this.board.empty(neighbour) && this.board.element(neighbour) && this.isVisited(neighbour)) {
+                let neighbourDistance = this.path[String(neighbour)].distance;
+
+                // If the neighbour fCost is lower than the current position neighbour fCost
+                if(neighbourDistance != 0 && neighbourDistance < pathPosition.distance) {
+                    pathPosition.distance = neighbourDistance;
+                    pathPosition.parent = String(neighbour);
+                }
+            }
+        }
+    }
+
     async run() {
         while(this.queue.length) {
             let position = this.head;
@@ -135,8 +144,8 @@ export class Astar {
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(position, direction)
                 
-                // If neighbour is empty and not visited / in queue
-                if(this.canMoveTo(neighbour)) {
+                // If neighbour is empty and not visited
+                if(this.board.element(neighbour) && this.board.empty(neighbour) && !this.isVisited(neighbour)) {
                     this.addPathInformation(neighbour, position);
                     if(!this.isQueued(neighbour)) { this.enqueue(neighbour); }
                     
@@ -147,8 +156,14 @@ export class Astar {
                 }
             }
             if(this.isQueued(this.board.endPosition)) { return this.getFastestPath; }
-            if(!this.board.isStartPosition(position)) { this.board.found(position); }
+            
+            // Add position
             this.visited.push(position);
+            if(!this.board.isStartPosition(position)) { 
+                this.board.found(position); 
+                this.getClosestNeighbour(position);
+            }
+
             this.dequeue(position);
             await this.board.sleep();
         }
