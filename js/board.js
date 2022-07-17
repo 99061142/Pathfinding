@@ -136,7 +136,7 @@ export class Board extends Node {
             document.querySelectorAll(this.columnType).forEach(element => {
                 // 33% chance to make the wall if it's not an important node
                 if(!this.importantNames.includes(element.id) && Math.random() <= 0.33) {          
-                    this.wall(this.position(element));
+                    this.wall(element);
                 }
             });
         }
