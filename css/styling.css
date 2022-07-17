@@ -73,15 +73,18 @@ td:not(#start):not(#end):not(#weight):not(#weightNext):not(#weightFound):not(#we
     background-color: black;
 }
 
-#found, #weightFound{
+#found, 
+#weightFound{
     background-color: #007bff;
 }
 
-#next, #weightNext{
+#next, 
+#weightNext{
     background-color: slateblue;
 }
 
-#fastest, #weightFastest{
+#fastest, 
+#weightFastest{
     background-color: #ffc107;
 }
 
