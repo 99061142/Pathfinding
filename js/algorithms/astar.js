@@ -102,14 +102,21 @@ export class Astar {
 
     get getFastestPath() {
         let path = [];
-        let position = String(this.board.endPosition);
-        
-        while(position) {
-            position = position.split(',').map(Number);
+        let position = this.board.endPosition;
+
+        while(!this.board.isStartPosition(position)) {
+            position = this.positionParent(position);
             path.push(position);
-            position = this.path[String(position)].parent;
         }
-        return path.slice(1, -1);
+        return path.slice(0, -1);
+    }
+
+    positionParent(position) {      
+        try {
+            return this.pathPosition(position).parent.split(',').map(Number);
+        } catch(typeError) {
+            return null
+        }
     }
 
     pathPosition(position) {
@@ -125,7 +132,7 @@ export class Astar {
             // If the neighbour position is visited
             if(this.board.empty(neighbour) && this.board.element(neighbour) && this.isVisited(neighbour)) {
                 let neighbourDistance = this.path[String(neighbour)].distance;
-                let parentPositionList = pathPosition.parent.split(',').map(Number);
+                let parentPositionList = this.positionParent(position);
 
                 /* If the neighbour totalDistance is lower than the current position neighbour totalDistance or 
                 when the neighbour totalDistance is equal to the current position neighbour totalDistance and 
