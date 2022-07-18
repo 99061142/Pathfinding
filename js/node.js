@@ -122,26 +122,28 @@ export class Node {
 
 
     found(position) {
-        // Change the element to a found node
-        const ELEMENT = this.element(position); 
-        ELEMENT.className = this.standardClasses;
-        ELEMENT.id = "found";
+        let element = this.element(position); 
+
+        if(element.id.includes('weight')) { return this.weightFound(position); }
+        element.className = this.standardClasses;
+        element.id = "found";
     }
 
     async next(position) {    
-        // Change the element to a next node
-        const ELEMENT = this.element(position);
-        ELEMENT.className = this.standardClasses;
-        ELEMENT.id = "next";
+        let element = this.element(position);
 
-        await this.sleep(); // wait for the animation to finish
+        if(element.id.includes('weight')) { return this.weightNext(position); }
+        element.className = this.standardClasses;
+        element.id = "next";
+        await this.sleep();
     }
 
-    async fastest(element) {
-        // Change the element to a fastest node
+    async fastest(position) {
+        let element = this.element(position);
+        
+        if(element.id.includes('weight')) { return this.weightFastest(element); }
         element.className = this.standardClasses;
         element.id = "fastest";
-
-        await this.sleep(); // wait for the animation to finish
+        await this.sleep();
     }
 }

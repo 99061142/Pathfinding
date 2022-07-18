@@ -122,12 +122,10 @@ export class Board extends Node {
     }
 
     async fastestRoute(route) { 
-        if(route) {
-            for(let position of route) { 
-                const ELEMENT = this.element(position);
-                if(ELEMENT.id.includes("weight")) { await this.weightFastest(ELEMENT); }
-                else { await this.fastest(ELEMENT); }
-            }
+        if(!route) { return; }
+        
+        for(let position of route) { 
+            await this.fastest(position);
         }
     }
 
