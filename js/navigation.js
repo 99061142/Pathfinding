@@ -1,6 +1,8 @@
 import { Board } from "./board.js";
 
 export class Navigation extends Board {
+    #weightedAlgorithms = ["dijkstra", "astar"];
+
     constructor() {
         super();
         this.speedDropdown = document.getElementById("speed-dropdown");
@@ -46,6 +48,8 @@ export class Navigation extends Board {
         // Attach the onclick event for each algorithm option
         document.getElementById("algorithm-options").querySelectorAll("button").forEach(algorithmButton => {
             algorithmButton.onclick = () => {
+                if(!this.#weightedAlgorithms.includes(algorithmButton.value)) { this.deleteWeightNodes(); }
+
                 this.runButtonText(algorithmButton.innerText);
                 this.runButton.value = algorithmButton.innerText.toLowerCase();
             }

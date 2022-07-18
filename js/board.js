@@ -98,6 +98,13 @@ export class Board extends Node {
         }
     }
 
+    deleteWeightNodes() {
+        document.querySelectorAll(this.columnType + "[id*='weight']").forEach(element => {
+            element.id = element.id.replace("weight", "").toLowerCase();
+            element.className = this.standardClasses;
+        });
+    }
+
     standardWeightStyling() {
         document.querySelectorAll(this.columnType + "[id*='weight']").forEach(element => {
             element.id = "weight";
