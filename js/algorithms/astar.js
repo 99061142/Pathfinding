@@ -15,7 +15,7 @@ export class Astar {
             let position = String(this.board.position(nodeElement));
 
             if(nodeElement.id !== 'wall') {            
-                path[position] = {
+                path[String(position)] = {
                     distance: Infinity,
                     parent: null
                 }
@@ -28,40 +28,34 @@ export class Astar {
     }
 
     toStartDistance(position) {
-        // Distance from current position to start position
         let [row, col] = position;
         let [startRow, startCol] = this.board.startPosition;
-        let rowDif = Math.abs(startRow - row);
-        let colDif = Math.abs(startCol - col);
-        let distance = Number(this.board.element(position).dataset.distance) / 10;
-
-        while(rowDif || colDif) {
-            distance += (rowDif && colDif) ? 1.4 : 1;
-            if(rowDif) { rowDif -= 1; }
-            if(colDif) { colDif -= 1; }
-        }        
-        distance = Math.round(distance * 100) / 10; // 1 decimal
-        return distance;
+        let rowDistance = Math.abs(startRow - row);
+        let colDistance = Math.abs(startCol - col);
+        let totalDistance = rowDistance + colDistance;
+        let straightDistance = Math.abs(rowDistance - colDistance);
+        let diagonalDistance = Math.abs(totalDistance - straightDistance) / 2 * 1.4;
+        
+        let currentPositionWeight = Number(this.board.element(position).dataset.distance) / 10;
+        let distance = currentPositionWeight + straightDistance + diagonalDistance;
+        return Math.round(distance * 100) / 10;
     }
 
     toEndDistance(position) {
-        // Distance from current position to end position  
         let [row, col] = position;
         let [endRow, endCol] = this.board.endPosition;
-        let rowDif = Math.abs(endRow - row);
-        let colDif = Math.abs(endCol - col);
-        let distance = 0;
-
-        while(rowDif || colDif) {
-            distance += (rowDif && colDif) ? 1.4 : 1;
-            if(rowDif) { rowDif -= 1; }
-            if(colDif) { colDif -= 1; }
-        }
-        return Math.round(distance * 100) / 10; // 1 decimal
+        let rowDistance = Math.abs(endRow - row);
+        let colDistance = Math.abs(endCol - col);
+        let totalDistance = rowDistance + colDistance;
+        let straightDistance = Math.abs(rowDistance - colDistance);
+        let diagonalDistance = Math.abs(totalDistance - straightDistance) / 2 * 1.4;
+        
+        let distance = straightDistance + diagonalDistance;
+        return Math.round(distance * 100) / 10;
     }
 
     totalDistance(position) {
-        return this.toStartDistance(position) + this.toEndDistance(position); // Distance to start + distance to end
+        return this.toStartDistance(position) + this.toEndDistance(position);
     }
 
     get head() {
@@ -162,7 +156,7 @@ export class Astar {
 
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(position, direction);
-                
+
                 // If neighbour is empty and not visited
                 if(this.board.element(neighbour) && this.board.empty(neighbour) && !this.isVisited(neighbour)) {
                     this.addPathInformation(neighbour, position);
