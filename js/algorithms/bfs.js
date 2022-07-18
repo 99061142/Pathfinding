@@ -3,12 +3,13 @@ export class Bfs {
     
     constructor(board) {
         this.board = board;
-        this.queue = [board.startPosition]; // Positions to move from
-        this.path = {}; // Position of a node and the parent of it
+        this.queue = [board.startPosition];
+        this.path = {};
+        this.visited = [board.startPosition];
     }    
 
     get head() {
-        return this.queue[0]; // Least added position
+        return this.queue.at(0);
     }
 
     enqueue(position) {
@@ -16,11 +17,16 @@ export class Bfs {
     }
 
     dequeue() {
-        return this.queue.shift();
+        this.queue.shift();
     }
 
-    visited(position) {
-        return String(position) === String(this.board.startPosition) || this.path.hasOwnProperty(String(position));
+    setVisited(position) {
+        this.visited.push(String(position));
+        this.path[String(position)] = this.head;
+    }
+
+    isVisited(position) {
+        return this.visited.some(visitedPosition => String(visitedPosition) === String(position));
     }
 
     fastestPath() {
@@ -34,19 +40,22 @@ export class Bfs {
         return path.slice(1, -1);
     }
 
+    canMove(position) {
+        return this.board.empty(position) && !this.isVisited(position);
+    }
+
     async run() {
         while(this.queue && this.queue.length) {
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(this.head, direction);
 
-                // If neighbour is empty and not visited
-                if(this.board.empty(neighbour) && !this.visited(neighbour)) {    
+                if(this.canMove(neighbour)) {    
                     if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
-                    this.path[String(neighbour)] = this.head; // Add the position and the parent of the position
+                    this.setVisited(neighbour);
                     this.enqueue(neighbour);
                 }    
             }    
-            this.dequeue(); // Remove head from queue
+            this.dequeue();
             if(!this.head){ return; } // Path couldn't go further
             if(this.board.isEndPosition(this.head)) { return this.fastestPath(); }
             this.board.found(this.head);
