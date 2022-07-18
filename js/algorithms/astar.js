@@ -93,7 +93,7 @@ export class Astar {
     }
 
     isVisited(position) {
-        return this.visited.map(String).includes(String(position))
+        return this.visited.some(visitedPosition => String(visitedPosition) === String(position));
     }
 
     isQueued(position) {
