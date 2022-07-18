@@ -149,11 +149,7 @@ export class Astar {
         this.visited.push(position);
         this.dequeue(position);
         if(!this.board.isStartPosition(position)) { this.getClosestNeighbour(position); } // Select the closest neighbour as parent position
-
-        if(!this.board.isStartPosition(position) && !this.board.isEndPosition(position)) {
-            if(!this.board.element(position).id.includes("weight")) { this.board.found(position); }
-            else{ this.board.weightFound(position); }
-        }
+        if(!this.board.isStartPosition(position) && !this.board.isEndPosition(position)) { this.board.found(position); }
     }
 
     async run() {
@@ -168,10 +164,7 @@ export class Astar {
                     this.addPathInformation(neighbour, position);
                     if(!this.isQueued(neighbour)) { this.enqueue(neighbour); }
                     
-                    if(!this.board.isEndPosition(neighbour)) {
-                        if(this.board.element(neighbour).id.includes("weight")) { await this.board.weightNext(neighbour); }
-                        else { await this.board.next(neighbour); }
-                    }
+                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
                 }
             }
             this.positionFound(position);
