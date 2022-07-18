@@ -83,7 +83,7 @@ export class Astar {
     }
 
     dequeue(position) {
-        this.queue = this.queue.filter(queuedPosition => queuedPosition !== position)
+        this.queue = this.queue.filter(queuedPosition => queuedPosition !== position);
     }
 
     addPathInformation(position, parentPosition) {
@@ -97,7 +97,7 @@ export class Astar {
     }
 
     isQueued(position) {
-        return this.queue.map(String).includes(String(position));
+        return this.queue.some(queuedPosition => String(queuedPosition) === String(position));
     }
 
     get getFastestPath() {
