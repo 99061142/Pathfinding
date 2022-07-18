@@ -83,8 +83,7 @@ export class Astar {
     }
 
     dequeue(position) {
-        const INDEX = this.queue.indexOf(position);
-        this.queue.splice(INDEX, 1);
+        this.queue = this.queue.filter(queuedPosition => queuedPosition !== position)
     }
 
     addPathInformation(position, parentPosition) {
