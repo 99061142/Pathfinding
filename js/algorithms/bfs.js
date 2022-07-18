@@ -4,8 +4,9 @@ export class Bfs {
     constructor(board) {
         this.board = board;
         this.queue = [board.startPosition];
-        this.path = {};
-        this.visited = [board.startPosition];
+        this.path = {
+            [board.startPosition]: null
+        };
     }    
 
     get head() {
@@ -20,13 +21,12 @@ export class Bfs {
         this.queue.shift();
     }
 
-    setVisited(position) {
-        this.visited.push(String(position));
+    setPath(position) {
         this.path[String(position)] = this.head;
     }
 
     isVisited(position) {
-        return this.visited.some(visitedPosition => String(visitedPosition) === String(position));
+        return this.path.hasOwnProperty(String(position));
     }
 
     fastestPath() {
@@ -49,11 +49,10 @@ export class Bfs {
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(this.head, direction);
 
-                if(this.canMove(neighbour)) {    
-                    if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
-                    this.setVisited(neighbour);
-                    this.enqueue(neighbour);
-                }    
+                if(!this.canMove(neighbour)) { continue }  
+                if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
+                this.setPath(neighbour);
+                this.enqueue(neighbour);
             }    
             this.dequeue();
             if(!this.head){ return; } // Path couldn't go further
