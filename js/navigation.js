@@ -1,7 +1,17 @@
 import { Board } from "./board.js";
 
 export class Navigation extends Board {
-    #weightedAlgorithms = ["dijkstra", "astar"];
+    #algorithms = {
+        weighted: {
+            dijkstra: "Dijkstra",
+            astar: "A*" 
+        },
+        unweighted: {
+            bfs: "BFS",
+            dfs: "DFS"
+        }
+    };
+
 
     constructor() {
         super();
@@ -17,50 +27,80 @@ export class Navigation extends Board {
         this.clearAlgorithmPathOnclick();
         this.randomWallsOnclick();
 
-        // Change the text of the run/speed button to its default value
-        this.runButtonText();
-        this.speedOptionsText();
+        this.runButtonText = this.runButton.value; // Default run button text
+        this.speedOptionsText = this.currentSpeedType; // Default speed dropdown text
     }
 
-    runButtonText(algorithm=null) {
-        // If the algorithm is not specified, then it is the first time the function is called
-        if(!algorithm) { 
-            this.runButton.innerHTML += this.runButton.value.toUpperCase(); 
-        }
-        else {
-            // Replace the current algorithm with the new one
-            this.runButton.innerText = this.runButton.innerText.replace(this.runButton.value.toUpperCase(), algorithm.toUpperCase());
+    algorithmType(algorithm) {
+        // Return the type of algorithm (weighted or unweighted)
+        for(let key in this.#algorithms) {
+            if(this.#algorithms[key].hasOwnProperty(algorithm)) { return key; }
         }
     }
 
-    speedOptionsText(speedType=null) {
-        // If the speed type is not specified, then it is the first time the function is called
-        if(!speedType) { 
-            this.speedDropdown.innerText += capitalize(this.currentSpeedType);
+    get currentAlgorithmType() {
+        // return algorithm type
+        for(let key in this.#algorithms) {
+            if(this.#algorithms[key].hasOwnProperty(this.runButtonValue)) { return key; }
         }
-        else {
-            // Replace the current speed type with the new one
-            this.speedDropdown.innerText = this.speedDropdown.innerText.replace(capitalize(this.currentSpeedType), speedType);
-        }
+    }
+
+    get currentAlgorithmIsWeighted() {
+        return this.currentAlgorithmType === "weighted";
+    }
+
+    get currentAlgorithmName() {
+        return this.algorithmName(this.runButtonValue);
+    }
+
+    algorithmName(algorithm) {
+        return this.#algorithms[this.algorithmType(algorithm)][algorithm.toLowerCase()];
+    }
+
+
+    get runButtonText() {
+        this.runButton.innerText;
+    }
+
+    set runButtonText(algorithm) {
+        this.runButton.innerText = this.runButton.innerHTML.replace(this.currentAlgorithmName, " ") + this.algorithmName(algorithm);
+    }
+
+    get runButtonValue() {
+        return this.runButton.value;
+    }
+
+    set runButtonValue(value) {
+        this.runButton.value = value;
     }
 
     algorithmOptionsOnclick() {
         // Attach the onclick event for each algorithm option
         document.getElementById("algorithm-options").querySelectorAll("button").forEach(algorithmButton => {
             algorithmButton.onclick = () => {
-                if(!this.#weightedAlgorithms.includes(algorithmButton.value)) { this.deleteWeightNodes(); }
+                if(this.isRunning) { return; }
+                if(this.currentAlgorithmIsWeighted) { this.deleteWeightNodes(); }
 
-                this.runButtonText(algorithmButton.innerText);
-                this.runButton.value = algorithmButton.innerText.toLowerCase();
+                let algorithm = algorithmButton.innerText.toLowerCase();
+                this.runButtonText = algorithm;
+                this.runButtonValue = algorithm;
             }
         });
+    }
+
+    get speedOptionsText() {
+        return this.speedDropdown.innerText;
+    }
+
+    set speedOptionsText(speed) {
+        this.speedDropdown.innerText = this.speedDropdown.innerText.replace(capitalize(this.currentSpeedType), " ") + capitalize(speed);
     }
 
     speedOptionsOnclick() {
         // Attach the onclick event for each speed option
         document.getElementById("speed-options").querySelectorAll("button").forEach(speedButton => {
             speedButton.onclick = () => {
-                this.speedOptionsText(speedButton.innerText);
+                this.speedOptionsText = speedButton.innerText;
                 this.currentSpeedType = speedButton.innerText.toLowerCase();
             }
         });
