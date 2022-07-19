@@ -1,8 +1,8 @@
 import { Node } from './node.js';
-import { Bfs } from './algorithms/bfs.js';
-import { Dfs } from './algorithms/dfs.js';
-import { Dijkstra } from './algorithms/dijkstra.js';
-import { Astar } from './algorithms/astar.js';
+import { Bfs } from './algorithms/pathfindings/bfs.js';
+import { Dfs } from './algorithms/pathfindings/dfs.js';
+import { Dijkstra } from './algorithms/pathfindings/dijkstra.js';
+import { Astar } from './algorithms/pathfindings/astar.js';
 
 export class Board extends Node {
     #height = document.querySelectorAll('#board > tr').length;
