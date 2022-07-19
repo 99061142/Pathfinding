@@ -49,7 +49,7 @@ export class Bfs {
             for(let direction of this.#directions) {
                 let neighbour = neighbourPosition(this.head, direction);
 
-                if(!this.canMove(neighbour)) { continue }  
+                if(!this.canMove(neighbour)) { continue; }  
                 if(!this.board.isEndPosition(neighbour)) { await this.board.next(neighbour); }
                 this.setPath(neighbour);
                 this.enqueue(neighbour);
