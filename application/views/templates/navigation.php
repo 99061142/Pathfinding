@@ -33,7 +33,7 @@
 
             <!-- Run button -->
             <li class="nav-item">
-                <button class="px-4 bg-green" id="run-button" value="bfs" disabled>Run </button>
+                <button class="px-4 bg-green" id="run-button" value="astar" disabled>Run</button>
             </li>
             <!-- /Run button -->
 
@@ -58,7 +58,7 @@
 
             <!-- Speed options -->
             <li class="nav-item dropdown">
-                <a class="dropdown-toggle" id="speed-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed: </a>
+                <a class="dropdown-toggle" id="speed-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed:</a>
                 <div class="dropdown-menu mt-4" id="speed-options" aria-labelledby="speed-dropdown">
                     <button class="dropdown-item">Slow</button>
                     <button class="dropdown-item">Normal</button>

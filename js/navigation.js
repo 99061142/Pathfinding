@@ -57,13 +57,14 @@ export class Navigation extends Board {
         return this.#algorithms[this.algorithmType(algorithm)][algorithm.toLowerCase()];
     }
 
-
     get runButtonText() {
         this.runButton.innerText;
     }
 
     set runButtonText(algorithm) {
-        this.runButton.innerText = this.runButton.innerHTML.replace(this.currentAlgorithmName, " ") + this.algorithmName(algorithm);
+        let standardText = this.runButton.innerHTML.replace(this.currentAlgorithmName, "");
+        let algorithmName = this.algorithmName(algorithm);
+        this.runButton.innerText = `${standardText} ${algorithmName}`;
     }
 
     get runButtonValue() {
@@ -93,7 +94,9 @@ export class Navigation extends Board {
     }
 
     set speedOptionsText(speed) {
-        this.speedDropdown.innerText = this.speedDropdown.innerText.replace(capitalize(this.currentSpeedType), " ") + capitalize(speed);
+        let standardText = this.speedDropdown.innerText.replace(capitalize(this.currentSpeedType), " ");
+        let speedName = capitalize(speed);
+        this.speedDropdown.innerText = `${standardText} ${speedName}`;
     }
 
     speedOptionsOnclick() {
