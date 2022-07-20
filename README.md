@@ -21,13 +21,13 @@
 * BFS
 * DFS
 
-### Algorithm not working properly
+### Working, but sometimes not correctly
 
 * Dijkstra (If the path has an shorter route, it sometimes doesn't pick that up and goes a longer route. (Ex: go through the weight node (50w) but doesn't go around it for 30w.))
 
 * A* (If the path has an shorter route, it sometimes doesn't pick that up and goes a longer route. (Ex: go through the weight node (50w) but doesn't go around it for 30w.))
 
-## Algorithm not working
+### Not working
 
 * None
 
