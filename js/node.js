@@ -75,7 +75,7 @@ export class Node {
         // set the element to the standard attributes
         element.className = this.standardClasses;
         element.id = "";
-        element.dataset.distance = 10;
+        element.dataset.weight = 10;
     }
 
     wall(element) {  
@@ -101,7 +101,7 @@ export class Node {
             // Change the element to a weight
             element.id = "weight";
             element.className += " fas fa-solid fa-weight-hanging";
-            element.dataset.distance = 50;
+            element.dataset.weight = 50;
         }
     }
 

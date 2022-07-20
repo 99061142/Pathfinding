@@ -36,7 +36,7 @@ export class Astar {
         let straightDistance = Math.abs(rowDistance - colDistance);
         let diagonalDistance = Math.abs(totalDistance - straightDistance) / 2 * 1.4;
         
-        let currentPositionWeight = Number(this.board.element(position).dataset.distance) / 10;
+        let currentPositionWeight = Number(this.board.element(position).dataset.weight) / 10;
         let distance = currentPositionWeight + straightDistance + diagonalDistance;
         return Math.round(distance * 100) / 10;
     }

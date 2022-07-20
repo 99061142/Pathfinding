@@ -62,7 +62,7 @@ export class Dijkstra {
 
     distance(parent, position) {
         // Get the distance from current position to the start position
-        const CHILD_DISTANCE = Number(this.board.element(position).dataset.distance);
+        const CHILD_DISTANCE = Number(this.board.element(position).dataset.weight);
         const PARENT_DISTANCE = this.path[String(parent)].distance;
         const DISTANCE = PARENT_DISTANCE + CHILD_DISTANCE; 
         return DISTANCE;
