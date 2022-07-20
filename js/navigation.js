@@ -80,11 +80,12 @@ export class Navigation extends Board {
         document.getElementById("algorithm-options").querySelectorAll("button").forEach(algorithmButton => {
             algorithmButton.onclick = () => {
                 if(this.isRunning) { return; }
-                if(this.currentAlgorithmIsWeighted) { this.deleteWeightNodes(); }
 
                 let algorithm = algorithmButton.innerText.toLowerCase();
                 this.runButtonText = algorithm;
                 this.runButtonValue = algorithm;
+                
+                if(!this.currentAlgorithmIsWeighted) { this.deleteWeightNodes(); }
             }
         });
     }
