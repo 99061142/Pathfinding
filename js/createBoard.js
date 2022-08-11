@@ -1,18 +1,50 @@
-var board = document.getElementById("board");
-const ROW = 30;
-const COL = 80;
+class CreateBoard {
+    constructor() {
+        this.board = document.getElementById("board");
+        this.standardClassNames = "node border border-dark float-left";
+        this.createBoard();
+    }
 
-function createBoard() {
-    for(let i = 0; i <= ROW; i++) {
+    boardTop() {
+        return this.board.getBoundingClientRect().top;
+    }
+
+    canAddRow() {
+        return this.board.offsetHeight + 34 < window.innerHeight - this.boardTop();
+    }
+
+    addRow() {
         let row = document.createElement("tr");
-        board.appendChild(row);
-        
-        for(let j = 0; j <= COL; j++) {
-            let col = document.createElement("td");
-            col.className = "node border border-dark float-left";
-            col.dataset.weight = 10;
-            row.appendChild(col);
+        this.board.appendChild(row);
+
+        while(this.canAddCol(row))  {
+            this.addCol(row);
         }
     }
+
+    canAddCol(row) {
+        let width = 34;
+
+        for(let col of row.children) {
+            if(col.offsetWidth < window.innerWidth) {
+                width += col.offsetWidth;
+            }
+        }
+        return width < window.innerWidth;
+    }
+
+    addCol(row) {
+        let col = document.createElement("td");
+        col.className = this.standardClassNames;
+        row.appendChild(col);
+    }
+
+    createBoard() {
+        // create a board with rows and columns until the window width and height is reached
+        while(this.canAddRow()) {
+            this.addRow();
+        }
+        
+    }
 }
-createBoard();
+new CreateBoard();
