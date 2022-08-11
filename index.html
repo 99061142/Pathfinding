@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Find the fastest path</title>
+
+        <!-- Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+
+        <!-- Fontawesome -->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+
+        <!-- Custom JS -->
+        <script src="js/index.js"></script>
+        <script src="js/createBoard.js" defer></script>
+        <script type="module" src="js/classes/boardFunctionality.js" defer></script>
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="css/styling.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand">Pathfinding</a>
+
+            <!-- Navigation toggler -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- /Navigation toggler -->
+
+            <div class="collapse navbar-collapse mt-1" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <!-- Pathfinding algorithm options -->
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle" id="algorithms-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Algorithms</a>
+                        <div class="dropdown-menu mt-4" id="algorithm-options" aria-labelledby="algorithms-dropdown">
+                            <button class="dropdown-item">BFS</button>
+                            <button class="dropdown-item">DFS</button>
+                            <button class="dropdown-item">Dijkstra</button>
+                            <button class="dropdown-item">AStar</button>
+                        </div>
+                    </li>
+                    <!-- /Pathfinding algorithm options -->
+
+                    <!-- Board layouts -->
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle" id="board-layouts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Layouts</a>
+                        <div class="dropdown-menu mt-4" aria-labelledby="board-layouts">
+                            <button class="dropdown-item" id="maze" disabled>Maze</button>
+                            <button class="dropdown-item" id="random-walls">Random walls</button>
+                        </div>
+                    </li>
+                    <!-- /Board layouts -->
+
+                    <!-- Run button -->
+                    <li class="nav-item">
+                        <button class="px-4 bg-green" id="run-button" value="astar" disabled>Run</button>
+                    </li>
+                    <!-- /Run button -->
+
+                    <!-- Clear everything -->
+                    <li class="nav-item">
+                        <button class="buttton-as-anchor" id="clear-board">Clear board</button>
+                    </li>
+                    <!-- /Clear everything -->
+
+                    <!-- Clear walls -->
+                    <li class="nav-item">
+                        <button class="buttton-as-anchor" id="clear-walls">Clear walls</button>
+                    </li>
+                    <!-- /Clear walls -->
+
+                    <!-- Clear algorithm path -->
+                    <li class="nav-item">
+                        <button class="buttton-as-anchor" id="clear-path">Clear algorithm path</button>
+                    </li>
+                    <!-- /Clear algorithm path -->
+
+
+                    <!-- Speed options -->
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle" id="speed-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Speed:</a>
+                        <div class="dropdown-menu mt-4" id="speed-options" aria-labelledby="speed-dropdown">
+                            <button class="dropdown-item">Slow</button>
+                            <button class="dropdown-item">Normal</button>
+                            <button class="dropdown-item">Fast</button>
+                            <button class="dropdown-item">Instant</button>
+                        </div>
+                    </li>
+                    <!-- /Speed options -->
+                </ul>
+            </div>
+        </nav>
+        
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <i class="fas fa-arrow-right border border-dark bg-success"></i>
+                        <p class="d-inline-block">Starting point</p>
+                    </div>
+
+                    <div class="col-sm">
+                        <i class="fas fa-home border border-dark bg-danger"></i>
+                        <p class="d-inline-block">End point</p>
+                    </div>
+
+                    <div class="col-sm">    
+                        <div class="border border-dark d-inline-block p-2" id="wall"></div>
+                        <p class="d-inline-block">Wall</p>
+                    </div>
+
+                    <div class="col-sm">    
+                        <i class="fas fa-solid fa-weight-hanging border border-dark" id="weight"></i>
+                        <p class="d-inline-block">Weight wall</p>
+                    </div>
+
+                    <div class="col-sm">    
+                        <div class="border border-dark d-inline-block p-2" id="found"></div>
+                        <p class="d-inline-block">Checked node</p>
+                    </div>
+                    
+                    <div class="col-sm">    
+                        <div class="border border-dark d-inline-block p-2" id="next"></div>
+                        <p class="d-inline-block">Next node</p>
+                    </div>
+
+                    <div class="col-sm">    
+                        <div class="border border-dark d-inline-block p-2" id="fastest"></div>
+                        <p class="d-inline-block">Fastest route</p>
+                    </div>
+                </div>
+            </div>
+
+            <table class="my-2 d-flex justify-content-center">
+                <tbody id="board"></tbody>
+            </table>
+        </main>
+    </body>
+</html>
