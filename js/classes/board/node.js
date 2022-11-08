@@ -1,5 +1,6 @@
 export class Node {
     constructor(row, node, index) {
+        this._runButton = document.getElementById("run");
         this._standardClasses = node.classList;
         this._standardWeight = node.dataset.weight;
         this.styling = null;
@@ -9,6 +10,11 @@ export class Node {
         this._node.addEventListener("click", this.click.bind(this));
         this._node.addEventListener("mouseover", this.hover.bind(this));  
         this.init();  
+    }
+
+    get algorithmRunning() {
+        let running = this._runButton.disabled && document.getElementById("end") != null;
+        return running;
     }
 
     wall() {
@@ -32,6 +38,8 @@ export class Node {
     } 
 
     end() {
+        this._runButton.disabled = false;
+
         this._node.id = "end";
 
         let classList = ["end", "icon"];
@@ -40,6 +48,10 @@ export class Node {
     }
 
     erase() {
+        if(this.styling == "end") {
+            this._runButton.disabled = true;
+        }
+
         this._node.dataset.weight = this._standardWeight;
         this._node.removeAttribute("id");
 
@@ -49,6 +61,11 @@ export class Node {
     }
 
     hover(e) {
+        // If the algorithm is running, return
+        if(this.algorithmRunning) {
+            return;
+        }
+
         let button = e.buttons;
 
         // Left click
@@ -123,6 +140,11 @@ export class Node {
     }
 
     click() {
+        // If the algorithm is running, return
+        if(this.algorithmRunning) {
+            return;
+        }
+
         // If the node is the start or end, erase it
         if(this.styling == "start" || this.styling == "end") {
             this.erase();
