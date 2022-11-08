@@ -10,3 +10,9 @@ let startButton = document.getElementById("start");
 startButton.addEventListener("click", () => {
 
 });
+
+// Event listener for update layout button
+let updateLayout = document.getElementById("updateLayout");
+updateLayout.addEventListener("click", () => {
+    board.updateLayout();
+});
