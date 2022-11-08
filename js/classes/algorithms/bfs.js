@@ -1,8 +1,11 @@
-export class Bfs {
+import { Algorithm } from './algorithm.js';
+
+export class Bfs extends Algorithm {
     constructor(dict) {
-        this._dict = dict;
+        super(dict);
     }
 
     async run() {
+
     }
 }
