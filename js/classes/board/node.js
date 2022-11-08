@@ -45,6 +45,7 @@ export class Node {
 
         let standardClasses = [...this._standardClasses].join(" ");
         this._node.classList = standardClasses;    
+        this._styling = null;
     }
 
     hover(e) {
