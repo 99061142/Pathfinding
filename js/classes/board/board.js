@@ -54,6 +54,7 @@ export class Board {
 
     addRow() {
         let row = this._row.cloneNode(true);
+        row.removeAttribute("id");
         this._board.appendChild(row);
     }
 
