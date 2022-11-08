@@ -11,14 +11,6 @@ export class Board {
         this.init();
     }
 
-    init() {
-        // Remove the node that was already created
-        this._node.remove();
-
-        this.addRows();
-        this.addNodes();
-    }
-
     get dict() {
         let dict = {};
         let rows = this._board.children;
@@ -47,7 +39,7 @@ export class Board {
     }
 
     get rowChange() {
-        let boardTop = this._board.getBoundingClientRect().top * 1.75;
+        let boardTop = this._board.getBoundingClientRect().top * 1.3;
         let maxHeight = this.maxHeight;
         let height = maxHeight - boardTop;
         let rowChange = Math.floor(height / this.nodeHeight) - 1;
@@ -57,11 +49,11 @@ export class Board {
     get columnChange() {
         let maxWidth = this.maxWidth;
         let columnChange = Math.floor(maxWidth / this.nodeWidth) - 1;
-        return columnChange * 0.75;
+        return columnChange * 0.9;
     }
 
-    addNode(row, rowIndex) {
-        let node = new Node(row, this._node);
+    addNode(row, rowIndex, nodeIndex) {
+        let node = new Node(row, this._node, nodeIndex);
         this._nodes[rowIndex].push(node)
     }
 
@@ -74,8 +66,8 @@ export class Board {
             let columnsAmount = columnChange - currentColumns;
 
             this._nodes[rowIndex] = [];
-            for(let i = 0; i < columnsAmount; i++) {
-                this.addNode(row, rowIndex);
+            for(let nodeIndex = 0; nodeIndex < columnsAmount; nodeIndex++) {
+                this.addNode(row, rowIndex, nodeIndex);
             }
         }
     }
@@ -115,5 +107,14 @@ export class Board {
             default:
                 throw new Error("Layout not found");
         }
+    }
+
+    init() {
+        // Remove the node that was already created
+        this._node.remove();
+
+        // Initialize the board
+        this.addRows();
+        this.addNodes();
     }
 }
