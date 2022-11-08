@@ -4,7 +4,7 @@ export class Board {
     constructor(row, node) {
         this._board = document.getElementById("board");
         this._node = node;
-        this._nodes = {};
+        this.nodes = {};
         this._row = row;
         this.nodeHeight = node.offsetHeight;
         this.nodeWidth = node.offsetWidth;
@@ -54,7 +54,7 @@ export class Board {
 
     addNode(row, rowIndex, nodeIndex) {
         let node = new Node(row, this._node, nodeIndex);
-        this._nodes[rowIndex].push(node)
+        this.nodes[rowIndex].push(node)
     }
 
     addNodes() {
@@ -65,7 +65,7 @@ export class Board {
             let currentColumns = row.children.length;
             let columnsAmount = columnChange - currentColumns;
 
-            this._nodes[rowIndex] = [];
+            this.nodes[rowIndex] = [];
             for(let nodeIndex = 0; nodeIndex < columnsAmount; nodeIndex++) {
                 this.addNode(row, rowIndex, nodeIndex);
             }
@@ -85,7 +85,7 @@ export class Board {
     }
 
     randomWalls() {
-        let nodes = this._nodes;
+        let nodes = this.nodes;
 
         for(let row of Object.values(nodes)) {
             for(let node of row) {

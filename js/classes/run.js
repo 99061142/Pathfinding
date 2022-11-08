@@ -14,14 +14,13 @@ export class Run {
             default:
                 throw new Error("Algorithm not recognized");
         }
-
     }
 
-    async run(dict) {
+    async run(dict, nodes) {
         if(this._running) { return; }
 
         // Run the algorithm
-        await new this.algorithm(dict).run().then(() => {
+        await new this.algorithm(dict, nodes).run().then(() => {
 
         });
 

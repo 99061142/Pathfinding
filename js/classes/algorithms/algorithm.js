@@ -1,5 +1,6 @@
 export class Algorithm {
-    constructor(dict) {
-        this._dict = dict;
+    constructor(dict, nodes) {
+        this.dict = dict;
+        this._nodes = nodes;
     }
 }

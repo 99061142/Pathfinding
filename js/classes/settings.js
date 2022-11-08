@@ -13,7 +13,8 @@ let board = new Board(row, node);
 let runButton = document.getElementById("run");
 runButton.addEventListener("click", () => {
     let dict = board.dict;
-    run.run(dict);
+    let nodes = board.nodes;
+    run.run(dict, nodes);
 });
 
 // Event listener for update layout button
