@@ -43,8 +43,8 @@ class CreateBoard {
         // create a board with rows and columns until the window width and height is reached
         while(this.canAddRow()) {
             this.addRow();
+            console.log("Added row");
         }
-        
     }
 }
 new CreateBoard();
