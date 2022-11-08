@@ -41,6 +41,7 @@ export class Node {
 
     erase() {
         this._node.dataset.weight = this._standardWeight;
+        this._node.removeAttribute("id");
 
         let standardClasses = [...this._standardClasses].join(" ");
         this._node.classList = standardClasses;    
@@ -152,6 +153,7 @@ export class Node {
 
     init() {
         this._row.appendChild(this._node);
+        this.erase();
     }
 
     delete() {
