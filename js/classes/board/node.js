@@ -122,13 +122,13 @@ export class Node {
 
     click() {
         // If the node is the start or end, erase it
-        if(this._node === this.start || this._node === this.end) {
+        if(this._styling == "start" || this._styling == "end") {
             this.erase();
             return
         }
 
         // If the board has no start, set the node as start
-        if(!this.start) {
+        if(!this.start) {   
             this.erase();
             this.start = this._node;
             return
