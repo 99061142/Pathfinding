@@ -5,9 +5,9 @@ let row = document.getElementById("exampleRow");
 let node = document.getElementById("exampleNode");
 let board = new Board(row, node);
 
-// Event listener for start button
-let startButton = document.getElementById("start");
-startButton.addEventListener("click", () => {
+// Event listener for run button
+let runButton = document.getElementById("run");
+runButton.addEventListener("click", () => {
 
 });
 
