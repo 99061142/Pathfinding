@@ -4,7 +4,7 @@
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Find the fastest path</title>
+        <title>Pathfinding</title>
 
         <!-- Jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -24,8 +24,8 @@
     </head>
     <body> 
         <div>
-            <label for="algorithms">Algorithm</label>
-            <select id="algorithms" style="cursor: pointer;">
+            <label for="algorithm">Algorithm</label>
+            <select id="algorithm" style="cursor: pointer;">
                 <option value="BFS">BFS</option>
                 <option value="DFS">DFS</option>
                 <option value="Dijkstra">Dijkstra</option>
@@ -67,7 +67,7 @@
                             End point
                         </p>
                     </div>
-
+                    
                     <div class="col-sm">    
                         <p>
                             <i class="border border-dark icon weight d-inline-flex"></i> 
@@ -84,7 +84,7 @@
                         <div class="border border-dark d-inline-block p-2 visited"></div>
                         <p class="d-inline-block">Visited</p>
                     </div>
-                    
+
                     <div class="col-sm">    
                         <div class="border border-dark d-inline-block p-2 next"></div>
                         <p class="d-inline-block">Next</p>
@@ -96,8 +96,8 @@
                     </div>
                 </div>
             </div>
-            
-            <table id="table" class="my-2 d-flex justify-content-center">
+
+            <table class="my-2 d-flex justify-content-center">
                 <tbody id="board">
                     <tr id="exampleRow">
                         <td id="exampleNode" data-weight="1" class="border border-dark float-left"></td>
