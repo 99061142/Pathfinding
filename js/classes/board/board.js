@@ -91,4 +91,29 @@ export class Board {
             this.addRow();
         }
     }
+
+    randomWalls() {
+        let nodes = this._nodes;
+
+        for(let row of Object.values(nodes)) {
+            for(let node of row) {
+                let random = Math.random();
+                if(random < 0.33) {
+                    node.addStyling('wall');
+                }
+            }
+        }
+    }
+
+    updateLayout() {
+        let layout = document.getElementById("layout").value;
+
+        switch(layout) {
+            case "random-walls":
+                this.randomWalls();
+                break;
+            default:
+                throw new Error("Layout not found");
+        }
+    }
 }
