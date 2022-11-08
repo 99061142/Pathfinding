@@ -1,91 +1,70 @@
-/* Navigation styling */
-
-
-/* Every element inside the navigation */
-nav *{
-    color: white !important;
+/* Fontawesome icons */
+.icon::before {
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Every element inside the navigation bar */
-.nav-item{
-    margin: 0px 5px;
+.start::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f061";
 }
 
-/* Color of the navigation */
-nav,
-.dropdown-menu{
-    background-color: #009dc4;
+.end::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f015";
 }
 
-/* Hover color for the elements inside the navigation */
-.bg-green,
-.nav-item:not(.nav-button):hover,
-.nav-item.show,
-.dropdown-item:hover{
-    background-color: #28a745;
+.weight::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f5cd";
 }
+/* /Fontawesome icons */
 
-
-/* Button as anchor */
-.buttton-as-anchor{
-    background-color: transparent;
-    border: none;
-}
-
-/* Outline of button inside the navigation */
-nav button:focus{
-    outline: none;
-}
-
-/* Mouse styling for the elements inside the navigation */
-.nav-item,
-.nav-item > button:not(#run-button:disabled),
-.dropdown-item{
-    cursor: pointer;
-}
-
-#run-button:disabled{
-    background-color: #dc3545;
-}
-
-/* /Navigation styling */
-
-
-/* Node styling */
-
-td:not(#start):not(#end):not(#weight):not(#weightNext):not(#weightFound):not(#weightFastest){
+/* Nodes */
+td:not(#start):not(#end) {
     width: 15px;
     height: 15px;
     padding: 7.5px;
-}  
-
-#start,
-#end,
-#weight,
-#weightNext,
-#weightFound,
-#weightFastest{
-    width: 17px;
-    height: 17px;
 }
 
-#wall{
+.start,
+.end,
+.weight {
+    width: 17px;
+    height: 17px;
+
+    /* center the icon */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start {
+    background-color: green;
+}
+
+.end {
+    background-color: red;
+}
+
+.wall{
     background-color: black;
 }
 
-#found, 
-#weightFound{
-    background-color: #007bff;
+.visited {
+    background-color: lightskyblue;
 }
 
-#next, 
-#weightNext{
-    background-color: slateblue;
+.next {
+    background-color: lightpink;
 }
 
-#fastest, 
-#weightFastest{
-    background-color: #ffc107;
+.fastest {
+    background-color: yellow;
 }
-
-/* /Node styling */
+/* /Nodes */
