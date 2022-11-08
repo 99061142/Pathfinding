@@ -2,35 +2,19 @@
 
 ## How to use it
 
-1. Add an start / end position to the board (click on an empty node on the board).
-3. Choose an algorithm out of the algorithms options inside the navigation bar (click "Algorithms" to see all the options).
-5. Click on the run button to see how the algorithm find the fastest path from the start to end position (the board MUST have the start and end position).
+1. Add an start / end position to the board (left click an element on the board).
+2. Choose an algorithm.
+3. Choose the sorting speed for the algorithm.
+4. Run the algorithm
 
 
 ## What can you do
-* Make walls on the board ((hover) left click).
-* Make weights on the board ((hover) middle click).
-* Clear node on the board (left click).
-* Create random walls on the board (click "layouts" on the board and then "random walls" (33% chance for a wall on each node)).
-
+* Add walls
+* Add weights
+* Create random boards
 
 ## Algorithms
-
-### Working
-
-* BFS
-* DFS
-
-### Working, but sometimes not correctly
-
-* Dijkstra (If the path has an shorter route, it sometimes doesn't pick that up and goes a longer route. (Ex: go through the weight node (50w) but doesn't go around it for 30w.))
-
-* A* (If the path has an shorter route, it sometimes doesn't pick that up and goes a longer route. (Ex: go through the weight node (50w) but doesn't go around it for 30w.))
-
-### Not working
-
-* None
+---
 
 ## Note
-
-* This website is in the starting phase, it does NOT work properly. Some things are not made and sometimes the website is not responding correctly.
+* This website is in the starting phase. It gets updated frequently.
