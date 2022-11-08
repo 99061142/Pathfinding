@@ -1,10 +1,10 @@
-export class Node {
+export class Node {styling
     constructor(row, node) {
         this._standardClasses = node.classList;
         this._standardWeight = node.dataset.weight;
         this._row = row;
         this._node = node.cloneNode(true);
-        this._styling = null;
+        this.styling = null;
         this._node.addEventListener("click", this.click.bind(this));
         this._node.addEventListener("mouseover", this.hover.bind(this));  
         this.init();  
@@ -16,27 +16,27 @@ export class Node {
     }
 
     wall() {
-        this._node.dataset.weight = Infinity;
+        this._node.dataset.weight = 0;
         this._node.classList.add("wall");
-        this._styling = "wall";
+        this.styling = "wall";
     }
 
     weight(weight) {
         this._node.dataset.weight = weight;
         this._node.classList.add("weight");
-        this._styling = "weight";
+        this.styling = "weight";
     }
 
     set start(element) {
         let classList = ["start", "icon"];
         element.classList.add(...classList);
-        this._styling = "start";
+        this.styling = "start";
     } 
 
     set end(element) {
         let classList = ["end", "icon"];
         element.classList.add(...classList);
-        this._styling = "end";
+        this.styling = "end";
     }
 
     erase() {
@@ -45,7 +45,7 @@ export class Node {
 
         let standardClasses = [...this._standardClasses].join(" ");
         this._node.classList = standardClasses;    
-        this._styling = null;
+        this.styling = null;
     }
 
     hover(e) {
@@ -59,27 +59,27 @@ export class Node {
 
     overruleStyling(pencil) {
         // If node styling and pencil are the same, return false
-        if(pencil == this._styling) {
+        if(pencil == this.styling) {
             return false;
         }
 
         // If node is the start or end, return false
-        if(this._styling == "start" || this._styling == "end") {
+        if(this.styling == "start" || this.styling == "end") {
             return false;
         }
 
         // If node has no styling and pencil is erase, return true
-        if(pencil == "erase" && this._styling != null) {
+        if(pencil == "erase" && this.styling != null) {
             return true;
         }
 
         // If node has no styling, return true
-        if(this._styling == null) {
+        if(this.styling == null) {
             return true
         }
 
         // If node styling is wall and pencil is weight, return true
-        if(this._styling == "wall" && pencil.includes("weight")) {
+        if(this.styling == "wall" && pencil.includes("weight")) {
             return true;
         }
 
@@ -97,8 +97,8 @@ export class Node {
     }
 
 
-    addStyling() {
-        let pencil = document.getElementById("pencil").value.toLowerCase();
+    addStyling(styling=null) {
+        let pencil = styling || document.getElementById("pencil").value.toLowerCase();
 
         // If node styling can't be overruled, return
         if(!this.overruleStyling(pencil)) {
@@ -123,7 +123,7 @@ export class Node {
 
     click() {
         // If the node is the start or end, erase it
-        if(this._styling == "start" || this._styling == "end") {
+        if(this.styling == "start" || this.styling == "end") {
             this.erase();
             return
         }
@@ -143,7 +143,7 @@ export class Node {
         }
 
         // If the node has styling, erase it
-        if(this._styling != null) {
+        if(this.styling != null) {
             this.erase();
             return
         }
