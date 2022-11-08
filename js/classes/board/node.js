@@ -1,18 +1,14 @@
-export class Node {styling
-    constructor(row, node) {
+export class Node {
+    constructor(row, node, index) {
         this._standardClasses = node.classList;
         this._standardWeight = node.dataset.weight;
+        this.styling = null;
         this._row = row;
         this._node = node.cloneNode(true);
-        this.styling = null;
+        this._index = index;
         this._node.addEventListener("click", this.click.bind(this));
         this._node.addEventListener("mouseover", this.hover.bind(this));  
         this.init();  
-    }
-
-    get index() {
-        let index = this._node.cellIndex;
-        return index;
     }
 
     wall() {
@@ -27,15 +23,19 @@ export class Node {styling
         this.styling = "weight";
     }
 
-    set start(element) {
+    start() {
+        this._node.id = "start";
+
         let classList = ["start", "icon"];
-        element.classList.add(...classList);
+        this._node.classList.add(...classList);
         this.styling = "start";
     } 
 
-    set end(element) {
+    end() {
+        this._node.id = "end";
+
         let classList = ["end", "icon"];
-        element.classList.add(...classList);
+        this._node.classList.add(...classList);
         this.styling = "end";
     }
 
@@ -44,7 +44,7 @@ export class Node {styling
         this._node.removeAttribute("id");
 
         let standardClasses = [...this._standardClasses].join(" ");
-        this._node.classList = standardClasses;    
+        this._node.classList = standardClasses;  
         this.styling = null;
     }
 
@@ -98,10 +98,11 @@ export class Node {styling
 
 
     addStyling(styling=null) {
-        let pencil = styling || document.getElementById("pencil").value.toLowerCase();
+        let pencil = document.getElementById("pencil").value;
+        styling = styling || pencil
 
         // If node styling can't be overruled, return
-        if(!this.overruleStyling(pencil)) {
+        if(!this.overruleStyling(styling)) {
             return
         }
 
@@ -109,14 +110,14 @@ export class Node {styling
         this.erase();
 
         // Add pencil styling
-        if(pencil == "wall") {
+        if(styling == "wall") {
             this.wall();
         }
-        else if(pencil.includes("weight")) {
-            let weight = pencil.split("-")[1];
+        else if(styling.includes("weight")) {
+            let weight = styling.split("-")[1];
             this.weight(weight);
         }
-        else if(pencil != "erase") {
+        else if(styling != "erase") {
             throw new Error("Pencil value not recognized");
         }
     }
@@ -129,16 +130,16 @@ export class Node {styling
         }
 
         // If the board has no start, set the node as start
-        if(!this.start) {   
+        if(!document.getElementById("start")) {   
             this.erase();
-            this.start = this._node;
+            this.start();
             return
         }
 
         // If the board has no end, set the node as end
-        if(!this.end) {
+        if(!document.getElementById("end")) {
             this.erase();
-            this.end = this._node;
+            this.end();
             return
         }
 
@@ -152,26 +153,12 @@ export class Node {styling
         this.addStyling();
     }
 
-    init() {
-        this._row.appendChild(this._node);
-        this.erase();
-    }
-
     delete() {
         this._row.removeChild(this._node);
     }
 
-    get start() {   
-        // Start element on the board
-        let board = document.getElementById("board");
-        let start = board.querySelector(".start");
-        return start;
-    }
-
-    get end() {
-        // End element on the board
-        let board = document.getElementById("board");
-        let end = board.querySelector(".end");
-        return end
+    init() {
+        this._row.appendChild(this._node);
+        this.erase();
     }
 }
