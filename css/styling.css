@@ -68,3 +68,13 @@ td:not(#start):not(#end) {
     background-color: yellow;
 }
 /* /Nodes */
+
+
+/* Settings */
+#run[disabled],
+#updateLayout[disabled] {
+    color: red;
+}
+
+
+/* /Settings */
