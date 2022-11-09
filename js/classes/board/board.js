@@ -87,11 +87,32 @@ export class Board {
     randomWalls() {
         let nodes = this.nodes;
 
+        // For every node, pick a random %. If the % is lower than 0.33, add the wall styling
         for(let row of Object.values(nodes)) {
             for(let node of row) {
                 let random = Math.random();
-                if(random < 0.33) {
+                if(random < 0.25) {
                     node.addStyling('wall');
+                }
+            }
+        }
+    }
+
+    randomWeights() {
+        // Get pencil weight options
+        let pencil = document.getElementById("pencil");
+        let pencilWeights = Array.from(pencil.options).filter(option => option.value.startsWith("weight"));
+
+        // For every node, pick a random weight and random %. If the % is lower than 0.33, add the weight styling        
+        for(let row of Object.values(this.nodes)) {
+            for(let node of row) {
+                // Weight styling
+                let stylingIndex = Math.floor(Math.random() * pencilWeights.length);
+                let styling = pencilWeights[stylingIndex].value;
+
+                let random = Math.random();
+                if(random < 0.25) {
+                    node.addStyling(styling);
                 }
             }
         }
@@ -103,6 +124,9 @@ export class Board {
         switch(layout) {
             case "random-walls":
                 this.randomWalls();
+                break;
+            case "random-weights":
+                this.randomWeights();
                 break;
             default:
                 throw new Error("Layout not found");
