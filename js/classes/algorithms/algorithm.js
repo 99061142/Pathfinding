@@ -15,6 +15,11 @@ export class Algorithm {
         return dict;
     }
 
+    node(row, column) {
+        let node = this._nodes[row][column];
+        return node;
+    }
+
     sleep() {
         let speedSlider = document.getElementById("speedSlider");
         let max_speed = speedSlider.max
