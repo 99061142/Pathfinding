@@ -11,23 +11,6 @@ export class Board {
         this.init();
     }
 
-    get dict() {
-        let dict = {};
-        let rows = this._board.children;
-
-        for(let [i, row] of Object.entries(rows)) {
-            dict[i] = [];
-
-            let nodes = row.children;
-            for(let node of nodes) {
-                let weight = node.dataset.weight;
-                weight = parseInt(weight);
-                dict[i].push(weight);
-            }
-        }
-        return dict;
-    }
-
     get maxWidth() {
         let width = window.innerWidth;
         return width;

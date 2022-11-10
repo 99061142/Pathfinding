@@ -1,8 +1,8 @@
 import { Algorithm } from './algorithm.js';
 
 export class Bfs extends Algorithm {
-    constructor(dict, nodes) {
-        super(dict, nodes);
+    constructor(nodes) {
+        super(nodes);
     }
 
     async run() {

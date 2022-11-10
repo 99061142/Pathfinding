@@ -19,7 +19,7 @@ export class Run {
         }
     }
 
-    async run(dict, nodes) {
+    async run(nodes) {
         let start = document.getElementById("start");
         let end = document.getElementById("end");
 
@@ -31,7 +31,7 @@ export class Run {
         this._switchSettingsState(true);
 
         // Run the algorithm
-        await new this.algorithm(dict, nodes).run().then(() => {
+        await new this.algorithm(nodes).run().then(() => {
             this._running = false;
             this._switchSettingsState(false);
 
