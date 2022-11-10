@@ -174,6 +174,10 @@ export class Node {
         // If the node has no styling, add pencil styling
         this.addStyling();
     }
+    
+    isStart() {
+        return this.styling == "start";
+    }
 
     delete() {
         this._row.removeChild(this._node);
