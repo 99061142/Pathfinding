@@ -179,6 +179,10 @@ export class Node {
         return this.styling == "start";
     }
 
+    isEnd() {
+        return this.styling == "end";
+    }
+
     delete() {
         this._row.removeChild(this._node);
     }
