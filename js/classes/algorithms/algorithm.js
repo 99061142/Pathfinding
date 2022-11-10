@@ -14,4 +14,12 @@ export class Algorithm {
         }
         return dict;
     }
+
+    sleep() {
+        let speedSlider = document.getElementById("speedSlider");
+        let max_speed = speedSlider.max
+        let current = speedSlider.value
+        let ms = max_speed - current;
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 }
