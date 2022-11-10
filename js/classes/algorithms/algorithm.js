@@ -15,6 +15,11 @@ export class Algorithm {
         return dict;
     }
 
+    isStart(row, column) {
+        let node = this._nodes[row][column];
+        return node.isStart();
+    }
+
     node(row, column) {
         let node = this._nodes[row][column];
         return node;
