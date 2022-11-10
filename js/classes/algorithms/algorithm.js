@@ -20,6 +20,11 @@ export class Algorithm {
         return node.isStart();
     }
 
+    isEnd(row, column) {
+        let node = this._nodes[row][column];
+        return node.isEnd();
+    }
+
     node(row, column) {
         let node = this._nodes[row][column];
         return node;
