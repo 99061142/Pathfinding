@@ -1,9 +1,10 @@
 export class Algorithm {
     constructor(nodes) {
         this._nodes = nodes;
+        this._dict = this.createDict();
     }
 
-    get dict() {
+    createDict() {
         let dict = {};
         for(let [rowIndex, row] of Object.entries(this._nodes)) {
             dict[rowIndex] = [];
@@ -26,6 +27,19 @@ export class Algorithm {
                 }
             }
         }
+    }
+
+    isMovable(position) {
+        let [row, col] = position;
+    
+        if(row < 0 || col < 0 || row >= this._nodes.length || col >= this._nodes[0].length) { 
+            return false; 
+        }
+
+        if(this._dict[row][col] == 0) {
+            return false;
+        }
+        return true;
     }
 
     isStart(row, column) {
