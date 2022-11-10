@@ -15,6 +15,19 @@ export class Algorithm {
         return dict;
     }
 
+    get startPosition() {
+        for(let [rowIndex, row] of Object.entries(this._nodes)) {
+            for(let [colIndex, node] of Object.entries(row)) {
+                if(node.isStart()) {
+                    rowIndex = parseInt(rowIndex);
+                    colIndex = parseInt(colIndex);
+
+                    return [rowIndex, colIndex];
+                }
+            }
+        }
+    }
+
     isStart(row, column) {
         let node = this._nodes[row][column];
         return node.isStart();
