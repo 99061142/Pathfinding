@@ -41,6 +41,16 @@ export class Algorithm {
         }
         return true;
     }
+    
+    position(pos1, pos2) {
+        let [row1, col1] = pos1;
+        let [row2, col2] = pos2;
+
+        let row = row1 + row2;
+        let col = col1 + col2;
+        let position = [row, col];
+        return position;
+    }
 
     isStart(row, column) {
         let node = this._nodes[row][column];
