@@ -44,6 +44,7 @@ export class Bfs extends Algorithm {
                 // add the position to the path
                 this._path[position] = queuedPosition;
             }
+            await this.node(queuedPosition).visited();
 
             // If the end position is found, return the path
             let nextQueuedPosition = queue[0];
@@ -51,7 +52,7 @@ export class Bfs extends Algorithm {
                 await this.showRoute(this.route);
                 return
             }
-            await this.node(queuedPosition).visited();
+            
         }
     }
 }
