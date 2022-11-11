@@ -60,7 +60,7 @@ td:not(#start):not(#end) {
     background-color: lightskyblue;
 }
 
-.next:not(#end) {
+.next {
     background-color: lightpink;
 }
 
