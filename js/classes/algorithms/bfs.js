@@ -39,18 +39,19 @@ export class Bfs extends Algorithm {
 
                 // Push the position to the queueS
                 queue.push(position);
-                await this.next(position);
+                this.node(position).next();
 
                 // add the position to the path
                 this._path[position] = queuedPosition;
             }
 
             // If the end position is found, return the path
-            if(queue.length && this.isEnd(queue.at(0))) { 
+            let nextQueuedPosition = queue[0];
+            if(queue.length && this.node(nextQueuedPosition).isEnd()) {
                 await this.showRoute(this.route);
                 return
             }
-            await this.visited(queuedPosition);
+            await this.node(queuedPosition).visited();
         }
     }
 }
