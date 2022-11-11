@@ -72,7 +72,8 @@ td:not(#start):not(#end) {
 
 /* Settings */
 #run[disabled],
-#updateLayout[disabled] {
+#updateLayout[disabled],
+#clearBoard[disabled] {
     color: red;
 }
 /* /Settings */
