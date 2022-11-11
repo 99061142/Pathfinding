@@ -15,6 +15,7 @@
 
 ## Algorithms
 * BFS
+* DFS
 
 ## Note
 * This website is in the starting phase. It gets updated frequently.
