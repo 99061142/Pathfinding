@@ -5,6 +5,21 @@ export class Dfs extends Algorithm {
         super(nodes);
         this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
         this._start = this.startPosition;
+        this._path = {
+            [this._start]: null
+        }
+    }
+
+    get route() {
+        let parent = this.endPosition;
+        let path = [];
+
+        while(parent) {
+            path.push(parent);
+            parent = this._path[parent];
+        }
+        path = path.slice(1, -1);
+        return path;
     }
 
     async run() {
@@ -23,12 +38,16 @@ export class Dfs extends Algorithm {
                 // Push the position to the queue
                 queue.push(position);
                 this.node(position).next();
+
+                // add the position to the path
+                this._path[position] = queuedPosition;
             }
             await this.node(queuedPosition).visited();
 
             // If the end position is found, return the path
             let nextQueuedPosition = queue[queue.length - 1];
             if(queue.length && this.node(nextQueuedPosition).isEnd()) {
+                await this.showRoute(this.route);
                 return
             }
         }
