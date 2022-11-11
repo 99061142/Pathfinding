@@ -104,10 +104,10 @@ export class Board {
     clearAlgorithm() {
         let algorithmStyling = ["next", "fastest", "visited"];
 
-        // Clear every node on the board
+        // Clear every node on the board that has an algorithm styling
         for(let row of Object.values(this.nodes)) {
             for(let node of row) {
-                if(!algorithmStyling.includes(node.styling) || node.isStart() || node.isEnd()) { continue; }
+                if(!algorithmStyling.includes(node.styling)) { continue; }                
                 node.erase();
             }
         }
