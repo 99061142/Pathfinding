@@ -140,6 +140,11 @@ export class Node {
             currentWeight = this.currentWeight;
             return pencilWeight > currentWeight
         }
+
+        let algorithmStyling = ["visited", "next", "fastest"];
+        if(algorithmStyling.includes(this.styling)) {
+            return true;
+        }
         return false;
     }
 
