@@ -54,9 +54,11 @@ export class Node {
         this.styling = "end";
     }
 
-    visited() {
+    async visited() {
         this._node.classList.replace("next", "visited");
         this.styling = "visited";
+
+        await this.sleep();
     }
 
     next() {
@@ -65,9 +67,11 @@ export class Node {
         this.styling = "next";
     }
 
-    fastest() {
+    async fastest() {
         this._node.classList.replace("visited", "fastest");
         this.styling = "fastest";
+
+        await this.sleep();
     }
 
     erase() {
@@ -212,5 +216,15 @@ export class Node {
     init() {
         this._row.appendChild(this._node);
         this.erase();
+    }
+
+    sleep() {
+        let speedSlider = document.getElementById("speedSlider");
+        let max_speed = speedSlider.max
+        let current = speedSlider.value
+        let ms = max_speed - current;
+
+        if(ms == 0) { return }
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
