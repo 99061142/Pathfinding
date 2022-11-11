@@ -5,6 +5,21 @@ export class Bfs extends Algorithm {
         super(nodes);
         this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
         this._start = this.startPosition;
+        this._path = {
+            [this._start]: null
+        }
+    }
+
+    get route() {
+        let parent = this.endPosition;
+        let path = [];
+
+        while(parent) {
+            path.push(parent);
+            parent = this._path[parent];
+        }
+        path = path.slice(1, -1);
+        return path;
     }
 
     async run() {
@@ -25,10 +40,14 @@ export class Bfs extends Algorithm {
                 // Push the position to the queueS
                 queue.push(position);
                 await this.next(position);
+
+                // add the position to the path
+                this._path[position] = queuedPosition;
             }
 
             // If the end position is found, return the path
             if(queue.length && this.isEnd(queue.at(0))) { 
+                await this.showRoute(this.route);
                 return
             }
             await this.visited(queuedPosition);
