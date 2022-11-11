@@ -60,7 +60,7 @@ td:not(#start):not(#end) {
     background-color: lightskyblue;
 }
 
-.next {
+.next:not(#end) {
     background-color: lightpink;
 }
 
@@ -75,6 +75,4 @@ td:not(#start):not(#end) {
 #updateLayout[disabled] {
     color: red;
 }
-
-
 /* /Settings */
