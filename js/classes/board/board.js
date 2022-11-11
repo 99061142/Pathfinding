@@ -101,6 +101,18 @@ export class Board {
         }
     }
 
+    clearAlgorithm() {
+        let algorithmStyling = ["next", "fastest", "visited"];
+
+        // Clear every node on the board
+        for(let row of Object.values(this.nodes)) {
+            for(let node of row) {
+                if(!algorithmStyling.includes(node.styling) || node.isStart() || node.isEnd()) { continue; }
+                node.erase();
+            }
+        }
+    }
+
     updateLayout() {
         let layout = document.getElementById("layout").value;
 
