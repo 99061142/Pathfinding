@@ -58,12 +58,14 @@ export class Node {
         this._node.classList.replace("next", "visited");
     }
 
-
     next() {
         this._node.dataset.weight = 0;
         this._node.classList.add("next");
     }
 
+    fastest() {
+        this._node.classList.replace("visited", "fastest");
+    }
 
     erase() {
         if(this.styling == "end") {
