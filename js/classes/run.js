@@ -1,5 +1,6 @@
 import { Bfs } from './algorithms/bfs.js';
 import { Dfs } from './algorithms/dfs.js';
+import { Dijkstra } from './algorithms/dijkstra.js';
 
 export class Run {
     constructor(switchSettingsState) {
@@ -15,6 +16,8 @@ export class Run {
                 return Bfs;
             case "dfs":
                 return Dfs;
+            case "dijkstra":
+                return Dijkstra;
             default:
                 this._running = false;
                 this._switchSettingsState(false);
