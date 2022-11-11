@@ -47,54 +47,16 @@ export class Algorithm {
         return position;
     }
 
-    isStart(row, col) {
-        let node = this._nodes[row][col];
-        return node.isStart();
-    }
-
-    isEnd(position) {
+    node(position) {
         let [row, col] = position;
-        let node = this.node(row, col)
-        return node.isEnd();
-    }
-
-    node(row, col) {
         let node = this._nodes[row][col];
         return node;
     }
 
-    sleep() {
-        let speedSlider = document.getElementById("speedSlider");
-        let max_speed = speedSlider.max
-        let current = speedSlider.value
-        let ms = max_speed - current;
-
-        if(ms == 0) { return }
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async visited(position) {
-        await this.sleep();
-
-        let [row, col] = position;
-        let node = this.node(row, col);
-        node.visited();
-    }
-
-    async next(position) {
-        await this.sleep();
-
-        let [row, col] = position;
-        let node = this.node(row, col);
-        node.next();
-    }
-
     async showRoute(route) {
         for(let position of route) {
-            let [row, col] = position;
-            let node = this.node(row, col);
-            node.fastest(position);
-            await this.sleep();
+            let node = this.node(position);
+            await node.fastest(position);
         }
     }
 }
