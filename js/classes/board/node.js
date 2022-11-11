@@ -56,15 +56,18 @@ export class Node {
 
     visited() {
         this._node.classList.replace("next", "visited");
+        this.styling = "visited";
     }
 
     next() {
         this._node.dataset.weight = 0;
         this._node.classList.add("next");
+        this.styling = "next";
     }
 
     fastest() {
         this._node.classList.replace("visited", "fastest");
+        this.styling = "fastest";
     }
 
     erase() {
@@ -195,11 +198,11 @@ export class Node {
     }
     
     isStart() {
-        return this.styling == "start";
+        return this._node.id == "start";
     }
 
     isEnd() {
-        return this.styling == "end";
+        return this._node.id == "end";
     }
 
     delete() {
