@@ -113,6 +113,15 @@ export class Board {
         }
     }
 
+    clear() {
+        // Clear every node
+        for(let row of Object.values(this.nodes)) {
+            for(let node of row) {              
+                node.erase();
+            }
+        }
+    }
+
     updateLayout() {
         let layout = document.getElementById("layout").value;
 
