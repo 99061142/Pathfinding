@@ -5,6 +5,7 @@ import { Run } from "./run.js";
 function switchSettingsState(state) {
     runButton.disabled = state;
     updateLayoutButton.disabled = state;
+    clearBoardButton.disabled = state;
 }   
 
 // Initialize run class
@@ -28,4 +29,10 @@ runButton.addEventListener("click", () => {
 let updateLayoutButton = document.getElementById("updateLayout");
 updateLayoutButton.addEventListener("click", () => {
     board.updateLayout();
+});
+
+// Event listener for clear board button
+let clearBoardButton = document.getElementById("clearBoard");
+clearBoardButton.addEventListener("click", () => {
+    board.clear();
 });
