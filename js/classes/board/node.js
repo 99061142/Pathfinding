@@ -54,6 +54,11 @@ export class Node {
         this.styling = "end";
     }
 
+    visited() {
+        this._node.classList.replace("next", "visited");
+    }
+
+
     next() {
         this._node.dataset.weight = 0;
         this._node.classList.add("next");
