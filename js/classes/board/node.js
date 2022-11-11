@@ -54,6 +54,12 @@ export class Node {
         this.styling = "end";
     }
 
+    next() {
+        this._node.dataset.weight = 0;
+        this._node.classList.add("next");
+    }
+
+
     erase() {
         if(this.styling == "end") {
             this._runButton.disabled = true;
