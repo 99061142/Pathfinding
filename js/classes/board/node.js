@@ -36,6 +36,7 @@ export class Node {
     }
 
     start() {
+        this._node.dataset.weight = 0;
         this._node.id = "start";
 
         let classList = ["start", "icon"];
