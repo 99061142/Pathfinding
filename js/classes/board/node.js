@@ -137,8 +137,7 @@ export class Node {
             
             // Return if pencil weight is higher than current weight
             pencilWeight = parseInt(pencilWeight);
-            currentWeight = this.currentWeight;
-            return pencilWeight > currentWeight
+            return pencilWeight > this.currentWeight
         }
 
         let algorithmStyling = ["visited", "next", "fastest"];
