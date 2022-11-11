@@ -12,6 +12,12 @@ export class Node {
         this.init();  
     }
 
+    get currentWeight() {
+        let weight = this._node.dataset.weight;
+        weight = parseInt(weight);
+        return weight;
+    }
+
     get algorithmRunning() {
         let running = this._runButton.disabled && document.getElementById("end") != null;
         return running;
@@ -103,11 +109,10 @@ export class Node {
         // If node styling is weight and pencil is weight, compare weights
         if(pencil.includes("weight")) {
             let pencilWeight = pencil.split("-")[1];
-            let currentWeight = this._node.dataset.weight;
             
             // Return if pencil weight is higher than current weight
             pencilWeight = parseInt(pencilWeight);
-            currentWeight = parseInt(currentWeight);
+            currentWeight = this.currentWeight;
             return pencilWeight > currentWeight
         }
         return false;
