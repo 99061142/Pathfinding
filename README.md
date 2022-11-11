@@ -16,6 +16,7 @@
 ## Algorithms
 * BFS
 * DFS
+* Dijkstra
 
 ## Note
 * This website is in the starting phase. It gets updated frequently.
