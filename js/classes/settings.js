@@ -18,6 +18,8 @@ let board = new Board(row, node);
 // Event listener for run button
 let runButton = document.getElementById("run");
 runButton.addEventListener("click", () => {
+    board.clearAlgorithm();
+
     let nodes = board.nodes;
     run.run(nodes);
 });
