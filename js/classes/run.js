@@ -1,4 +1,5 @@
 import { Bfs } from './algorithms/bfs.js';
+import { Dfs } from './algorithms/dfs.js';
 
 export class Run {
     constructor(switchSettingsState) {
@@ -12,6 +13,8 @@ export class Run {
         switch(algorithm) {
             case "bfs":
                 return Bfs;
+            case "dfs":
+                return Dfs;
             default:
                 this._running = false;
                 this._switchSettingsState(false);
