@@ -88,4 +88,13 @@ export class Algorithm {
         let node = this.node(row, col);
         node.next();
     }
+
+    async showRoute(route) {
+        for(let position of route) {
+            let [row, col] = position;
+            let node = this.node(row, col);
+            node.fastest(position);
+            await this.sleep();
+        }
+    }
 }
