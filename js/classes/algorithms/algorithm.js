@@ -1,47 +1,42 @@
 export class Algorithm {
     constructor(nodes) {
         this._nodes = nodes;
-        this._dict = this.createDict();
-    }
-
-    createDict() {
-        let dict = {};
-        for(let [rowIndex, row] of Object.entries(this._nodes)) {
-            dict[rowIndex] = [];
-            for(let node of row) {
-                let weight = node.weight;
-                dict[rowIndex].push(weight);
-            }
-        }
-        return dict;
     }
 
     get startPosition() {
-        for(let [rowIndex, row] of Object.entries(this._nodes)) {
-            for(let [colIndex, node] of Object.entries(row)) {
-                if(node.isStart()) {
-                    rowIndex = parseInt(rowIndex);
-                    colIndex = parseInt(colIndex);
-
-                    return [rowIndex, colIndex];
-                }
-            }
-        }
+        let start = document.getElementById("start");
+        let rowIndex = start.closest("tr").rowIndex;
+        let colIndex = start.cellIndex;
+        return [rowIndex, colIndex];
     }
 
-    isMovable(position) {
-        let [row, col] = position;
-    
-        if(row < 0 || col < 0 || row >= this._nodes.length || col >= this._nodes[0].length) { 
-            return false; 
-        }
+    get endPosition() {
+        let end = document.getElementById("end");
+        let rowIndex = end.closest("tr").rowIndex;
+        let colIndex = end.cellIndex;
+        return [rowIndex, colIndex];
+    }
 
-        if(this._dict[row][col] == 0) {
-            return false;
+    inBoard(position) {
+        let [row, col] = position;
+        let rowLength = Object.keys(this._nodes).length;
+        let colLength = this._nodes[0].length;
+        
+        if(row < 0 || col < 0 || row >= rowLength || col >= colLength) { 
+            return false; 
         }
         return true;
     }
-    
+
+    isMovable(position) {
+        if(!this.inBoard(position)) { return false; }
+
+        let [row, col] = position;
+        let node = this._nodes[row][col];
+        let weight = node.currentWeight;
+        return weight != 0;
+    }
+
     position(pos1, pos2) {
         let [row1, col1] = pos1;
         let [row2, col2] = pos2;
@@ -52,18 +47,19 @@ export class Algorithm {
         return position;
     }
 
-    isStart(row, column) {
-        let node = this._nodes[row][column];
+    isStart(row, col) {
+        let node = this._nodes[row][col];
         return node.isStart();
     }
 
-    isEnd(row, column) {
-        let node = this._nodes[row][column];
+    isEnd(position) {
+        let [row, col] = position;
+        let node = this.node(row, col)
         return node.isEnd();
     }
 
-    node(row, column) {
-        let node = this._nodes[row][column];
+    node(row, col) {
+        let node = this._nodes[row][col];
         return node;
     }
 
@@ -72,6 +68,24 @@ export class Algorithm {
         let max_speed = speedSlider.max
         let current = speedSlider.value
         let ms = max_speed - current;
+
+        if(ms == 0) { return }
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async visited(position) {
+        await this.sleep();
+
+        let [row, col] = position;
+        let node = this.node(row, col);
+        node.visited();
+    }
+
+    async next(position) {
+        await this.sleep();
+
+        let [row, col] = position;
+        let node = this.node(row, col);
+        node.next();
     }
 }
