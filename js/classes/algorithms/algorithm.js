@@ -1,6 +1,7 @@
 export class Algorithm {
     constructor(nodes) {
         this._nodes = nodes;
+        this.visited = this.visited();
     }
 
     get startPosition() {
@@ -58,5 +59,20 @@ export class Algorithm {
             let node = this.node(position);
             await node.fastest(position);
         }
+    }
+
+    visited() {
+        let list = [];
+        
+        for(let row of Object.values(this._nodes)) {
+            for(let node of row) {
+                let position = node.position
+                if(!this.isMovable(position)) {
+                    let stringifiedPosition = position.toString();
+                    list.push(stringifiedPosition);
+                }
+            }
+        }
+        return list
     }
 }
