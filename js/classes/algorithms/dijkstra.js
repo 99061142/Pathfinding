@@ -69,6 +69,7 @@ export class Dijkstra extends Algorithm {
     async run() {
         while(this._queue && this._queue.length) {
             let queuedPosition = this.head;
+            this.dequeue(queuedPosition);
 
             // If the position is the end position, return the path
             if(this.node(queuedPosition).isEnd()) {
@@ -78,28 +79,30 @@ export class Dijkstra extends Algorithm {
 
             for(let direction of this._directions) {
                 let position = this.position(queuedPosition, direction);
-                
+                let stringifiedPosition = position.toString();
+
                 // Skip if the position on the board is already checked or not empty
-                if(!this.isMovable(position)) { continue; }
+                if(!this.isMovable(position) || this.visited.includes(stringifiedPosition)) { continue; }
 
-                // Get the weight / total distance of the current position
-                let node = this.node(position);
-                let weight = node.currentWeight;
-                let distance = this._path[queuedPosition].distance + weight;
+                // Push the position to the queue
+                this._queue.push(position);
+                this.node(position).next();
+                
+                // Get the total distance of the position to the start position
+                let parentDistance = this._path[queuedPosition].distance;
+                let positionWeight = this.node(position).currentWeight;
+                let distance = parentDistance + positionWeight;
 
-                // Add the position to the path with the parent and distance
+                // Add the position to the path
                 this._path[position] = {
                     parent: queuedPosition,
                     distance: distance
                 }
-                // Push the position to the queue
-                this._queue.push(position);
-                this.node(position).next();
-            }
-            await this.node(queuedPosition).visited();
 
-            // Remove the position from the queue
-            this.dequeue(queuedPosition);
+                // Add the position to the visited array
+                this.visited.push(stringifiedPosition);
+            }
+            await this.node(this.head).visited();
         }
     }
 }
