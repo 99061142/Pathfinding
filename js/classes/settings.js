@@ -4,9 +4,8 @@ import { Run } from "./run.js";
 // Set the settings state based on if the algorithm is running
 function switchSettingsState(state) {
     runButton.disabled = state;
-    updateLayoutButton.disabled = state;
     clearBoardButton.disabled = state;
-}   
+}
 
 // Initialize run class
 let run = new Run(switchSettingsState);
@@ -25,10 +24,22 @@ runButton.addEventListener("click", () => {
     run.run(nodes);
 });
 
-// Event listener for update layout button
-let updateLayoutButton = document.getElementById("updateLayout");
-updateLayoutButton.addEventListener("click", () => {
-    board.updateLayout();
+// Event listener for the board layout options
+let layoutOptions = document.getElementById("layoutOptions").children;
+layoutOptions = Array.from(layoutOptions);
+layoutOptions.forEach((option) => {
+    option.addEventListener("click", (e) => {
+        e.preventDefault();
+        
+        // If the algorithm is running, return
+        if(run.running) { return; }
+        
+        // Get the layout name
+        let layout = option.innerText.toLowerCase().replace(" ", "-");
+
+        // Update the layout
+        board.updateLayout(layout)
+    });
 });
 
 // Event listener for clear board button
