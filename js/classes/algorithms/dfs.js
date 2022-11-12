@@ -31,9 +31,10 @@ export class Dfs extends Algorithm {
 
             for(let direction of this._directions) {
                 let position = this.position(queuedPosition, direction);
+                let stringifiedPosition = position.toString();
 
                 // Skip if the position on the board is already checked or not empty
-                if(!this.isMovable(position)) { continue; }
+                if(!this.isMovable(position) || this.visited.includes(stringifiedPosition)) { continue; }
 
                 // Push the position to the queue
                 queue.push(position);
@@ -41,6 +42,9 @@ export class Dfs extends Algorithm {
 
                 // add the position to the path
                 this._path[position] = queuedPosition;
+
+                // Add the position to the visited array
+                this.visited.push(position.toString());
             }
             await this.node(queuedPosition).visited();
 
