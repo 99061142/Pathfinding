@@ -107,8 +107,8 @@ export class Board {
         // Clear every node on the board that has an algorithm styling
         for(let row of Object.values(this.nodes)) {
             for(let node of row) {
-                if(!algorithmStyling.includes(node.styling)) { continue; }                
-                node.erase();
+                if(!algorithmStyling.includes(node.styling)) { continue; }         
+                node.removeStyling(node.styling);
             }
         }
     }
