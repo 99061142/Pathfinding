@@ -72,8 +72,16 @@ td:not(#start):not(#end) {
 
 /* Settings */
 #run[disabled],
-#updateLayout[disabled],
 #clearBoard[disabled] {
-    color: red;
+    background-color: #dc3545;
+    color: white;
+}
+
+#run {
+    background-color: #28a745;
+}
+
+#clearBoard {
+    background-color: #ffc107;
 }
 /* /Settings */
