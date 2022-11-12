@@ -38,7 +38,7 @@ export class Bfs extends Algorithm {
                 // Skip if the position on the board is already checked or not empty
                 if(!this.isMovable(position) || this.visited.includes(stringifiedPosition)) { continue; }
 
-                // Push the position to the queueS
+                // Push the position to the queue
                 queue.push(position);
                 this.node(position).next();
 
