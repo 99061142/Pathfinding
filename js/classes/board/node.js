@@ -12,6 +12,12 @@ export class Node {
         this.init();  
     }
 
+    get position() {
+        let row = this._row.closest("tr").rowIndex;
+        let col = this._index;
+        return [row, col];
+    }
+
     get currentWeight() {
         let weight = this._node.dataset.weight;
         weight = parseInt(weight);
@@ -66,7 +72,6 @@ export class Node {
     next() {
         if(this.isStart() || this.isEnd()) { return; }
 
-        this._node.dataset.weight = 0;
         this._node.classList.add("next");
         this.styling = "next";
     }
@@ -147,7 +152,6 @@ export class Node {
         return false;
     }
 
-
     addStyling(styling=null) {
         let pencil = document.getElementById("pencil").value;
         styling = styling || pencil
@@ -171,6 +175,10 @@ export class Node {
         else if(styling != "erase") {
             throw new Error("Pencil value not recognized");
         }
+    }
+
+    removeStyling(styling) {
+        this._node.classList.remove(styling);
     }
 
     click() {
