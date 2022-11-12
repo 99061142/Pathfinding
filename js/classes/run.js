@@ -4,7 +4,7 @@ import { Dijkstra } from './algorithms/dijkstra.js';
 
 export class Run {
     constructor(switchSettingsState) {
-        this._running = false;
+        this.running = false;
         this._switchSettingsState = switchSettingsState;
     }
 
@@ -19,7 +19,7 @@ export class Run {
             case "dijkstra":
                 return Dijkstra;
             default:
-                this._running = false;
+                this.running = false;
                 this._switchSettingsState(false);
                 throw new Error("Algorithm not recognized");
         }
@@ -30,15 +30,15 @@ export class Run {
         let end = document.getElementById("end");
 
         // If a algorithm is running or the start or end node is not placed, return
-        if(this._running || !start || !end) { 
+        if(this.running || !start || !end) { 
             return; 
         }
-        this._running = true;
+        this.running = true;
         this._switchSettingsState(true);
 
         // Run the algorithm
         await new this.algorithm(nodes).run().then(() => {
-            this._running = false;
+            this.running = false;
             this._switchSettingsState(false);
 
         });
