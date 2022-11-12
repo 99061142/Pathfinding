@@ -33,16 +33,20 @@ export class Bfs extends Algorithm {
             for(let direction of this._directions) {
                 // Get the neighbour position
                 let position = this.position(queuedPosition, direction);
+                let stringifiedPosition = position.toString();
 
                 // Skip if the position on the board is already checked or not empty
-                if(!this.isMovable(position)) { continue; }
+                if(!this.isMovable(position) || this.visited.includes(stringifiedPosition)) { continue; }
 
                 // Push the position to the queueS
                 queue.push(position);
                 this.node(position).next();
 
-                // add the position to the path
+                // Add the position to the path
                 this._path[position] = queuedPosition;
+
+                // Add the position to the visited array
+                this.visited.push(stringifiedPosition);
             }
             await this.node(queuedPosition).visited();
 
