@@ -122,9 +122,7 @@ export class Board {
         }
     }
 
-    updateLayout() {
-        let layout = document.getElementById("layout").value;
-
+    updateLayout(layout) {
         switch(layout) {
             case "random-walls":
                 this.randomWalls();
