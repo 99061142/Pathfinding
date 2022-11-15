@@ -1,5 +1,5 @@
 export class Node {
-    constructor(row, node, index) {
+    constructor(row, node, index, unweightedAlgorithms) {
         this._runButton = document.getElementById("run");
         this._standardClasses = node.classList;
         this._standardWeight = node.dataset.weight;
@@ -8,7 +8,8 @@ export class Node {
         this._node = node.cloneNode(true);
         this._index = index;
         this._node.addEventListener("click", this.click.bind(this));
-        this._node.addEventListener("mouseover", this.hover.bind(this));  
+        this._node.addEventListener("mouseover", this.hover.bind(this)); 
+        this._unweightedAlgorithms = unweightedAlgorithms;
         this.init();  
     }
 
@@ -156,8 +157,10 @@ export class Node {
         let pencil = document.getElementById("pencil").value;
         styling = styling || pencil
 
+        let algorithm = document.getElementById("algorithm").value.toLowerCase();
+
         // If node styling can't be overruled, return
-        if(!this.overruleStyling(styling)) {
+        if(!this.overruleStyling(styling) || pencil.includes("weight") && this._unweightedAlgorithms.includes(algorithm)) {
             return
         }
 
