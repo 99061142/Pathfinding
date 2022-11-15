@@ -8,6 +8,7 @@ export class Board {
         this._row = row;
         this.nodeHeight = node.offsetHeight;
         this.nodeWidth = node.offsetWidth;
+        this.unweightedAlgorithms = ["bfs", "dfs"]; 
         this.init();
     }
 
@@ -36,7 +37,7 @@ export class Board {
     }
 
     addNode(row, rowIndex, nodeIndex) {
-        let node = new Node(row, this._node, nodeIndex);
+        let node = new Node(row, this._node, nodeIndex, this.unweightedAlgorithms);
         this.nodes[rowIndex].push(node)
     }
 
