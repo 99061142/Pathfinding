@@ -37,6 +37,9 @@ layoutOptions.forEach((option) => {
         // Get the layout name
         let layout = option.innerText.toLowerCase().replace(" ", "-");
 
+        // Don't use weight layouts when the algorithm is unweighted
+        if(layout.includes("weight") && run.unweightedAlgorithms.includes(run.algorithmName)) { return }
+
         // Update the layout
         board.updateLayout(layout)
     });
