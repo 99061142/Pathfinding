@@ -8,10 +8,13 @@ export class Run {
         this._switchSettingsState = switchSettingsState;
     }
 
-    get algorithm() {
-        let algorithm = document.getElementById("algorithm").value.toLowerCase();
+    get algorithmName() {
+        let name = document.getElementById("algorithm").value.toLowerCase();
+        return name;
+    }
 
-        switch(algorithm) {
+    get algorithm() {
+        switch(this.algorithmName) {
             case "bfs":
                 return Bfs;
             case "dfs":
