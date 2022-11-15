@@ -66,6 +66,13 @@ export class Dijkstra extends Algorithm {
         return path;
     }
 
+    addToPath(position, distance) {
+        this._path[position] = {
+            parent: queuedPosition,
+            distance: distance
+        }
+    }
+
     async run() {
         while(this._queue && this._queue.length) {
             let queuedPosition = this.head;
@@ -81,26 +88,31 @@ export class Dijkstra extends Algorithm {
                 let position = this.position(queuedPosition, direction);
                 let stringifiedPosition = position.toString();
 
-                // Skip if the position on the board is already checked or not empty
-                if(!this.isMovable(position) || this.visited.includes(stringifiedPosition)) { continue; }
+                // If the position is not movable, skip
+                if(!this.isMovable(position)) { continue; }
 
-                // Push the position to the queue
-                this._queue.push(position);
-                this.node(position).next();
-                
                 // Get the total distance of the position to the start position
                 let parentDistance = this._path[queuedPosition].distance;
                 let positionWeight = this.node(position).currentWeight;
                 let distance = parentDistance + positionWeight;
 
-                // Add the position to the path
-                this._path[position] = {
-                    parent: queuedPosition,
-                    distance: distance
-                }
+                // If the neighbour is not movable, or has a lower distance saved then the current distance, skip
+                if(this._path[stringifiedPosition] && distance >= this._path[stringifiedPosition].distance || this.visited.includes(stringifiedPosition)) { continue; }  
 
-                // Add the position to the visited array
-                this.visited.push(stringifiedPosition);
+                if(this._path[stringifiedPosition] && distance >= this._path[stringifiedPosition].distance) {
+                    console.log(distance, this._path[stringifiedPosition].distance);
+                }
+                // Add to path
+                if(this._path[stringifiedPosition] == undefined) {
+                    this._path[stringifiedPosition] = {};
+
+                    // Add the position to the queue and visited list
+                    this._queue.push(position);
+                    this.node(position).next();
+                    this.visited.push(stringifiedPosition);
+                }
+                this._path[stringifiedPosition].distance = distance;
+                this._path[stringifiedPosition].parent = queuedPosition;
             }
             await this.node(this.head).visited();
         }
