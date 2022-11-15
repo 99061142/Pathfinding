@@ -99,9 +99,6 @@ export class Dijkstra extends Algorithm {
                 // If the neighbour is not movable, or has a lower distance saved then the current distance, skip
                 if(this._path[stringifiedPosition] && distance >= this._path[stringifiedPosition].distance || this.visited.includes(stringifiedPosition)) { continue; }  
 
-                if(this._path[stringifiedPosition] && distance >= this._path[stringifiedPosition].distance) {
-                    console.log(distance, this._path[stringifiedPosition].distance);
-                }
                 // Add to path
                 if(this._path[stringifiedPosition] == undefined) {
                     this._path[stringifiedPosition] = {};
