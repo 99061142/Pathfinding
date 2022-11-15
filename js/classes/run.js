@@ -6,6 +6,7 @@ export class Run {
     constructor(switchSettingsState) {
         this.running = false;
         this._switchSettingsState = switchSettingsState;
+        this.unweightedAlgorithms = ["bfs", "dfs"];
     }
 
     get algorithmName() {
