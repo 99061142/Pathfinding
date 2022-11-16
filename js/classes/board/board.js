@@ -165,7 +165,7 @@ export class Board {
                 this.clearWeights();
                 break;
             case "path":
-                this.clearPath();
+                this.clearAlgorithm();
                 break;
             case "all":
                 this.clear();
