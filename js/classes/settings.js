@@ -45,8 +45,29 @@ layoutOptions.forEach((option) => {
     });
 });
 
+// Event listener for the clear board options
+let clearBoardOptions = document.getElementById("clearOptions");
+clearBoardOptions = Array.from(clearBoardOptions.children);
+clearBoardOptions.forEach((option) => {
+    option.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        // If the algorithm is running, return
+        if(run.running) { return; }
+
+        // Get the clear option
+        let clearOption = option.innerText.toLowerCase().replace(" ", "-");
+
+        // Clear specific nodes
+        board.clearBoard(clearOption);
+    });
+});
+
+
+
 // Event listener for clear board button
 let clearBoardButton = document.getElementById("clearBoard");
 clearBoardButton.addEventListener("click", () => {
     board.clear();
 });
+
