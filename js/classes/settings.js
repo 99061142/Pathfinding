@@ -4,7 +4,6 @@ import { Run } from "./run.js";
 // Set the settings state based on if the algorithm is running
 function switchSettingsState(state) {
     runButton.disabled = state;
-    clearBoardButton.disabled = state;
 }
 
 // Initialize run class
@@ -62,12 +61,3 @@ clearBoardOptions.forEach((option) => {
         board.clearBoard(clearOption);
     });
 });
-
-
-
-// Event listener for clear board button
-let clearBoardButton = document.getElementById("clearBoard");
-clearBoardButton.addEventListener("click", () => {
-    board.clear();
-});
-
