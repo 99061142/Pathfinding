@@ -123,6 +123,17 @@ export class Board {
         }
     }
 
+    clearWeights() {
+        for(let row of Object.values(this.nodes)) {
+            for(let node of row) {
+                console.log(node.styling)
+                if(node.styling.startsWith("weight")) {
+                    node.removeStyling(node.styling);
+                }
+            }
+        }
+    }
+
     updateLayout(layout) {
         switch(layout) {
             case "random-walls":
@@ -133,6 +144,24 @@ export class Board {
                 break;
             default:
                 throw new Error("Layout not found");
+        }
+    }
+
+    clearBoard(clear) {
+        switch(clear) {
+            case "walls":
+                this.clearWalls();
+            case "weights":
+                this.clearWeights();
+                break;
+            case "path":
+                this.clearPath();
+                break;
+            case "all":
+                this.clear();
+                break;
+            default:
+                throw new Error("Clear option not found");
         }
     }
 
