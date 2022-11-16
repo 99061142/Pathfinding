@@ -126,9 +126,8 @@ export class Board {
     clearWeights() {
         for(let row of Object.values(this.nodes)) {
             for(let node of row) {
-                console.log(node.styling)
-                if(node.styling.startsWith("weight")) {
-                    node.removeStyling(node.styling);
+                if(node.styling == "weight") {
+                    node.removeStyling("weight");
                 }
             }
         }
