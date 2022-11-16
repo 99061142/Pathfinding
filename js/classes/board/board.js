@@ -134,6 +134,16 @@ export class Board {
         }
     }
 
+    clearWalls() {
+        for(let row of Object.values(this.nodes)) {
+            for(let node of row) {
+                if(node.styling === "wall") {
+                    node.erase();
+                }
+            }
+        }
+    }
+
     updateLayout(layout) {
         switch(layout) {
             case "random-walls":
@@ -151,6 +161,7 @@ export class Board {
         switch(clear) {
             case "walls":
                 this.clearWalls();
+                break;
             case "weights":
                 this.clearWeights();
                 break;
