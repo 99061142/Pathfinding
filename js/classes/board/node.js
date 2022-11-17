@@ -158,10 +158,10 @@ export class Node {
     }
 
     addStyling(styling=null) {
-        let pencil = document.getElementById("pencil").value;
+        let pencil = document.getElementById("pencilDropdown").innerText.toLowerCase().trim();
         styling = styling || pencil
 
-        let algorithm = document.getElementById("algorithm").value.toLowerCase();
+        let algorithm = document.getElementById("algorithmDropdown").innerText.toLowerCase().trim();
 
         // If node styling can't be overruled, return
         if(!this.overruleStyling(styling) || pencil.includes("weight") && this._unweightedAlgorithms.includes(algorithm)) {
