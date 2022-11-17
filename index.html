@@ -31,27 +31,37 @@
 
             <div class="collapse navbar-collapse" id="collapsedNav">
                 <ul class="navbar-nav mr-auto">
-                    <div>
-                        <label class="navbar-text" for="algorithm">Algorithm</label>
-                        <select class="custom-select" id="algorithm">
-                            <option value="bfs">BFS</option>
-                            <option value="dfs">DFS</option>
-                            <option value="dijkstra">Dijkstra</option>
-                            <option value="a*">A*</option>
-                        </select>
+                    <div class="text-center">
+                        <p class="navbar-text m-0">Algorithm</p>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="algorithmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            A*
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="algorithmDropdown" id="algorithmOptions">
+                                <a class="dropdown-item" href="#">BFS</a>
+                                <a class="dropdown-item" href="#">DFS</a>
+                                <a class="dropdown-item" href="#">Dijkstra</a>
+                                <a class="dropdown-item" href="#">A*</a>
+                            </div>
+                        </li>
                     </div>
 
-                    <div>
-                        <label class="navbar-text" for="pencil">Pencil</label>
-                        <select class="custom-select d-inline-block" id="pencil">
-                            <option value="erase">Erase</option>
-                            <option value="wall" selected>Wall</option>
-                            <option value="weight-5">Weight +5</option>
-                            <option value="weight-10">Weight +10</option>
-                        </select>
+                    <div class="text-center">
+                        <p class="navbar-text m-0">Pencil</p>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="pencilDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Wall
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="pencilDropdown" id="pencilOptions">
+                                <a class="dropdown-item" href="#">Erase</a>
+                                <a class="dropdown-item" href="#">Wall</a>
+                                <a class="dropdown-item weightedAlgorithm disabled" href="#">Weight +5</a>
+                                <a class="dropdown-item weightedAlgorithm disabled" href="#">Weight +10</a>
+                            </div>
+                        </li>
                     </div>
 
-                    <div>
+                    <div class="text-center">
                         <label class="navbar-text d-block" for="speedSlider">Speed</label>
                         <input type="range" class="custom-range" id="speedSlider" min="0" max="100" value="50">
                     </div>
@@ -62,7 +72,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="layoutDropdown" id="layoutOptions">
                             <a class="dropdown-item" href="#">Random walls</a>
-                            <a class="dropdown-item" href="#">Random weights</a>
+                            <a class="dropdown-item weightedAlgorithm disabled" href="#">Random weights</a>
                         </div>
                     </li>
 
