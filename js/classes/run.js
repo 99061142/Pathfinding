@@ -10,7 +10,7 @@ export class Run {
     }
 
     get algorithmName() {
-        let name = document.getElementById("algorithm").value.toLowerCase();
+        let name = document.getElementById("algorithmDropdown").innerText.toLowerCase().trim();
         return name;
     }
 
