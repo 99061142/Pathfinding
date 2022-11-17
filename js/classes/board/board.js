@@ -129,7 +129,7 @@ export class Board {
         for(let row of Object.values(this.nodes)) {
             for(let node of row) {
                 if(node.classList.contains("weight")) {
-                    node.removeStyling("weight");
+                    node.erase();
                 }
             }
         }
