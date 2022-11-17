@@ -176,7 +176,7 @@ export class Node {
             this.wall();
         }
         else if(styling.includes("weight")) {
-            let weight = styling.split("-")[1];
+            let weight = styling.split("+")[1];
             this.weight(weight);
         }
         else if(styling != "erase") {
