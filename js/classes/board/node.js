@@ -13,6 +13,10 @@ export class Node {
         this.init();  
     }
 
+    get classList() {
+        return this._node.classList;
+    }
+
     get position() {
         let row = this._row.closest("tr").rowIndex;
         let col = this._index;
