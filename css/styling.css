@@ -84,4 +84,11 @@ td:not(#start):not(#end) {
 #clearBoard {
     background-color: #ffc107;
 }
+
+
+#pencilOptions > a.disabled,
+#layoutOptions > a.disabled {
+    color: #dc3545 !important;
+    pointer-events: none;
+}
 /* /Settings */
