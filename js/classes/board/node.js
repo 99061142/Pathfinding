@@ -143,11 +143,11 @@ export class Node {
 
         // If node styling is weight and pencil is weight, compare weights
         if(pencil.includes("weight")) {
-            let pencilWeight = pencil.split("-")[1];
-            
-            // Return if pencil weight is higher than current weight
+            let pencilWeight = pencil.split("+")[1];            
             pencilWeight = parseInt(pencilWeight);
-            return pencilWeight > this.currentWeight
+
+            // If pencil weight is greater than node weight, return true
+            return pencilWeight > this.currentWeight;
         }
 
         let algorithmStyling = ["visited", "next", "fastest"];
