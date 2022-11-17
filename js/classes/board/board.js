@@ -84,15 +84,17 @@ export class Board {
 
     randomWeights() {
         // Get pencil weight options
-        let pencil = document.getElementById("pencil");
-        let pencilWeights = Array.from(pencil.options).filter(option => option.value.startsWith("weight"));
+        let pencil = document.getElementById("pencilOptions");
+
+        // Get every weight inside the pencil options
+        let pencilWeights = Array.from(pencil.children).filter(child => child.innerText.toLowerCase().includes("weight"));
 
         // For every node, pick a random weight and random %. If the % is lower than 0.33, add the weight styling        
         for(let row of Object.values(this.nodes)) {
             for(let node of row) {
                 // Weight styling
                 let stylingIndex = Math.floor(Math.random() * pencilWeights.length);
-                let styling = pencilWeights[stylingIndex].value;
+                let styling = pencilWeights[stylingIndex].innerText.toLowerCase().trim();
 
                 let random = Math.random();
                 if(random < 0.25) {
