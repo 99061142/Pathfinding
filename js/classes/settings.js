@@ -47,7 +47,6 @@ runButton.addEventListener("click", () => {
 
 // Event listener for the board layout options
 let layoutOptions = document.getElementById("layoutOptions").children;
-console.log(layoutOptions)
 layoutOptions = Array.from(layoutOptions);
 layoutOptions.forEach((option) => {
     option.addEventListener("click", (e) => {
