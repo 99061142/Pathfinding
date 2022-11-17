@@ -8,7 +8,7 @@ export class Astar extends Algorithm {
         this._path = {
             [this._start]: {
                 parent: null,
-                g: this.gCost(this._start),
+                g: 0,
                 h: this.hCost(this._start, this.endPosition),
             }
         };
