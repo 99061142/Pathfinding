@@ -149,6 +149,10 @@ export class Astar extends Algorithm {
                 this._path[stringifiedPosition].g = g;
                 this._path[stringifiedPosition].h = h;
             }
+
+            // If it can't search any further, break
+            if(this.head == null) { return }
+
             await this.node(this.head).visited();
 
             // If the head is the end position, return the route
