@@ -33,25 +33,17 @@ export class Dijkstra extends Algorithm {
     }
 
     get head() {
-        // Get queued position with the lowest distance
-        let pathKeys = Object.keys(this._path);
-        let lowestDistance = Infinity;
-        let lowestDistancePosition = null;
-
-        for(let position of pathKeys) {
-            // Get the current distance of the position
-            let distance = this._path[position].distance;
-
-            // If the distance is lower than the lowest distance, and the position is in the queue, 
-            // set the lowest distance to the current distance
-            if(distance < lowestDistance && this.queuedIndex(position) !== -1) {
-                lowestDistance = distance;
-                lowestDistancePosition = position;
+        // Get the position with the lowest distance
+        let lowest = Infinity;
+        let position = null;
+        for(let queuedPosition of this._queue) {
+            let distance = this._path[queuedPosition].distance;
+            if(distance < lowest) {
+                lowest = distance;
+                position = queuedPosition;
             }
         }
-        // Return the position with the lowest distance
-        lowestDistancePosition = lowestDistancePosition.split(',').map(Number);
-        return lowestDistancePosition;
+        return position;
     }
 
     get route() {
@@ -64,13 +56,6 @@ export class Dijkstra extends Algorithm {
         }
         path = path.slice(1, -1);
         return path;
-    }
-
-    addToPath(position, distance) {
-        this._path[position] = {
-            parent: queuedPosition,
-            distance: distance
-        }
     }
 
     async run() {
@@ -111,6 +96,9 @@ export class Dijkstra extends Algorithm {
                 this._path[stringifiedPosition].distance = distance;
                 this._path[stringifiedPosition].parent = queuedPosition;
             }
+            // If it can't search any further, break
+            if(this.head == null) { return }
+
             await this.node(this.head).visited();
         }
     }
