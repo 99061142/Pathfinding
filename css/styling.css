@@ -1,3 +1,7 @@
+body {
+    background-color: #dfdfdf;
+}
+
 /* Fontawesome icons */
 .icon::before {
     font-style: normal;
