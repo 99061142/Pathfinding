@@ -86,7 +86,7 @@ td:not(#start):not(#end) {
 
 #pencilOptions > a.disabled,
 #layoutOptions > a.disabled {
-    color: #dc3545 !important;
+    color: #dc3545;
     pointer-events: none;
 }
 /* /Settings */
