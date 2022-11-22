@@ -5,8 +5,10 @@ import { Astar } from './algorithms/aStar.js';
 
 export class Run {
     constructor(switchSettingsState) {
-        this.running = false;
         this._switchSettingsState = switchSettingsState;
+    }
+    get running() {
+        return document.getElementById("run").disabled;
     }
 
     get algorithmName() {
@@ -25,7 +27,6 @@ export class Run {
             case "a*":
                 return Astar;
             default:
-                this.running = false;
                 this._switchSettingsState(false);
                 throw new Error("Algorithm not recognized");
         }
@@ -36,18 +37,12 @@ export class Run {
         let end = document.getElementById("end");
 
         // If a algorithm is running or the start or end node is not placed, return
-        if(this.running || !start || !end) { 
-            return; 
-        }
-        this.running = true;
+        if(this.running || !start || !end) { return; }
         this._switchSettingsState(true);
 
         // Run the algorithm
         await new this.algorithm(nodes).run().then(() => {
-            this.running = false;
             this._switchSettingsState(false);
-
         });
-
     }
 }
