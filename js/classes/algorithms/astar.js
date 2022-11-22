@@ -90,6 +90,10 @@ export class Astar extends Algorithm {
             route.unshift(position);
             position = this._path[position].parent;
         }
+        // Remove the start and end positions from the route
+        route.shift();
+        route.pop();
+
         return route;
     }
 
@@ -113,7 +117,6 @@ export class Astar extends Algorithm {
         let index = this._queue.indexOf(position);
         this._queue.splice(index, 1);
     }
-
 
     async run() {
         while(this._queue && this._queue.length) {
