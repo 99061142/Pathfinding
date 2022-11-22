@@ -103,7 +103,7 @@ algorithmOptions.forEach((option) => {
         weightedOptionElementsState(isWeighted);
 
         // Delete all weights if the algorithm is unweighted
-        if(!isWeighted) {
+        if(!isWeighted && !run.running) {
             board.clearWeights();
         }
 
