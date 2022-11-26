@@ -154,7 +154,7 @@ export class Board {
                 this.randomWeights();
                 break;
             default:
-                throw new Error("Layout not found");
+                throw new Error("Layout option not found");
         }
     }
 

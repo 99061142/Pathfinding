@@ -1,7 +1,7 @@
-import { Bfs } from './algorithms/bfs.js';
-import { Dfs } from './algorithms/dfs.js';
-import { Dijkstra } from './algorithms/dijkstra.js';
-import { Astar } from './algorithms/aStar.js';
+import { Bfs } from './pathfinding/bfs.js';
+import { Dfs } from './pathfinding/dfs.js';
+import { Dijkstra } from './pathfinding/dijkstra.js';
+import { Astar } from './pathfinding/aStar.js';
 
 export class Run {
     constructor(switchSettingsState) {
@@ -38,6 +38,7 @@ export class Run {
 
         // If a algorithm is running or the start or end node is not placed, return
         if(this.running || !start || !end) { return; }
+
         this._switchSettingsState(true);
 
         // Run the algorithm

@@ -92,6 +92,9 @@ algorithmOptions.forEach((option) => {
     option.addEventListener("click", (e) => {
         e.preventDefault();
 
+        // If the algorithm is running, return
+        if(run.running) { return; }
+
         // Get the algorithm name
         let algorithmName = option.innerText;
         let StrippedAlgorithmName = algorithmName.toLowerCase().trim();
