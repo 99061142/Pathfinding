@@ -52,8 +52,8 @@ layoutOptions.forEach((option) => {
     option.addEventListener("click", (e) => {
         e.preventDefault();
 
-        // If the algorithm is running or the option has an id attribute, return
-        if(run.running || option.hasAttribute('id')) { return; }
+        // If the algorithm is running, return
+        if(run.running) { return; }
         
         // Get the layout name
         let layout = option.innerText.toLowerCase().replace(" ", "-");

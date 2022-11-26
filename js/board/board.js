@@ -1,13 +1,14 @@
 import { Node } from "./node.js";
+import { RecursiveDivision } from "../mazes/recursiveDivision.js";
 
 export class Board {
-    constructor(row, node) {
+    constructor(exampleRow, exampleNode) {
         this._board = document.getElementById("board");
-        this._node = node;
+        this._exampleRow = exampleRow;
+        this._exampleNode = exampleNode;
         this.nodes = {};
-        this._row = row;
-        this.nodeHeight = node.offsetHeight;
-        this.nodeWidth = node.offsetWidth;
+        this.nodeHeight = exampleNode.offsetHeight;
+        this.nodeWidth = exampleNode.offsetWidth;
         this.unweightedAlgorithms = ["bfs", "dfs"]; 
         this.init();
     }
@@ -37,7 +38,7 @@ export class Board {
     }
 
     addNode(row, rowIndex, nodeIndex) {
-        let node = new Node(row, this._node, nodeIndex, this.unweightedAlgorithms);
+        let node = new Node(row, this._exampleNode, nodeIndex, this.unweightedAlgorithms);
         this.nodes[rowIndex].push(node)
     }
 
@@ -57,7 +58,7 @@ export class Board {
     }
 
     addRow() {
-        let row = this._row.cloneNode(true);
+        let row = this._exampleRow.cloneNode(true);
         row.removeAttribute("id");
         this._board.appendChild(row);
     }
@@ -147,6 +148,9 @@ export class Board {
 
     updateLayout(layout) {
         switch(layout) {
+            case "recursive-division":
+                new RecursiveDivision(this.nodes);
+                break;
             case "random-walls":
                 this.randomWalls();
                 break;
@@ -179,7 +183,7 @@ export class Board {
 
     init() {
         // Remove the node that was already created
-        this._node.remove();
+        this._exampleNode.remove();
 
         // Initialize the board
         this.addRows();

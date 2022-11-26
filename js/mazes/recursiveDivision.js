@@ -1,14 +1,7 @@
-export class RecursiveDivision {
-    constructor() {
-        this.init();
-    }
+import { Algorithm } from "../pathfinding/algorithm.js";
 
-    init() {
-        console.log("start")
+export class RecursiveDivision extends Algorithm {
+    constructor(nodes) {
+        super(nodes);
     }
 }
-
-let button = document.getElementById("recursiveDivision");
-button.addEventListener("click", () => {
-    new RecursiveDivision();
-});
