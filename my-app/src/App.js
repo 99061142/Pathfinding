@@ -1,10 +1,10 @@
 import './App.css';
-import Nav from './nav.jsx'
+import Navigation from './nav.jsx'
 
 function App() {
   return (
     <>
-      <Nav />
+      <Navigation />
     </>
   );
 }
