@@ -1,7 +1,7 @@
 import { Bfs } from './pathfinding/bfs.js';
 import { Dfs } from './pathfinding/dfs.js';
 import { Dijkstra } from './pathfinding/dijkstra.js';
-import { Astar } from './pathfinding/aStar.js';
+import { Astar } from './pathfinding/astar.js';
 
 export class Run {
     constructor(switchSettingsState) {
