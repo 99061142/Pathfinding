@@ -8,7 +8,9 @@ class Board extends Component {
             rows: 0,
             cells: 0,
             content: <></>,
-            run: false
+            running: false,
+            start: null,
+            end: null
         }
         window.addEventListener('resize', () => this.updateContent())
     }
@@ -27,7 +29,7 @@ class Board extends Component {
 
     setContent(ROWS, CELLS) {
         // If the algorithm is running, return
-        if (this.state.run) { return }
+        if (this.state.running) { return }
 
         // Add the rows and cells to the table to create the board
         this.setState({
