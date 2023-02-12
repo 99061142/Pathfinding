@@ -1,4 +1,4 @@
-import './App.css';
+import './app.css';
 import Navigation from './nav.jsx'
 import Board from './board.jsx'
 
