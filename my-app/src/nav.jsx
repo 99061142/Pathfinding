@@ -24,7 +24,7 @@ class Navigation extends Component {
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
                                     <Form.Select id="pencil">
                                         <option value="erase">Erase</option>
-                                        <option value="wall">Wall</option>
+                                        <option value="wall" selected>Wall</option>
                                         <option value="weight-5">Weight +5</option>
                                         <option value="weight-10">Weight +10</option>
                                     </Form.Select>
