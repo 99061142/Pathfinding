@@ -55,8 +55,8 @@ class Board extends Component {
         const TOP = Math.round(BOARD.getBoundingClientRect().top);
         const MAX_HEIGHT = Math.round(window.innerHeight - TOP);
         const MAX_WIDTH = Math.round(window.innerWidth);
-        const ROWS = Math.round(MAX_HEIGHT / 25);
-        const CELLS = Math.round(MAX_WIDTH / 25);
+        const ROWS = Math.round(MAX_HEIGHT / 28);
+        const CELLS = Math.round(MAX_WIDTH / 28);
         this.setRows(ROWS);
         this.setCells(CELLS);
         this.setContent(ROWS, CELLS);
