@@ -13,18 +13,18 @@ class Navigation extends Component {
                             <Row>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                                    <Form.Select id="algorithm">
+                                    <Form.Select id="algorithm" defaultValue="a*">
                                         <option value="bfs">BFS</option>
                                         <option value="dfs">DFS</option>
                                         <option value="dijkstra">Dijkstra</option>
-                                        <option value="a*" selected>A*</option>
+                                        <option value="a*">A*</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                                    <Form.Select id="pencil">
+                                    <Form.Select id="pencil" defaultValue="wall">
                                         <option value="erase">Erase</option>
-                                        <option value="wall" selected>Wall</option>
+                                        <option value="wall">Wall</option>
                                         <option value="weight-5">Weight +5</option>
                                         <option value="weight-10">Weight +10</option>
                                     </Form.Select>
