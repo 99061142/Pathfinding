@@ -1,0 +1,8 @@
+td {
+    padding: 12px;
+}
+
+td:has(svg) {
+    padding: 0px;
+    text-align: center;
+}
