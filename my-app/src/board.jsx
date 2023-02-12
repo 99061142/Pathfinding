@@ -2,28 +2,14 @@ import { Component } from "react";
 import Cell from './cell'
 
 class Board extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
-            rows: 0,
-            cells: 0,
-            content: <></>,
+            content: null,
             running: false,
-            start: null,
-            end: null
+            startPos: null,
+            endPos: null,
         }
-    }
-
-    setRows(ROWS) {
-        this.setState({
-            rows: ROWS
-        });
-    }
-
-    setCells(CELLS) {
-        this.setState({
-            rows: CELLS
-        });
     }
 
     setContent(ROWS, CELLS) {
@@ -37,9 +23,13 @@ class Board extends Component {
                     <tr key={row}>
                         {[...Array(CELLS)].map((_, cell) =>
                             <Cell
-                                key={cell}
                                 row={row}
                                 cell={cell}
+                                key={cell}
+                                getStartPos={this.getStartPos}
+                                setStartPos={this.setStartPos}
+                                getEndPos={this.getEndPos}
+                                setEndPos={this.setEndPos}
                             ></Cell>
                         )}
                     </tr>
@@ -49,16 +39,26 @@ class Board extends Component {
     }
 
     updateContent() {
-        // Get the max height and width of the board to calculate how many rows and cells the board needs, then create the board
+        // Create the board
+        const CELLS = this.getCells();
+        const ROWS = this.getRows();
+        this.setContent(ROWS, CELLS);
+    }
+
+    getRows() {
+        // Get the amount of rows by the max height of the element divided by the cell height
         const BOARD = document.getElementById("board");
         const TOP = Math.round(BOARD.getBoundingClientRect().top);
         const MAX_HEIGHT = Math.round(window.innerHeight - TOP);
-        const MAX_WIDTH = Math.round(window.innerWidth);
         const ROWS = Math.round(MAX_HEIGHT / 28);
+        return ROWS
+    }
+
+    getCells() {
+        // Get the amount of cells by the max width of the element divided by the cell width
+        const MAX_WIDTH = Math.round(window.innerWidth);
         const CELLS = Math.round(MAX_WIDTH / 28);
-        this.setRows(ROWS);
-        this.setCells(CELLS);
-        this.setContent(ROWS, CELLS);
+        return CELLS
     }
 
     componentDidMount() {
@@ -69,13 +69,35 @@ class Board extends Component {
         this.updateContent();
     }
 
+    getStartPos = () => {
+        let startPos = this.state.startPos;
+        return startPos
+    }
+
+    setStartPos = pos => {
+        this.setState({
+            startPos: pos
+        })
+    }
+
+    getEndPos = () => {
+        let endPos = this.state.endPos;
+        return endPos
+    }
+
+    setEndPos = pos => {
+        this.setState({
+            endPos: pos
+        })
+    }
+
     render() {
         return (
             <table id="board" className="my-2 d-flex justify-content-center" >
                 <tbody>
                     {this.state.content}
                 </tbody>
-            </table >
+            </table>
         );
     }
 }
