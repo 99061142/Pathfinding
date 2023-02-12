@@ -17,7 +17,7 @@ class Navigation extends Component {
                                         <option value="bfs">BFS</option>
                                         <option value="dfs">DFS</option>
                                         <option value="dijkstra">Dijkstra</option>
-                                        <option value="a*">A*</option>
+                                        <option value="a*" selected>A*</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
