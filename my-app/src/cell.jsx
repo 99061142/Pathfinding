@@ -6,7 +6,7 @@ class Cell extends Component {
     constructor({ row, col }) {
         super();
         this.state = {
-            classNames: {
+            styling: {
                 start: 'bg-success',
                 end: 'bg-danger',
                 wall: 'bg-dark',
@@ -65,12 +65,12 @@ class Cell extends Component {
     }
 
     render() {
-        let classNames = this.state.classNames[this.state.state] ? this.state.classNames[this.state.state] : '';
+        let styling = this.state.styling[this.state.state] ? this.state.styling[this.state.state] : '';
 
         return (
             <td
                 data-weight={this.state.weight}
-                className={`border border-dark float-left ${classNames}`}
+                className={`border border-dark float-left ${styling}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(e) => this.hover(e)}
             >
