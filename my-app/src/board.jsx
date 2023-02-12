@@ -12,7 +12,6 @@ class Board extends Component {
             start: null,
             end: null
         }
-        window.addEventListener('resize', () => this.updateContent())
     }
 
     setRows(ROWS) {
@@ -63,6 +62,10 @@ class Board extends Component {
     }
 
     componentDidMount() {
+        // When window gets resized, update board
+        window.addEventListener('resize', () => this.updateContent())
+
+        // Update board when initializing
         this.updateContent();
     }
 
