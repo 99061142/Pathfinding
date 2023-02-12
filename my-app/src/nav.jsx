@@ -2,18 +2,6 @@ import { Navbar, Nav, Container, Dropdown, Button, Form, Row } from 'react-boots
 import { Component } from 'react'
 
 class Navigation extends Component {
-    setAlgorithm(event) {
-        console.log(event.target.value);
-    }
-
-    setPencil(event) {
-        console.log(event.target.value);
-    }
-
-    setSpeed(event) {
-        console.log(event.target.value);
-    }
-
     render() {
         return (
             <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
@@ -25,7 +13,7 @@ class Navigation extends Component {
                             <Row>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                                    <Form.Select id="algorithm" onChange={this.setAlgorithm.bind(this)}>
+                                    <Form.Select id="algorithm">
                                         <option value="bfs">BFS</option>
                                         <option value="dfs">DFS</option>
                                         <option value="dijkstra">Dijkstra</option>
@@ -34,7 +22,7 @@ class Navigation extends Component {
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                                    <Form.Select id="pencil" onChange={this.setPencil.bind(this)}>
+                                    <Form.Select id="pencil">
                                         <option value="erase">Erase</option>
                                         <option value="wall">Wall</option>
                                         <option value="weight-5">Weight +5</option>
@@ -43,7 +31,7 @@ class Navigation extends Component {
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                                    <Form.Range id="speed" onChange={this.setSpeed.bind(this)} />
+                                    <Form.Range id="speed" />
                                 </Form.Group>
                                 <Dropdown className="col-12 col-lg-2">
                                     <Dropdown.Toggle id="layout" className="px-3 my-4 w-100" variant="success">
