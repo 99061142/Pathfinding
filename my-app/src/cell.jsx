@@ -17,6 +17,16 @@ class Cell extends Component {
         this.pos = [row, cell]
     }
 
+    componentWillUnmount() {
+        if (this.state.state == "start") {
+            this.props.setStartPos(null);
+            return
+        }
+        if (this.state.state == "end") {
+            this.props.setEndPos(null)
+        }
+    }
+
     setElementState(state) {
         this.setState({
             state: state,
