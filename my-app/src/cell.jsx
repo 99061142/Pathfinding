@@ -56,6 +56,9 @@ class Cell extends Component {
     }
 
     async clicked() {
+        // If the algorithm is running, return
+        if (this.props.running()) { return }
+
         let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
 
         // If the board has no start, add start
@@ -79,6 +82,9 @@ class Cell extends Component {
     }
 
     hover(e) {
+        // If the algorithm is running, return
+        if (this.props.running()) { return }
+
         // If the element is clicked, update element state
         let clicked = e.buttons === 1;
         if (clicked) {
