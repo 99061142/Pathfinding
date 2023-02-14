@@ -23,9 +23,10 @@ class Board extends Component {
                     <tr key={row}>
                         {[...Array(CELLS)].map((_, cell) =>
                             <Cell
+                                key={cell}
                                 row={row}
                                 cell={cell}
-                                key={cell}
+                                running={this.algorithmRunning}
                                 getStartPos={this.getStartPos}
                                 setStartPos={this.setStartPos}
                                 getEndPos={this.getEndPos}
@@ -89,6 +90,11 @@ class Board extends Component {
         this.setState({
             endPos: pos
         })
+    }
+
+    algorithmRunning = () => {
+        let running = this.state.running;
+        return running
     }
 
     render() {
