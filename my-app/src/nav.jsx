@@ -38,7 +38,7 @@ class Navigation extends Component {
                                         Layout
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item>Walls</Dropdown.Item>
+                                        <Dropdown.Item>Random Walls</Dropdown.Item>
                                         <Dropdown.Item>Random weights</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
