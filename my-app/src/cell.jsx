@@ -6,12 +6,7 @@ class Cell extends Component {
     constructor({ row, cell }) {
         super();
         this.state = {
-            styling: {
-                start: 'bg-success',
-                end: 'bg-danger',
-                wall: 'bg-dark',
-            },
-            state: 'empty',
+            state: '',
             weight: 1,
         }
         this.pos = [row, cell]
@@ -48,6 +43,10 @@ class Cell extends Component {
         else if (this.state.state == "end" && pencilValue == "erase") {
             this.props.setEndPos(null);
         }
+
+        if (pencilValue == "erase") {
+            pencilValue = '';
+        }
         this.setElementState(pencilValue);
 
         if (pencilWeight) {
@@ -81,29 +80,28 @@ class Cell extends Component {
         }
     }
 
-    hover(e) {
+    hover(element) {
         // If the algorithm is running, return
         if (this.props.running()) { return }
 
         // If the element is clicked, update element state
-        let clicked = e.buttons === 1;
+        let clicked = element.buttons === 1;
         if (clicked) {
             this.clicked();
         }
     }
 
     render() {
-        let styling = this.state.styling[this.state.state] ? this.state.styling[this.state.state] : '';
         return (
             <td
                 data-weight={this.state.weight}
-                className={`border border-dark float-left ${styling}`}
+                className={`border border-dark ${this.state.state}`}
                 onClick={() => this.clicked()}
-                onMouseEnter={(e) => this.hover(e)}
+                onMouseEnter={(element) => this.hover(element)}
             >
                 {
-                    this.state.state === 'start' ? <FontAwesomeIcon icon={faArrowRight} />
-                        : this.state.state === 'end' ? <FontAwesomeIcon icon={faHouse} />
+                    this.state.state == 'start' ? <FontAwesomeIcon icon={faArrowRight} />
+                        : this.state.state == 'end' ? <FontAwesomeIcon icon={faHouse} />
                             : this.state.state == 'weight' ? <FontAwesomeIcon icon={faWeightHanging} />
                                 : null
                 }
