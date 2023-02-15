@@ -13,9 +13,6 @@ class Board extends Component {
     }
 
     setContent(ROWS, CELLS) {
-        // If the algorithm is running, return
-        if (this.state.running) { return }
-
         // Add the rows and cells to the table to create the board
         this.setState({
             content: <>
@@ -40,6 +37,9 @@ class Board extends Component {
     }
 
     updateContent() {
+        // If the algorithm is running, return
+        if (this.state.running) { return }
+
         // Create the board
         const CELLS = this.getCells();
         const ROWS = this.getRows();
@@ -78,7 +78,7 @@ class Board extends Component {
     setStartPos = pos => {
         this.setState({
             startPos: pos
-        })
+        });
     }
 
     getEndPos = () => {
