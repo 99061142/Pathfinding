@@ -6,3 +6,15 @@ td:has(svg) {
     padding: 0px;
     text-align: center;
 }
+
+.start {
+    background-color: #28a745;
+}
+
+.end {
+    background-color: #dc3545;
+}
+
+.wall {
+    background-color: #343a40;
+}
