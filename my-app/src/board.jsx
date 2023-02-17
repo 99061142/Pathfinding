@@ -5,34 +5,38 @@ class Board extends Component {
     constructor() {
         super();
         this.state = {
-            content: null,
             running: false,
             startPos: null,
             endPos: null,
-        }
+            board: [],
+            rows: 0,
+            cells: 0
+        };
     }
 
     setContent(ROWS, CELLS) {
-        // Add the rows and cells to the table to create the board
+        let board = [];
+        for (let rowIndex = 0; rowIndex <= ROWS; rowIndex++) {
+            board.push([]);
+            for (let cellIndex = 0; cellIndex <= CELLS; cellIndex++) {
+                const CELL = <Cell
+                    key={cellIndex}
+                    row={rowIndex}
+                    cell={cellIndex}
+                    running={this.algorithmRunning}
+                    getStartPos={this.getStartPos}
+                    setStartPos={this.setStartPos}
+                    getEndPos={this.getEndPos}
+                    setEndPos={this.setEndPos}
+                ></Cell>
+                board[rowIndex].push(CELL)
+            }
+        }
+
         this.setState({
-            content: <>
-                {[...Array(ROWS)].map((_, row) =>
-                    <tr key={row}>
-                        {[...Array(CELLS)].map((_, cell) =>
-                            <Cell
-                                key={cell}
-                                row={row}
-                                cell={cell}
-                                running={this.algorithmRunning}
-                                getStartPos={this.getStartPos}
-                                setStartPos={this.setStartPos}
-                                getEndPos={this.getEndPos}
-                                setEndPos={this.setEndPos}
-                            ></Cell>
-                        )}
-                    </tr>
-                )}
-            </>
+            board: board,
+            rows: ROWS,
+            cells: CELLS
         })
     }
 
@@ -51,20 +55,20 @@ class Board extends Component {
         const BOARD = document.getElementById("board");
         const TOP = Math.round(BOARD.getBoundingClientRect().top);
         const MAX_HEIGHT = Math.round(window.innerHeight - TOP);
-        const ROWS = Math.round(MAX_HEIGHT / 28);
+        const ROWS = Math.round(MAX_HEIGHT / 29);
         return ROWS
     }
 
     getCells() {
         // Get the amount of cells by the max width of the element divided by the cell width
         const MAX_WIDTH = Math.round(window.innerWidth);
-        const CELLS = Math.round(MAX_WIDTH / 28);
+        const CELLS = Math.round(MAX_WIDTH / 29);
         return CELLS
     }
 
     componentDidMount() {
         // When window gets resized, update board
-        window.addEventListener('resize', () => this.updateContent())
+        window.addEventListener('resize', () => this.updateContent());
 
         // Update board when initializing
         this.updateContent();
@@ -89,7 +93,7 @@ class Board extends Component {
     setEndPos = pos => {
         this.setState({
             endPos: pos
-        })
+        });
     }
 
     algorithmRunning = () => {
@@ -101,7 +105,13 @@ class Board extends Component {
         return (
             <table id="board" className="my-2 d-flex justify-content-center" >
                 <tbody>
-                    {this.state.content}
+                    {[...Array(this.state.rows)].map((_, row) =>
+                        <tr key={row}>
+                            {[...Array(this.state.cells)].map((_, cell) =>
+                                this.state.board[row][cell]
+                            )}
+                        </tr>
+                    )}
                 </tbody>
             </table>
         );
