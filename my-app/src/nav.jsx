@@ -12,8 +12,7 @@ class Navigation extends Board {
             algorithm: {
                 weighted: true,
                 name: "a*"
-            },
-            pencil: "wall"
+            }
         };
         this.pencilElement = createRef();
     }
@@ -38,15 +37,8 @@ class Navigation extends Board {
         // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall"
         const PENCIL_ELEMENT = this.pencilElement.current
         if (!IS_WEIGHTED && PENCIL_ELEMENT.value.includes("weight")) {
-            PENCIL_ELEMENT.value = "wall"
-            this.setPencil("wall");
+            PENCIL_ELEMENT.value = "wall";
         }
-    }
-
-    setPencil(value) {
-        this.setState({
-            pencil: value
-        });
     }
 
     run() {
@@ -86,7 +78,7 @@ class Navigation extends Board {
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                                    <Form.Select ref={this.pencilElement} id="pencil" defaultValue={this.state.pencil} onChange={(element) => this.setPencil(element.target.value)}>
+                                    <Form.Select ref={this.pencilElement} id="pencil" defaultValue="wall">
                                         <option value="erase">Erase</option>
                                         <option value="wall">Wall</option>
                                         <option value="weight-5" disabled={!this.state.algorithm.weighted}>Weight +5</option>
