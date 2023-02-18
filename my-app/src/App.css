@@ -22,3 +22,7 @@
 .wall {
     background-color: #343a40;
 }
+
+.visited {
+    background-color: lightskyblue;
+}
