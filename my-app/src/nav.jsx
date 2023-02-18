@@ -8,34 +8,40 @@ class Navigation extends Board {
         this.state = {
             ...this.state,
             speed: 50,
-            algorithm: "a*",
+            algorithm: {
+                weighted: true,
+                name: "a*"
+            },
             pencil: "wall"
         };
     }
 
-    setSpeed(element) {
-        const VAL = Number(element.target.value);
+    setSpeed(value) {
+        value = Number(value);
         this.setState({
-            speed: VAL
+            speed: value
         });
     }
 
-    setAlgorithm(element) {
-        const VAL = element.target.value;
+    setAlgorithm(value) {
+        const WEIGHTED_ALGORITHMS = ['a*', 'dijkstra']
+        const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(value)
         this.setState({
-            algorithm: VAL
+            algorithm: {
+                weighted: IS_WEIGHTED,
+                name: value
+            }
         })
     }
 
-    setPencil(element) {
-        const VAL = element.target.value;
+    setPencil(value) {
         this.setState({
-            pencil: VAL
-        })
+            pencil: value
+        });
     }
 
     run() {
-        const ALGORITHM = this.state.algorithm
+        const ALGORITHM = this.state.algorithm.name
         const STATES = {
             board: this.state.board,
             start: this.state.startPos,
@@ -46,7 +52,7 @@ class Navigation extends Board {
             new Bfs(STATES);
             return;
         }
-        throw Error(`ALGORITHM "${ALGORITHM}" not found.`)
+        throw Error(`algorithm "${ALGORITHM}" not found.`)
     }
 
     render() {
@@ -60,7 +66,7 @@ class Navigation extends Board {
                             <Row>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                                    <Form.Select id="algorithm" defaultValue={this.state.algorithm} onChange={(element) => this.setAlgorithm(element)}>
+                                    <Form.Select id="algorithm" defaultValue={this.state.algorithm.name} onChange={(element) => this.setAlgorithm(element.target.value)}>
                                         <option value="bfs">BFS</option>
                                         <option value="dfs">DFS</option>
                                         <option value="dijkstra">Dijkstra</option>
@@ -69,16 +75,16 @@ class Navigation extends Board {
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                                    <Form.Select id="pencil" defaultValue={this.state.pencil} onChange={(element) => this.setPencil(element)}>
+                                    <Form.Select id="pencil" defaultValue={this.state.pencil} onChange={(element) => this.setPencil(element.target.value)}>
                                         <option value="erase">Erase</option>
                                         <option value="wall">Wall</option>
-                                        <option value="weight-5">Weight +5</option>
-                                        <option value="weight-10">Weight +10</option>
+                                        <option value="weight-5" disabled={!this.state.algorithm.weighted}>Weight +5</option>
+                                        <option value="weight-10" disabled={!this.state.algorithm.weighted}>Weight +10</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                                    <Form.Range id="speed" value={this.state.speed} onChange={(element) => this.setSpeed(element)} />
+                                    <Form.Range id="speed" value={this.state.speed} onChange={(element) => this.setSpeed(element.target.value)} />
                                 </Form.Group>
                                 <Dropdown className="col-12 col-lg-2">
                                     <Dropdown.Toggle id="layout" className="px-3 my-4 w-100" variant="success">
@@ -86,9 +92,9 @@ class Navigation extends Board {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item>Random Walls</Dropdown.Item>
-                                        <Dropdown.Item>Random weights</Dropdown.Item>
+                                        <Dropdown.Item disabled={!this.state.algorithm.weighted}>Random weights</Dropdown.Item>
                                     </Dropdown.Menu >
-                                </Dropdown >
+                                </Dropdown>
                                 <Dropdown className="col-12 col-lg-2">
                                     <Dropdown.Toggle id="clear" className="px-3 my-4 w-100" variant="success">
                                         Clear
@@ -101,12 +107,12 @@ class Navigation extends Board {
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 <Button className="col-12 col-lg-2 px-5 my-4" variant={this.state.running || !this.state.startPos || !this.state.endPos ? "danger" : "success"} onClick={() => this.run()}>Run</Button>
-                            </Row >
-                        </Nav >
-                    </Navbar.Collapse >
-                </Container >
-            </Navbar >
-        )
+                            </Row>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        );
     }
 }
 
