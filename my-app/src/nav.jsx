@@ -48,11 +48,13 @@ class Navigation extends Board {
             end: this.state.endPos,
             speed: this.state.speed
         }
-        if (ALGORITHM == "bfs") {
-            new Bfs(STATES);
-            return;
+        switch (ALGORITHM) {
+            case "bfs":
+                new Bfs(STATES);
+                break
+            default:
+                throw Error(`algorithm "${ALGORITHM}" not found.`)
         }
-        throw Error(`algorithm "${ALGORITHM}" not found.`)
     }
 
     render() {
