@@ -95,7 +95,7 @@ class Cell extends Component {
         return (
             <td
                 data-weight={this.state.weight}
-                className={`border border-dark ${this.state.state}`}
+                className={`border border-dark cell ${this.state.state}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(element) => this.hover(element)}
             >
