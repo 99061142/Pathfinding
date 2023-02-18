@@ -37,8 +37,10 @@ class Navigation extends Board {
 
         // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall"
         const PENCIL_ELEMENT = this.pencilElement.current
-        if (!IS_WEIGHTED && PENCIL_ELEMENT.value.includes("weight"))
+        if (!IS_WEIGHTED && PENCIL_ELEMENT.value.includes("weight")) {
             PENCIL_ELEMENT.value = "wall"
+            this.setPencil("wall");
+        }
     }
 
     setPencil(value) {
