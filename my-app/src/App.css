@@ -1,8 +1,12 @@
-td {
+.cellInformation .cell {
+    max-width: 24px;
+}
+
+.cell {
     padding: 12px;
 }
 
-td:has(svg) {
+.cell:has(svg) {
     padding: 0px;
     text-align: center;
 }
