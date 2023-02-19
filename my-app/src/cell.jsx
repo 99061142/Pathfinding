@@ -19,6 +19,7 @@ class Cell extends Component {
         }
         if (this.state.state == "end") {
             this.props.setEndPos(null)
+            return
         }
     }
 
