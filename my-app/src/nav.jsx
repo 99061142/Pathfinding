@@ -14,7 +14,7 @@ class Navigation extends Board {
                 name: "a*"
             }
         };
-        this.pencilElement = createRef();
+        this.pencil = createRef();
     }
 
     setSpeed(value) {
@@ -25,8 +25,8 @@ class Navigation extends Board {
     }
 
     setAlgorithm(value) {
-        const WEIGHTED_ALGORITHMS = ['a*', 'dijkstra']
-        const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(value)
+        const WEIGHTED_ALGORITHMS = ['a*', 'dijkstra'];
+        const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(value);
         this.setState({
             algorithm: {
                 weighted: IS_WEIGHTED,
@@ -35,7 +35,7 @@ class Navigation extends Board {
         });
 
         // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall"
-        const PENCIL_ELEMENT = this.pencilElement.current
+        const PENCIL_ELEMENT = this.pencil.current;
         if (!IS_WEIGHTED && PENCIL_ELEMENT.value.includes("weight")) {
             PENCIL_ELEMENT.value = "wall";
         }
@@ -54,7 +54,7 @@ class Navigation extends Board {
                 new Bfs(STATES);
                 break
             default:
-                throw Error(`algorithm "${ALGORITHM}" not found.`)
+                throw Error(`algorithm "${ALGORITHM}" not found.`);
         }
     }
 
@@ -78,7 +78,7 @@ class Navigation extends Board {
                                 </Form.Group>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                                    <Form.Select ref={this.pencilElement} id="pencil" defaultValue="wall">
+                                    <Form.Select ref={this.pencil} id="pencil" defaultValue="wall">
                                         <option value="erase">Erase</option>
                                         <option value="wall">Wall</option>
                                         <option value="weight-5" disabled={!this.state.algorithm.weighted}>Weight +5</option>
