@@ -70,7 +70,7 @@ class Navigation extends Board {
                             <Row>
                                 <Form.Group className="col-12 col-lg-2">
                                     <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                                    <Form.Select id="algorithm" defaultValue={this.state.algorithm.name} onChange={(element) => this.setAlgorithm(element.target.value)}>
+                                    <Form.Select id="algorithm" defaultValue={this.state.algorithm.name} onChange={(element) => this.setAlgorithm(element.target.value)} disabled={this.props.running}>
                                         <option value="bfs">BFS</option>
                                         <option value="dfs">DFS</option>
                                         <option value="dijkstra">Dijkstra</option>
@@ -91,7 +91,7 @@ class Navigation extends Board {
                                     <Form.Range id="speed" value={this.state.speed} onChange={(element) => this.setSpeed(element.target.value)} />
                                 </Form.Group>
                                 <Dropdown className="col-12 col-lg-2">
-                                    <Dropdown.Toggle id="layout" className="px-3 my-4 w-100" variant="success">
+                                    <Dropdown.Toggle id="layout" className="px-3 my-4 w-100" variant={this.props.running ? "danger" : "success"} disabled={this.props.running}>
                                         Layout
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
@@ -100,7 +100,7 @@ class Navigation extends Board {
                                     </Dropdown.Menu >
                                 </Dropdown>
                                 <Dropdown className="col-12 col-lg-2">
-                                    <Dropdown.Toggle id="clear" className="px-3 my-4 w-100" variant="success">
+                                    <Dropdown.Toggle id="clear" className="px-3 my-4 w-100" variant={this.props.running ? "danger" : "success"} disabled={this.props.running}>
                                         Clear
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
@@ -115,7 +115,7 @@ class Navigation extends Board {
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
-            </Navbar>
+            </Navbar >
         );
     }
 }
