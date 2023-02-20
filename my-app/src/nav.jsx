@@ -10,8 +10,8 @@ class Navigation extends Board {
             ...this.state,
             speed: 50,
             algorithm: {
-                weighted: true,
-                name: "a*"
+                weighted: false,
+                name: "bfs"
             }
         };
         this.pencil = createRef();
@@ -44,9 +44,9 @@ class Navigation extends Board {
     run() {
         const ALGORITHM = this.state.algorithm.name
         const STATES = {
-            board: this.state.board,
-            start: this.state.startPos,
-            end: this.state.endPos,
+            start: this.props.startPos,
+            end: this.props.endPos,
+            board: this.props.board,
             speed: this.state.speed
         }
         switch (ALGORITHM) {
@@ -59,6 +59,7 @@ class Navigation extends Board {
     }
 
     render() {
+        const RUN_DISABLED = this.props.running || !this.props.startPos || !this.props.endPos;
         return (
             <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
                 <Container fluid>
@@ -94,7 +95,7 @@ class Navigation extends Board {
                                         Layout
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item>Random Walls</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.randomWalls()}>Random Walls</Dropdown.Item>
                                         <Dropdown.Item disabled={!this.state.algorithm.weighted}>Random weights</Dropdown.Item>
                                     </Dropdown.Menu >
                                 </Dropdown>
@@ -109,7 +110,7 @@ class Navigation extends Board {
                                         <Dropdown.Item>All</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
-                                <Button className="col-12 col-lg-2 px-5 my-4" variant={this.state.running || !this.state.startPos || !this.state.endPos ? "danger" : "success"} onClick={() => this.run()}>Run</Button>
+                                <Button className="col-12 col-lg-2 px-5 my-4" variant={RUN_DISABLED ? "danger" : "success"} disabled={RUN_DISABLED} onClick={() => this.run()}>Run</Button>
                             </Row>
                         </Nav>
                     </Navbar.Collapse>
