@@ -6,26 +6,26 @@ class Cell extends Component {
     constructor({ row, cell }) {
         super();
         this.state = {
-            state: '',
+            name: '',
             weight: 1,
         }
         this.pos = [row, cell]
     }
 
     componentWillUnmount() {
-        if (this.state.state == "start") {
+        if (this.state.name == "start") {
             this.props.setStartPos(null);
             return
         }
-        if (this.state.state == "end") {
+        if (this.state.name == "end") {
             this.props.setEndPos(null);
             return
         }
     }
 
-    setElementState(state) {
+    setName(name) {
         this.setState({
-            state: state,
+            name: name,
         });
     }
 
@@ -38,17 +38,17 @@ class Cell extends Component {
     addState(pencilValue, pencilWeight) {
         /* Update the state of the element by the pencil value, or set the state to start/end (max 1 on the board).
         When the pencil has an weight value, set the weight (number behind the '-') as dataset weight. */
-        if (this.state.state == "start" && pencilValue == "erase") {
+        if (this.state.name == "start" && pencilValue == "erase") {
             this.props.setStartPos(null);
         }
-        else if (this.state.state == "end" && pencilValue == "erase") {
+        else if (this.state.name == "end" && pencilValue == "erase") {
             this.props.setEndPos(null);
         }
 
         if (pencilValue == "erase") {
             pencilValue = '';
         }
-        this.setElementState(pencilValue);
+        this.setName(pencilValue);
 
         if (pencilWeight) {
             this.setWeight(pencilWeight);
@@ -63,20 +63,20 @@ class Cell extends Component {
 
         // If the board has no start, add start
         if (!this.props.startPos && pencilValue != "erase") {
-            this.setElementState('start');
+            this.setName('start');
             this.props.setStartPos(this.pos);
             return
         }
 
         // If the board has no end, add end
         if (!this.props.endPos && pencilValue != "erase") {
-            this.setElementState('end');
+            this.setName('end');
             this.props.setEndPos(this.pos);
             return
         }
 
         // Add pencil state when the cell isn't the start or end or the pencil is erase
-        if (this.state.state != "start" && this.state.state != "end" || pencilValue == "erase") {
+        if (this.state.name != "start" && this.state.name != "end" || pencilValue == "erase") {
             this.addState(pencilValue, pencilWeight);
         }
     }
@@ -96,14 +96,14 @@ class Cell extends Component {
         return (
             <td
                 data-weight={this.state.weight}
-                className={`border border-dark cell ${this.state.state}`}
+                className={`border border-dark cell ${this.state.name}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(element) => this.hover(element)}
             >
                 {
-                    this.state.state == 'start' ? <FontAwesomeIcon icon={faArrowRight} />
-                        : this.state.state == 'end' ? <FontAwesomeIcon icon={faHouse} />
-                            : this.state.state == 'weight' ? <FontAwesomeIcon icon={faWeightHanging} />
+                    this.state.name == 'start' ? <FontAwesomeIcon icon={faArrowRight} />
+                        : this.state.name == 'end' ? <FontAwesomeIcon icon={faHouse} />
+                            : this.state.name == 'weight' ? <FontAwesomeIcon icon={faWeightHanging} />
                                 : null
                 }
             </td >
