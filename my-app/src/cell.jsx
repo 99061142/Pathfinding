@@ -18,7 +18,7 @@ class Cell extends Component {
             return
         }
         if (this.state.state == "end") {
-            this.props.setEndPos(null)
+            this.props.setEndPos(null);
             return
         }
     }
@@ -57,19 +57,19 @@ class Cell extends Component {
 
     async clicked() {
         // If the algorithm is running, return
-        if (this.props.running()) { return }
+        if (this.props.running) { return }
 
         let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
 
         // If the board has no start, add start
-        if (!this.props.getStartPos() && pencilValue != "erase") {
+        if (!this.props.startPos && pencilValue != "erase") {
             this.setElementState('start');
             this.props.setStartPos(this.pos);
             return
         }
 
         // If the board has no end, add end
-        if (!this.props.getEndPos() && pencilValue != "erase") {
+        if (!this.props.endPos && pencilValue != "erase") {
             this.setElementState('end');
             this.props.setEndPos(this.pos);
             return
@@ -83,7 +83,7 @@ class Cell extends Component {
 
     hover(element) {
         // If the algorithm is running, return
-        if (this.props.running()) { return }
+        if (this.props.running) { return }
 
         // If the element is clicked, update element state
         let clicked = element.buttons === 1;
