@@ -51,9 +51,18 @@ class Board extends Component {
             for (let [cellIndex, cellData] of row.entries()) {
                 let random = Math.random();
                 if (random <= .3) {
+                    let data = {
+                        name
+                    };
+
+                    // Get random weight from 0 - 100 when random weights are created
+                    if (name === "weight") {
+                        data.weight = Math.floor(Math.random() * 100);
+                    }
+
                     let cellName = cellData.name;
                     if (cellName === 'start' || cellName === "end") { continue }
-                    this.props.setCellData({ name }, rowIndex, cellIndex)
+                    this.props.setCellData(data, rowIndex, cellIndex)
                 }
             }
         }
