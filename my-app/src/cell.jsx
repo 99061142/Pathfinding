@@ -1,83 +1,33 @@
 import { Component } from "react";
 import { faArrowRight, faHouse, faWeightHanging } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { createRef } from "react";
 
 class Cell extends Component {
     constructor({ row, cell }) {
         super();
-        this.state = {
-            name: '',
-            weight: 1,
-        }
-        this.pos = [row, cell]
+        this.row = row;
+        this.cell = cell;
+        this.element = createRef();
     }
 
-    componentWillUnmount() {
-        if (this.state.name == "start") {
-            this.props.setStartPos(null);
-            return
-        }
-        if (this.state.name == "end") {
-            this.props.setEndPos(null);
-            return
-        }
-    }
-
-    setName(name) {
-        this.setState({
-            name: name,
-        });
-    }
-
-    setWeight(weight) {
-        this.setState({
-            weight: weight
-        });
-    }
-
-    addState(pencilValue, pencilWeight) {
-        /* Update the state of the element by the pencil value, or set the state to start/end (max 1 on the board).
-        When the pencil has an weight value, set the weight (number behind the '-') as dataset weight. */
-        if (this.state.name == "start" && pencilValue == "erase") {
-            this.props.setStartPos(null);
-        }
-        else if (this.state.name == "end" && pencilValue == "erase") {
-            this.props.setEndPos(null);
-        }
-
-        if (pencilValue == "erase") {
-            pencilValue = '';
-        }
-        this.setName(pencilValue);
-
-        if (pencilWeight) {
-            this.setWeight(pencilWeight);
-        }
+    addState() {
+        /* Update the state of the element by the pencil value.
+        When the pencil has an weight value, set the weight as dataset weight. */
+        let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
+        pencilWeight = pencilWeight !== undefined ? pencilWeight : this.element.current.dataset.weight;
+        this.props.setCellName(pencilValue, pencilWeight, this.row, this.cell);
     }
 
     async clicked() {
         // If the algorithm is running, return
-        if (this.props.running) { return }
+        if (this.props.runnin) { return }
 
-        let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
-
-        // If the board has no start, add start
-        if (!this.props.startPos && pencilValue != "erase") {
-            this.setName('start');
-            this.props.setStartPos(this.pos);
-            return
-        }
-
-        // If the board has no end, add end
-        if (!this.props.endPos && pencilValue != "erase") {
-            this.setName('end');
-            this.props.setEndPos(this.pos);
-            return
-        }
-
-        // Add pencil state when the cell isn't the start or end or the pencil is erase
-        if (this.state.name != "start" && this.state.name != "end" || pencilValue == "erase") {
-            this.addState(pencilValue, pencilWeight);
+        // Add pencil state when the cell isn't the start or end position
+        let cellData = this.props.board[this.row][this.cell];
+        let name = cellData.name;
+        if (name !== "start" && name !== "end") {
+            this.addState();
         }
     }
 
@@ -93,20 +43,24 @@ class Cell extends Component {
     }
 
     render() {
+        let cellData = this.props.board[this.row][this.cell];
+        let name = cellData.name;
+        let weight = cellData.weight;
         return (
             <td
-                data-weight={this.state.weight}
-                className={`border border-dark cell ${this.state.name}`}
+                ref={this.element}
+                data-weight={weight ? weight : 1}
+                className={`border border-dark cell ${name ? name : ''}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(element) => this.hover(element)}
             >
                 {
-                    this.state.name == 'start' ? <FontAwesomeIcon icon={faArrowRight} />
-                        : this.state.name == 'end' ? <FontAwesomeIcon icon={faHouse} />
-                            : this.state.name == 'weight' ? <FontAwesomeIcon icon={faWeightHanging} />
+                    name === "start" ? <FontAwesomeIcon icon={faArrowRight} />
+                        : name === "end" ? <FontAwesomeIcon icon={faHouse} />
+                            : name === "weight" ? <FontAwesomeIcon icon={faWeightHanging} />
                                 : null
                 }
-            </td >
+            </td>
         );
     }
 }
