@@ -45,6 +45,18 @@ class Board extends Component {
     }
 
     randomWalls() {
+        let board = this.props.board
+        for (let [rowIndex, row] of board.entries()) {
+            for (let [cellIndex, cellData] of row.entries()) {
+                let random = Math.random();
+                if (random <= .3) {
+                    let data = { name: 'wall' };
+                    let cellName = cellData.name;
+                    if (cellName === 'start' || cellName === "end") { continue }
+                    this.props.setCellData(data, rowIndex, cellIndex)
+                }
+            }
+        }
     }
 
     render() {
@@ -64,7 +76,7 @@ class Board extends Component {
                                     setStartPos={this.props.setStartPos}
                                     endPos={this.props.endPos}
                                     setEndPos={this.props.setEndPos}
-                                    setCellName={this.props.setCellName}
+                                    setCellData={this.props.setCellData}
                                 />
                             )}
                         </tr>
