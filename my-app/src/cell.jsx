@@ -13,18 +13,21 @@ class Cell extends Component {
 
     componentDidMount() {
         const ELEMENT = this.element.current;
-        const NAME = ELEMENT.dataset.name;
-        const WEIGHT = Number(ELEMENT.dataset.weight);
-        this.props.setCellName(NAME, WEIGHT, this.row, this.cell);
+        const DATA = { ...ELEMENT.dataset };
+        this.props.setCellData(DATA, this.row, this.cell);
     }
 
     addState() {
         /* Update the state of the element by the pencil value.
         When the pencil has an weight value, set the weight as dataset weight. */
         let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
-        pencilWeight = pencilWeight !== undefined ? pencilWeight : this.element.current.dataset.weight;
-        pencilWeight = Number(pencilWeight);
-        this.props.setCellName(pencilValue, pencilWeight, this.row, this.cell);
+        let data = {
+            name: pencilValue
+        };
+        if (pencilWeight) {
+            data.weight = pencilWeight;
+        }
+        this.props.setCellData(data, this.row, this.cell);
     }
 
     async clicked() {
@@ -57,8 +60,8 @@ class Cell extends Component {
         return (
             <td
                 ref={this.element}
-                data-name={name ? name : ''}
-                data-weight={weight ? weight : 1}
+                data-name={name ? name : null}
+                data-weight={weight ? weight : null}
                 className={`border border-dark cell ${name ? name : ''}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(element) => this.hover(element)}
