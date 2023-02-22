@@ -45,9 +45,12 @@ class App extends Component {
         });
     }
 
-    setCellName = (name, row, cell) => {
+    setCellName = (name, weight, row, cell) => {
         let board = [...this.state.board];
-        board[row][cell] = name;
+        board[row][cell] = {
+            name: name,
+            weight: weight
+        }
         this.setBoard(board);
     }
 
