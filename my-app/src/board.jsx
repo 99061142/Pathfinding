@@ -68,6 +68,24 @@ class Board extends Component {
         }
     }
 
+    clearCells(names) {
+        let deleteAll = names === "all";
+        let namesList = names.split(',');
+        let board = this.props.board;
+        for (let [rowIndex, row] of board.entries()) {
+            for (let [cellIndex, cellData] of row.entries()) {
+                let cellName = cellData.name;
+                let data = {
+                    name: null,
+                    weight: null
+                };
+                if (deleteAll || namesList.includes(cellName)) {
+                    this.props.setCellData(data, rowIndex, cellIndex);
+                }
+            }
+        }
+    }
+
     render() {
         return (
             <table id="board" className="my-2 d-flex justify-content-center" >
