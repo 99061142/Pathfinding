@@ -17,40 +17,36 @@ class App extends Component {
 
     setBoard = board => {
         this.setState({
-            board: board
+            board
         });
     }
 
-    setEndPos = pos => {
+    setEndPos = (row, cell) => {
+        const POS = [row, cell]
         this.setState({
-            endPos: pos
+            endPos: POS
         });
     }
 
-    setStartPos = pos => {
+    setStartPos = (row, cell) => {
+        const POS = [row, cell]
         this.setState({
-            startPos: pos,
+            startPos: POS,
         });
     }
 
     setRunning = bool => {
         this.setState({
-            startPos: bool,
-        });
-    }
-
-    setBoard = board => {
-        this.setState({
-            board: board
+            running: bool,
         });
     }
 
     setCellName = (name, weight, row, cell) => {
         let board = [...this.state.board];
         board[row][cell] = {
-            name: name,
-            weight: weight
-        }
+            name,
+            weight
+        };
         this.setBoard(board);
     }
 
@@ -65,7 +61,7 @@ class App extends Component {
             setRunning: this.setRunning,
             setBoard: this.setBoard,
             setCellName: this.setCellName
-        }
+        };
         return (
             <>
                 <Navigation {...PROPS} />
