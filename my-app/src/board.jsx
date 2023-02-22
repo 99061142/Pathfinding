@@ -8,10 +8,7 @@ class Board extends Component {
         for (let row = 0; row < ROWS; row++) {
             board.push([]);
             for (let cell = 0; cell < CELLS; cell++) {
-                board[row].push({
-                    name: null,
-                    weight: null
-                });
+                board[row].push({});
             }
         }
         this.props.setBoard(board);
