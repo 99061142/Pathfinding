@@ -21,7 +21,17 @@ class Cell extends Component {
         /* Update the state of the element by the pencil value.
         When the pencil has an weight value, set the weight as dataset weight. */
         let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
-        let data = {
+        let data
+        if (pencilValue === "erase") {
+            data = {
+                name: null,
+                weight: null
+            };
+            this.props.setCellData(data, this.row, this.cell);
+            return
+        }
+
+        data = {
             name: pencilValue
         };
         if (pencilWeight) {
