@@ -49,6 +49,7 @@ class App extends Component {
                 newData[key] = Number(val)
             }
         }
+
         // Update board with the values that were changed inside the newData parameter
         let board = [...this.state.board];
         let oldData = board[row][cell];
