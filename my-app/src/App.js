@@ -41,12 +41,19 @@ class App extends Component {
         });
     }
 
-    setCellName = (name, weight, row, cell) => {
+    setCellData = (newData, row, cell) => {
+        // When an data value can be a number, set it to a number
+        for (let key in newData) {
+            let val = newData[key]
+            if(!isNaN(val) && val !== '') { 
+                newData[key] = Number(val)
+            }
+        }
+        // Update board with the values that were changed inside the newData parameter
         let board = [...this.state.board];
-        board[row][cell] = {
-            name,
-            weight
-        };
+        let oldData = board[row][cell];
+        newData = Object.assign({}, oldData, newData);
+        board[row][cell] = newData;
         this.setBoard(board);
     }
 
@@ -60,7 +67,7 @@ class App extends Component {
             setEndPos: this.setEndPos,
             setRunning: this.setRunning,
             setBoard: this.setBoard,
-            setCellName: this.setCellName
+            setCellData: this.setCellData
         };
         return (
             <>
