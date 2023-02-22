@@ -20,7 +20,8 @@ function CellInformation() {
                 </Col>
                 <Col xs={4} sm={3} md="auto" className="my-3">
                     <div className="border border-dark weight cell mx-auto">
-                        <FontAwesomeIcon icon={faWeightHanging} /></div>
+                        <FontAwesomeIcon icon={faWeightHanging} />
+                    </div>
                     <p>Weight</p>
                 </Col>
                 <Col xs={4} sm={3} md="auto" className="my-3">
