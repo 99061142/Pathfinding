@@ -44,16 +44,16 @@ class Board extends Component {
         this.updateContent();
     }
 
-    randomWalls() {
+    randomCells(name) {
+        // Set a cell name as parameter name when the random % is lower than .3
         let board = this.props.board
         for (let [rowIndex, row] of board.entries()) {
             for (let [cellIndex, cellData] of row.entries()) {
                 let random = Math.random();
                 if (random <= .3) {
-                    let data = { name: 'wall' };
                     let cellName = cellData.name;
                     if (cellName === 'start' || cellName === "end") { continue }
-                    this.props.setCellData(data, rowIndex, cellIndex)
+                    this.props.setCellData({ name }, rowIndex, cellIndex)
                 }
             }
         }
