@@ -105,10 +105,10 @@ class Navigation extends Board {
                                         Clear
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item>Walls</Dropdown.Item>
-                                        <Dropdown.Item>Weights</Dropdown.Item>
-                                        <Dropdown.Item>Path</Dropdown.Item>
-                                        <Dropdown.Item>All</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.clearCells('wall')}>Walls</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.clearCells('weight')}>Weights</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.clearCells('visited, next, fastest')}>Path</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.clearCells('all')}>All</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 <Button className="col-12 col-lg-2 px-5 my-4" variant={RUN_DISABLED ? "danger" : "success"} disabled={RUN_DISABLED} onClick={() => this.run()}>Run</Button>
