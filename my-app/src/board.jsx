@@ -2,24 +2,24 @@ import { Component } from "react";
 import Cell from './cell'
 
 class Board extends Component {
-    constructor() {
-        super();
-        this.state = {
-            rows: 0,
-            cells: 0,
-        };
-    }
-
     setContent(ROWS, CELLS) {
-        this.setState({
-            rows: ROWS,
-            cells: CELLS
-        })
+        // Create / set the board, and add the start and end position
+        let board = [];
+        for (let row = 0; row < ROWS; row++) {
+            board.push([]);
+            for (let cell = 0; cell < CELLS; cell++) {
+                board[row].push({
+                    name: null,
+                    weight: null
+                });
+            }
+        }
+        this.props.setBoard(board);
     }
 
     updateContent() {
         // If the algorithm is running, return
-        if (this.state.running) { return }
+        if (this.props.running) { return }
 
         // Create the board
         const CELLS = this.getCells();
@@ -44,21 +44,21 @@ class Board extends Component {
     }
 
     componentDidMount() {
-        // When window gets resized, update board
-        window.addEventListener('resize', () => this.updateContent());
-
-        // Update board when initializing
         this.updateContent();
+    }
+
+    randomWalls() {
     }
 
     render() {
         return (
             <table id="board" className="my-2 d-flex justify-content-center" >
                 <tbody>
-                    {[...Array(this.state.rows)].map((_, rowIndex) =>
+                    {this.props.board.map((_, rowIndex) =>
                         <tr key={rowIndex}>
-                            {[...Array(this.state.cells)].map((_, cellIndex) =>
+                            {this.props.board[rowIndex].map((_, cellIndex) =>
                                 <Cell
+                                    board={this.props.board}
                                     key={cellIndex}
                                     row={rowIndex}
                                     cell={cellIndex}
@@ -67,12 +67,13 @@ class Board extends Component {
                                     setStartPos={this.props.setStartPos}
                                     endPos={this.props.endPos}
                                     setEndPos={this.props.setEndPos}
+                                    setCellName={this.props.setCellName}
                                 />
                             )}
                         </tr>
                     )}
                 </tbody>
-            </table >
+            </table>
         );
     }
 }
