@@ -94,16 +94,10 @@ class Board extends Component {
                         <tr key={rowIndex}>
                             {this.props.board[rowIndex].map((_, cellIndex) =>
                                 <Cell
-                                    board={this.props.board}
-                                    key={cellIndex}
                                     row={rowIndex}
                                     cell={cellIndex}
-                                    running={this.props.running}
-                                    startPos={this.props.startPos}
-                                    setStartPos={this.props.setStartPos}
-                                    endPos={this.props.endPos}
-                                    setEndPos={this.props.setEndPos}
-                                    setCellData={this.props.setCellData}
+                                    key={cellIndex}
+                                    {...this.props}
                                 />
                             )}
                         </tr>
