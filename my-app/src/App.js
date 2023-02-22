@@ -15,6 +15,12 @@ class App extends Component {
         };
     }
 
+    setBoard = board => {
+        this.setState({
+            board: board
+        });
+    }
+
     setEndPos = pos => {
         this.setState({
             endPos: pos
@@ -33,28 +39,35 @@ class App extends Component {
         });
     }
 
+    setBoard = board => {
+        this.setState({
+            board: board
+        });
+    }
+
+    setCellName = (name, row, cell) => {
+        let board = [...this.state.board];
+        board[row][cell] = name;
+        this.setBoard(board);
+    }
+
     render() {
+        const PROPS = {
+            running: this.state.running,
+            board: this.state.board,
+            startPos: this.state.startPos,
+            endPos: this.state.endPos,
+            setStartPos: this.setStartPos,
+            setEndPos: this.setEndPos,
+            setRunning: this.setRunning,
+            setBoard: this.setBoard,
+            setCellName: this.setCellName
+        }
         return (
             <>
-                <Navigation 
-                    running={this.state.running}
-                    board={this.state.board}
-                    startPos={this.state.startPos} 
-                    endPos={this.state.endPos} 
-                    setStartPos={this.setStartPos} 
-                    setEndPos={this.setEndPos}
-                    setRunning={this.setRunning}
-                />
+                <Navigation {...PROPS} />
                 <CellInformation />
-                <Board
-                    running={this.state.running}
-                    board={this.state.board}
-                    startPos={this.state.startPos} 
-                    endPos={this.state.endPos} 
-                    setStartPos={this.setStartPos} 
-                    setEndPos={this.setEndPos}
-                    setRunning={this.setRunning}
-                />
+                <Board {...PROPS} />
             </>
         );
     }
