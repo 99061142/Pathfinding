@@ -96,7 +96,7 @@ class Navigation extends Board {
                                         Layout
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                        <Dropdown.Item onClick={() => this.randomWalls()}>Random Walls</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.randomCells('wall')}>Random Walls</Dropdown.Item>
                                         <Dropdown.Item disabled={!this.state.algorithm.weighted}>Random weights</Dropdown.Item>
                                     </Dropdown.Menu >
                                 </Dropdown>
