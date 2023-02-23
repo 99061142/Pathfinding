@@ -49,7 +49,7 @@ class Navigation extends Board {
             end: this.props.endPos,
             board: this.props.board,
             speed: this.state.speed,
-            setCellName: this.props.setCellName
+            setCellData: this.props.setCellData
         }
         switch (ALGORITHM) {
             case "bfs":
