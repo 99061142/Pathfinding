@@ -154,14 +154,4 @@ class AStar extends Algorithm {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 export default AStar;
