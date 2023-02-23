@@ -56,6 +56,15 @@ class App extends Component {
         newData = Object.assign({}, oldData, newData);
         board[row][cell] = newData;
         this.setBoard(board);
+
+        if(newData.name === "start") {
+            this.setStartPos(row, cell);
+            return
+        }
+        if(newData.name === "end") {
+            this.setEndPos(row, cell);
+            return
+        }
     }
 
     render() {
