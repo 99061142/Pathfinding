@@ -101,7 +101,7 @@ class Cell extends Component {
                 {
                     name === "start" ? <FontAwesomeIcon icon={faArrowRight} />
                         : name === "end" ? <FontAwesomeIcon icon={faHouse} />
-                            : name === "weight" ? <FontAwesomeIcon icon={faWeightHanging} />
+                            : weight > 1 ? <FontAwesomeIcon icon={faWeightHanging} />
                                 : null
                 }
             </td>
