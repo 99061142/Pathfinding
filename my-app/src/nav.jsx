@@ -1,9 +1,10 @@
 import { Navbar, Nav, Container, Dropdown, Button, Form, Row } from 'react-bootstrap'
+import { createRef } from 'react';
 import Board from './board';
 import Bfs from './algorithms/bfs';
 import Dfs from './algorithms/dfs';
 import Dijkstra from './algorithms/dijkstra';
-import { createRef } from 'react';
+import AStar from './algorithms/aStar';
 
 class Navigation extends Board {
     constructor() {
@@ -13,7 +14,7 @@ class Navigation extends Board {
             speed: 50,
             algorithm: {
                 weighted: true,
-                name: "dijkstra"
+                name: "a*"
             }
         };
         this.pencil = createRef();
@@ -64,6 +65,9 @@ class Navigation extends Board {
                 break
             case "dijkstra":
                 await new Dijkstra(STATES).run();
+                break
+            case "a*":
+                await new AStar(STATES).run();
                 break
             default:
                 throw Error(`algorithm "${ALGORITHM}" not found.`);
