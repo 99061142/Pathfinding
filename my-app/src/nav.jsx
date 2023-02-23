@@ -42,7 +42,7 @@ class Navigation extends Board {
         }
     }
 
-    run() {
+    async run() {
         const ALGORITHM = this.state.algorithm.name
         const STATES = {
             start: this.props.startPos,
@@ -51,13 +51,15 @@ class Navigation extends Board {
             speed: this.state.speed,
             setCellData: this.props.setCellData
         }
+        this.props.setRunning(true);
         switch (ALGORITHM) {
             case "bfs":
-                new Bfs(STATES);
+                await new Bfs(STATES).run();
                 break
             default:
                 throw Error(`algorithm "${ALGORITHM}" not found.`);
         }
+        this.props.setRunning(false);
     }
 
     render() {
