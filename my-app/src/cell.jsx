@@ -9,6 +9,8 @@ class Cell extends Component {
         this.row = row;
         this.cell = cell;
         this.element = createRef();
+        this.initName = '';
+        this.initWeight = 1;
     }
 
     componentDidMount() {
@@ -17,15 +19,19 @@ class Cell extends Component {
         this.props.setCellData(DATA, this.row, this.cell);
     }
 
-    addState() {
-        /* Update the state of the element by the pencil value.
+    updateState(name) {
+        /* Update the state of the element by the pencil value, or the given 'name' parameter when it is defined.
         When the pencil has an weight value, set the weight as dataset weight. */
         let [pencilValue, pencilWeight] = document.getElementById('pencil').value.toLowerCase().split('-');
+        if (name) {
+            pencilValue = name
+        }
+
         let data
         if (pencilValue === "erase") {
             data = {
-                name: null,
-                weight: null
+                name: this.initName,
+                weight: this.initWeight
             };
             this.props.setCellData(data, this.row, this.cell);
             return
@@ -40,23 +46,39 @@ class Cell extends Component {
         this.props.setCellData(data, this.row, this.cell);
     }
 
-    async clicked() {
+    clicked() {
         // If the algorithm is running, return
-        if (this.props.runnin) { return }
+        if (this.props.runnin || name === "start" || name === "end") { return }
 
-        // Add pencil state when the cell isn't the start or end position
         let cellData = this.props.board[this.row][this.cell];
         let name = cellData.name;
-        if (name !== "start" && name !== "end") {
-            this.addState();
+
+        // Set element to start position when the start position isn't on the board
+        if (!this.props.startPos && name === '') {
+            this.props.setCellData({ name: 'start' }, this.row, this.cell);
+            return
         }
+
+        // Set element to end position when the start position isn't on the board
+        if (!this.props.endPos && name === '') {
+            this.props.setCellData({ name: 'end' }, this.row, this.cell);
+            return
+        }
+
+        // If the element isn't empty, set it empty
+        if (name !== '') {
+            this.updateState('erase');
+            return
+        }
+        // Set element to given pencil value
+        this.updateState();
     }
 
     hover(element) {
         // If the algorithm is running, return
         if (this.props.running) { return }
 
-        // If the element is clicked, update element state
+        // If the element is clicked, update name
         let clicked = element.buttons === 1;
         if (clicked) {
             this.clicked();
@@ -65,14 +87,14 @@ class Cell extends Component {
 
     render() {
         let cellData = this.props.board[this.row][this.cell];
-        let name = cellData.name;
-        let weight = cellData.weight;
+        let name = cellData.name ? cellData.name : this.initName;
+        let weight = cellData.weight ? cellData.weight : this.initWeight;
         return (
             <td
                 ref={this.element}
-                data-name={name ? name : null}
-                data-weight={weight ? weight : null}
-                className={`border border-dark cell ${name ? name : ''}`}
+                data-name={name}
+                data-weight={weight}
+                className={`border border-dark cell ${name}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(element) => this.hover(element)}
             >
