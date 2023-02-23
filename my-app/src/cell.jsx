@@ -47,11 +47,11 @@ class Cell extends Component {
     }
 
     clicked() {
-        // If the algorithm is running, return
-        if (this.props.runnin || name === "start" || name === "end") { return }
-
         let cellData = this.props.board[this.row][this.cell];
         let name = cellData.name;
+
+        // If the algorithm is running, return
+        if (this.props.runnin || name === "start" || name === "end") { return }
 
         // Set element to start position when the start position isn't on the board
         if (!this.props.startPos && name === '') {
