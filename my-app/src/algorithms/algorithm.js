@@ -1,5 +1,3 @@
-import { Component } from "react";
-
 class Algorithm {
     constructor(props) {
         this.props = props
@@ -89,6 +87,7 @@ class Algorithm {
     async showRoute(route) {
         for(let position of route) {
             await this.setFastest(position);
+            this.sleep();
         }
     }
 }
