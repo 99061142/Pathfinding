@@ -120,7 +120,7 @@ class Navigation extends Board {
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
-            </Navbar >
+            </Navbar>
         );
     }
 }
