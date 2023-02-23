@@ -75,7 +75,7 @@ class Algorithm {
     async setFastest(pos) {
         const [ROW, CELL] = pos;
         this.props.setCellData({name: 'fastest'}, ROW, CELL);
-        this.sleep();
+        await this.sleep();
     }
 
     sleep() {
@@ -87,7 +87,6 @@ class Algorithm {
     async showRoute(route) {
         for(let position of route) {
             await this.setFastest(position);
-            await this.sleep();
         }
     }
 }
