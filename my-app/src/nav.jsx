@@ -1,6 +1,7 @@
 import { Navbar, Nav, Container, Dropdown, Button, Form, Row } from 'react-bootstrap'
 import Board from './board';
 import Bfs from './algorithms/bfs';
+import Dfs from './algorithms/dfs';
 import { createRef } from 'react';
 
 class Navigation extends Board {
@@ -11,7 +12,7 @@ class Navigation extends Board {
             speed: 50,
             algorithm: {
                 weighted: false,
-                name: "bfs"
+                name: "dfs"
             }
         };
         this.pencil = createRef();
@@ -56,6 +57,9 @@ class Navigation extends Board {
         switch (ALGORITHM) {
             case "bfs":
                 await new Bfs(STATES).run();
+                break
+            case "dfs":
+                await new Dfs(STATES).run();
                 break
             default:
                 throw Error(`algorithm "${ALGORITHM}" not found.`);
