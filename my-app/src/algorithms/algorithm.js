@@ -5,6 +5,25 @@ class Algorithm {
         this.props = props
     }
 
+    cellData(pos) {
+        const [ROW, CELL] = pos;
+        const BOARD = this.props.board;
+        const CELL_DATA = BOARD[ROW][CELL];
+        return CELL_DATA
+    }
+
+    cellWeight(pos) {
+        const CELL_DATA = this.cellData(pos);
+        const weight = CELL_DATA.weight;
+        return weight
+    }
+
+    cellName(pos) {
+        const CELL_DATA = this.cellData(pos);
+        const name = CELL_DATA.name;
+        return name
+    }
+
     isStart(pos) {
         const [ROW, CELL] = pos;
         const [START_ROW, START_CELL] = this.props.startPos;
@@ -28,9 +47,8 @@ class Algorithm {
             return false
         }
 
-        const CELL_DATA = this.props.board[ROW][CELL];
-        const CELL_NAME = CELL_DATA.name;
-        const CAN_MOVE = CELL_NAME === '' || this.isEnd(pos);
+        const CELL_NAME = this.cellName(pos);
+        const CAN_MOVE = CELL_NAME !== "wall" && CELL_NAME !== "visited" && CELL_NAME !== "next" && !this.isStart(pos);
         return CAN_MOVE
     }
 
