@@ -45,12 +45,13 @@ class Navigation extends Board {
     async run() {
         const ALGORITHM = this.state.algorithm.name
         const STATES = {
-            start: this.props.startPos,
-            end: this.props.endPos,
+            startPos: this.props.startPos,
+            endPos: this.props.endPos,
             board: this.props.board,
             speed: this.state.speed,
             setCellData: this.props.setCellData
         }
+        this.clearCells('visited, next, fastest')
         this.props.setRunning(true);
         switch (ALGORITHM) {
             case "bfs":
