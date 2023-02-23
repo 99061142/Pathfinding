@@ -82,7 +82,7 @@ class Dijkstra extends Algorithm {
                 if(this._path[pos] && distance >= this._path[pos].distance)  { continue }
 
                 // Add to path
-                if(this._path[pos] == undefined) {
+                if(this._path[pos] === undefined) {
                     this._path[pos] = {};
 
                     // Add the position to the queue
