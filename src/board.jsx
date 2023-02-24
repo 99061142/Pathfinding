@@ -68,20 +68,27 @@ class Board extends Component {
         }
     }
 
-    clearCells(names) {
-        let deleteAll = names === "all";
-        let namesList = names.split(', ');
-        let board = this.props.board;
-        for (let [rowIndex, row] of board.entries()) {
+    clearCells(name) {
+        const DELETE_ALL = name === "all";
+        const DELETE_PATH = name === "path";
+        const PATH_NAMES = ['next', 'visited', 'fastest'];
+        const BOARD = this.props.board;
+        for (let [rowIndex, row] of BOARD.entries()) {
             for (let [cellIndex, cellData] of row.entries()) {
-                let cellName = cellData.name;
-                let data = {
-                    name: '',
-                    weight: 1
+                let cellWeight = cellData.weight
+                let cellName = cellData.name
+
+                // If the cell doesn't need to be cleared, continue
+                if (!DELETE_ALL && (DELETE_PATH && !PATH_NAMES.includes(cellName)) || (!DELETE_PATH && cellName !== name)) { continue }
+
+                // Clear cell
+                cellWeight = DELETE_ALL ? 1 : cellWeight
+                cellName = DELETE_ALL || cellData.weight === 1 || PATH_NAMES.includes(cellName) ? '' : 'weight';
+                const DATA = {
+                    name: cellName,
+                    weight: cellWeight
                 };
-                if (deleteAll || namesList.includes(cellName)) {
-                    this.props.setCellData(data, rowIndex, cellIndex);
-                }
+                this.props.setCellData(DATA, rowIndex, cellIndex);
             }
         }
     }

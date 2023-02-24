@@ -59,7 +59,7 @@ class Navigation extends Board {
             getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         }
-        this.clearCells('visited, next, fastest')
+        this.clearCells('path')
         this.props.setRunning(true);
         switch (ALGORITHM) {
             case "bfs":
@@ -128,7 +128,7 @@ class Navigation extends Board {
                                     <Dropdown.Menu>
                                         <Dropdown.Item onClick={() => this.clearCells('wall')}>Walls</Dropdown.Item>
                                         <Dropdown.Item onClick={() => this.clearCells('weight')}>Weights</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => this.clearCells('visited, next, fastest')}>Path</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.clearCells('path')}>Path</Dropdown.Item>
                                         <Dropdown.Item onClick={() => this.clearCells('all')}>All</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
