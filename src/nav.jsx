@@ -42,12 +42,13 @@ class Navigation extends Board {
             }
         });
 
-        // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall"
+        // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall" and clear weighted cells
         const PENCIL_ELEMENT = this.pencil.current;
         if (!IS_WEIGHTED) {
             PENCIL_ELEMENT.value = "wall";
             this.clearCells('weight');
         }
+        this.clearCells('path');
     }
 
     async run() {
