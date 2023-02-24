@@ -79,7 +79,7 @@ class Algorithm {
     }
 
     sleep() {
-        let ms = 100 - this.props.speed;
+        let ms = 100 - this.props.getSpeed();
         if(ms == 0) { return }
         return new Promise(resolve => setTimeout(resolve, ms));
     }

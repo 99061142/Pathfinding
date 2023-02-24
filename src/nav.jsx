@@ -20,6 +20,11 @@ class Navigation extends Board {
         this.pencil = createRef();
     }
 
+    getSpeed = () => {
+        const SPEED = this.state.speed;
+        return SPEED
+    }
+
     setSpeed(value) {
         value = Number(value);
         this.setState({
@@ -51,7 +56,7 @@ class Navigation extends Board {
             startPos: this.props.startPos,
             endPos: this.props.endPos,
             board: this.props.board,
-            speed: this.state.speed,
+            getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         }
         this.clearCells('visited, next, fastest')
