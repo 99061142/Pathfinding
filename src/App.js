@@ -68,22 +68,20 @@ class App extends Component {
     }
 
     render() {
-        const PROPS = {
+        const STATES = {
             running: this.state.running,
             board: this.state.board,
             startPos: this.state.startPos,
             endPos: this.state.endPos,
-            setStartPos: this.setStartPos,
-            setEndPos: this.setEndPos,
             setRunning: this.setRunning,
             setBoard: this.setBoard,
             setCellData: this.setCellData
         };
         return (
             <>
-                <Navigation {...PROPS} />
+                <Navigation {...STATES} />
                 <CellInformation />
-                <Board {...PROPS} />
+                <Board {...STATES} />
             </>
         );
     }
