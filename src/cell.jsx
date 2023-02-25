@@ -53,18 +53,6 @@ class Cell extends Component {
         // If the algorithm is running, return
         if (this.props.runnin || name === "start" || name === "end") { return }
 
-        // Set element to start position when the start position isn't on the board
-        if (!this.props.startPos && name === '') {
-            this.props.setCellData({ name: 'start' }, this.row, this.cell);
-            return
-        }
-
-        // Set element to end position when the start position isn't on the board
-        if (!this.props.endPos && name === '') {
-            this.props.setCellData({ name: 'end' }, this.row, this.cell);
-            return
-        }
-
         // If the element isn't empty, set it empty
         if (name !== '') {
             this.updateState('erase');
