@@ -45,7 +45,7 @@ class Board extends Component {
     }
 
     randomCells(name) {
-        // Set a cell name as parameter name when the random % is lower than .3
+        // Set a cell name as parameter name when the random % is lower than .3 and isn't the start or end position
         let board = this.props.board
         for (let [rowIndex, row] of board.entries()) {
             for (let [cellIndex, cellData] of row.entries()) {
@@ -69,22 +69,21 @@ class Board extends Component {
         const DELETE_PATH = name === "path";
         const PATH_NAMES = ['next', 'visited', 'fastest'];
         const BOARD = this.props.board;
+
         for (let [rowIndex, row] of BOARD.entries()) {
             for (let [cellIndex, cellData] of row.entries()) {
                 let cellWeight = cellData.weight
                 let cellName = cellData.name
 
-                // If the cell doesn't need to be cleared, continue
-                if (!DELETE_ALL && (DELETE_PATH && !PATH_NAMES.includes(cellName)) || (!DELETE_PATH && cellName !== name)) { continue }
-
-                // Clear cell
-                cellWeight = DELETE_ALL ? 1 : cellWeight
-                cellName = DELETE_ALL || cellData.weight === 1 || PATH_NAMES.includes(cellName) ? '' : 'weight';
-                const DATA = {
-                    name: cellName,
-                    weight: cellWeight
-                };
-                this.props.setCellData(DATA, rowIndex, cellIndex);
+                if (name === cellName || DELETE_ALL || DELETE_PATH && PATH_NAMES.includes(cellName) || name === "weight" && cellWeight > 1) {
+                    cellWeight = name !== "weight" ? cellWeight : 1
+                    cellName = cellWeight === 1 ? '' : 'weight';
+                    const DATA = {
+                        name: cellName,
+                        weight: cellWeight
+                    };
+                    this.props.setCellData(DATA, rowIndex, cellIndex);
+                }
             }
         }
     }
