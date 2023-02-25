@@ -1,11 +1,9 @@
 # Pathfinding website
 
 ## How to use it
-
-1. Add an start / end position to the board (left click an element on the board).
-2. Choose an algorithm.
-3. Choose the sorting speed for the algorithm.
-4. Run the algorithm
+1. Choose an algorithm.
+2. Choose the sorting speed for the algorithm.
+3. Run the algorithm
 
 
 ## What can you do
