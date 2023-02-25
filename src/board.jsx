@@ -82,7 +82,7 @@ class Board extends Component {
                 let cellWeight = cellData.weight
                 let cellName = cellData.name
 
-                if (name === cellName || DELETE_ALL || DELETE_PATH && PATH_NAMES.includes(cellName) || name === "weight" && cellWeight > 1) {
+                if (name === cellName || DELETE_ALL && cellName != "start" && cellName != "end" || DELETE_PATH && PATH_NAMES.includes(cellName) || name === "weight" && cellWeight > 1) {
                     cellWeight = name !== "weight" ? cellWeight : 1
                     cellName = cellWeight === 1 ? '' : 'weight';
                     const DATA = {
