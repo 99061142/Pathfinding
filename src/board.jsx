@@ -2,7 +2,7 @@ import { Component } from "react";
 import Cell from './cell'
 
 class Board extends Component {
-    setContent(ROWS, CELLS) {
+    async setContent(ROWS, CELLS) {
         // Create / set the board, and add the start and end position
         let board = [];
         for (let row = 0; row < ROWS; row++) {
@@ -14,14 +14,21 @@ class Board extends Component {
         this.props.setBoard(board);
     }
 
-    updateContent() {
+    async updateContent() {
         // If the algorithm is running, return
         if (this.props.running) { return }
 
         // Create the board
         const CELLS = this.getCells();
         const ROWS = this.getRows();
-        this.setContent(ROWS, CELLS);
+        await this.setContent(ROWS, CELLS);
+
+        // Add start / end position
+        const MID_ROW = Math.round(ROWS / 2);
+        const START_CELL = Math.round(CELLS * .15);
+        const END_CELL = Math.round(CELLS * .85);
+        this.props.setCellData({ name: 'start' }, MID_ROW, START_CELL);
+        this.props.setCellData({ name: 'end' }, MID_ROW, END_CELL);
     }
 
     getRows() {
