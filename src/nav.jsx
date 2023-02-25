@@ -91,7 +91,7 @@ class Navigation extends Board {
         return (
             <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand onClick={() => this.refresh} style={{ cursor: 'pointer' }}>Pathfinder</Navbar.Brand>
+                    <Navbar.Brand onClick={() => this.refresh()} style={{ cursor: 'pointer' }}>Pathfinder</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto" style={{ maxHeight: '130px' }} navbarScroll>
