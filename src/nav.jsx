@@ -81,12 +81,17 @@ class Navigation extends Board {
         this.props.setRunning(false);
     }
 
+    refresh() {
+        // Refresh the page
+        window.location.reload();
+    }
+
     render() {
         const RUN_DISABLED = this.props.running || !this.props.startPos || !this.props.endPos;
         return (
             <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand href="/">Pathfinder</Navbar.Brand>
+                    <Navbar.Brand onClick={() => this.refresh} style={{ cursor: 'pointer' }}>Pathfinder</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <Nav className="me-auto" style={{ maxHeight: '130px' }} navbarScroll>
