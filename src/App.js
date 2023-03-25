@@ -15,66 +15,43 @@ class App extends Component {
         };
     }
 
-    setBoard = board => {
+    setRunning = bool => {
+        this.setState({
+            running: bool
+        });
+    }
+
+    setCellData = (pos, data) => {
+        const [ROW, COL] = pos;
+        let board = this.state.board;
+
+        // If the row isnt created yet, create it
+        if(board.length === ROW) {
+            board.push([]);
+        }
+
+        // Set every data value that can be a number to a number
+        for(let [key, value] of Object.entries(data)) {
+            if(parseInt(value)) {
+                data[key] = Number(value);
+            }
+        }
+        // Add the cell data to the board
+        board[ROW][COL] = data
+        this.setBoard(board)
+    }
+
+    setBoard(board) {
         this.setState({
             board
         });
-    }
-
-    setEndPos = (row, cell) => {
-        const POS = [row, cell]
-        this.setState({
-            endPos: POS
-        });
-    }
-
-    setStartPos = (row, cell) => {
-        const POS = [row, cell]
-        this.setState({
-            startPos: POS,
-        });
-    }
-
-    setRunning = bool => {
-        this.setState({
-            running: bool,
-        });
-    }
-
-    setCellData = (newData, row, cell) => {
-        // When an data value can be a number, set it to a number
-        for (let key in newData) {
-            let val = newData[key]
-            if(!isNaN(val) && val !== '') { 
-                newData[key] = Number(val)
-            }
-        }
-
-        // Update board with the values that were changed inside the newData parameter
-        let board = [...this.state.board];
-        let oldData = board[row][cell];
-        newData = Object.assign({}, oldData, newData);
-        board[row][cell] = newData;
-        this.setBoard(board);
-
-        if(newData.name === "start") {
-            this.setStartPos(row, cell);
-            return
-        }
-        if(newData.name === "end") {
-            this.setEndPos(row, cell);
-            return
-        }
     }
 
     render() {
         const STATES = {
             running: this.state.running,
             board: this.state.board,
-            startPos: this.state.startPos,
-            endPos: this.state.endPos,
             setRunning: this.setRunning,
-            setBoard: this.setBoard,
             setCellData: this.setCellData
         };
         return (
