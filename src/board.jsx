@@ -75,7 +75,7 @@ class Board extends Component {
 
     render() {
         return (
-            <table id="board" className="my-2 d-flex justify-content-center" >
+            <table id="board" className="my-2 d-flex justify-content-center">
                 <tbody>
                     {this.props.board.map((_, rowIndex) =>
                         <tr key={rowIndex}>
