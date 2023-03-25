@@ -34,6 +34,18 @@ class Board extends Component {
         this.setContent(MAX_ROWS, MAX_COLS);
     }
 
+    clearBoard() {
+        const BOARD = this.props.board;
+        for (const [row, cells] of BOARD.entries()) {
+            for (const [col, cellData] of cells.entries()) {
+                cellData.type = '';
+                cellData.weight = 1;
+                const POS = [row, col];
+                this.props.setCellData(POS, cellData);
+            }
+        }
+    }
+
     setRandomCells(type) {
         const BOARD = this.props.board;
         for (const [row, cells] of BOARD.entries()) {
@@ -49,7 +61,7 @@ class Board extends Component {
                     cellData.type = type;
                 }
                 const POS = [row, col];
-                this.props.setCellData(POS, cellData)
+                this.props.setCellData(POS, cellData);
             }
         }
     }
