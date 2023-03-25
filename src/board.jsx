@@ -34,13 +34,15 @@ class Board extends Component {
         this.setContent(MAX_ROWS, MAX_COLS);
     }
 
-    clearCells(type) {
+    clearCells(type, exceptionTypes = []) {
         const PATH_TYPES = ["visited", "next", "fastest"];
         const BOARD = this.props.board;
+
+        console.log(exceptionTypes)
         for (const [row, cells] of BOARD.entries()) {
             for (const [col, cellData] of cells.entries()) {
                 // If the cell doesn't need to be cleared, continue
-                if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all") { continue }
+                if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all" || exceptionTypes.includes(cellData.type)) { continue }
 
                 // Clear the cell
                 cellData.type = '';
@@ -52,7 +54,7 @@ class Board extends Component {
     }
 
     setRandomCells(type) {
-        this.clearCells("all");
+        this.clearCells("all", ['start', 'end']);
 
         const BOARD = this.props.board;
         for (const [row, cells] of BOARD.entries()) {
