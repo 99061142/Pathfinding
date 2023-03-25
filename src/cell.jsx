@@ -6,7 +6,18 @@ class Cell extends Component {
         super();
         this.row = row;
         this.col = cell;
-        this.cell = createRef();
+    }
+
+    getType() {
+        const DATA = this.props.board[this.row][this.col];
+        const TYPE = DATA.type
+        return TYPE
+    }
+
+    getWeight() {
+        const DATA = this.props.board[this.row][this.col];
+        const WEIGHT = DATA.weight
+        return WEIGHT
     }
 
     hover() {
@@ -18,17 +29,15 @@ class Cell extends Component {
     }
 
     render() {
-        let cellData = this.props.board[this.row][this.col];
         return (
             <td
-                ref={this.cell}
-                data-name={cellData.type}
-                data-weight={cellData.weight}
-                className={`border border-dark cell ${cellData.type}`}
+                data-type={this.getType()}
+                data-weight={this.getWeight()}
+                className={`border border-dark cell ${this.getType()}`}
                 onClick={() => this.clicked()}
                 onMouseEnter={(e) => this.hover(e)}
             >
-                {<CellIcon type={cellData.type} weight={cellData.weight} />}
+                {<CellIcon type={this.getType()} weight={this.getWeight()} />}
             </td >
         );
     }
