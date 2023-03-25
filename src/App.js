@@ -1,5 +1,5 @@
 import './app.css';
-import Navigation from './nav.jsx';
+import Settings from './settings.jsx';
 import CellInformation from './cellInformation';
 import Board from './board.jsx';
 import { Component } from 'react';
@@ -56,7 +56,7 @@ class App extends Component {
         };
         return (
             <>
-                <Navigation {...STATES} />
+                <Settings {...STATES} />
                 <CellInformation />
                 <Board {...STATES} />
             </>
