@@ -47,7 +47,7 @@ class Cell extends Component {
                 onClick={() => this.clicked()}
                 onMouseEnter={(e) => this.hover(e)}
             >
-                {<CellIcon type={TYPE} weight={WEIGHT} />}
+                <CellIcon type={TYPE} weight={WEIGHT} />
             </td>
         );
     }
