@@ -7,7 +7,7 @@ function CellInformation() {
         <Container fluid>
             <Row className="justify-content-around text-center">
                 {TYPES.map((type, key) =>
-                    <Col xs={4} sm={3} md="auto" className="my-3" key={key}>
+                    <Col sm="auto" className="my-3 d-none d-sm-block" key={key}>
                         <div style={{ maxWidth: '24px' }} className={`border border-dark cell mx-auto ${type}`}>
                             <CellIcon type={type} />
                         </div>
