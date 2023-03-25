@@ -34,6 +34,26 @@ class Board extends Component {
         this.setContent(MAX_ROWS, MAX_COLS);
     }
 
+    setRandomCells(type) {
+        const BOARD = this.props.board;
+        for (const [row, cells] of BOARD.entries()) {
+            for (const [col, cellData] of cells.entries()) {
+                // If the percentage is higher than .33, continue
+                const PERCENAGE = Math.random();
+                if (PERCENAGE > .33) { continue }
+
+                // Add the new data to the cell
+                if (type === "weight") {
+                    cellData.weight = Math.floor(Math.random() * 101);
+                } else {
+                    cellData.type = type;
+                }
+                const POS = [row, col];
+                this.props.setCellData(POS, cellData)
+            }
+        }
+    }
+
     render() {
         return (
             <table id="board" className="my-2 d-flex justify-content-center" >
