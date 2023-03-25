@@ -47,6 +47,8 @@ class Board extends Component {
     }
 
     setRandomCells(type) {
+        this.clearBoard();
+
         const BOARD = this.props.board;
         for (const [row, cells] of BOARD.entries()) {
             for (const [col, cellData] of cells.entries()) {
