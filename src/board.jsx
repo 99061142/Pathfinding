@@ -37,8 +37,6 @@ class Board extends Component {
     clearCells(type, exceptionTypes = []) {
         const PATH_TYPES = ["visited", "next", "fastest"];
         const BOARD = this.props.board;
-
-        console.log(exceptionTypes)
         for (const [row, cells] of BOARD.entries()) {
             for (const [col, cellData] of cells.entries()) {
                 // If the cell doesn't need to be cleared, continue
