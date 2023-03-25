@@ -34,24 +34,15 @@ class Board extends Component {
         this.setContent(MAX_ROWS, MAX_COLS);
     }
 
-    clearWalls() {
+    clearCells(type) {
+        const PATH_TYPES = ["visited", "next", "fastest"];
         const BOARD = this.props.board;
         for (const [row, cells] of BOARD.entries()) {
             for (const [col, cellData] of cells.entries()) {
-                if (cellData.type !== "wall") { continue }
+                // If the cell doesn't need to be cleared, continue
+                if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all") { continue }
 
-                cellData.type = '';
-                cellData.weight = 1;
-                const POS = [row, col];
-                this.props.setCellData(POS, cellData);
-            }
-        }
-    }
-
-    clearBoard() {
-        const BOARD = this.props.board;
-        for (const [row, cells] of BOARD.entries()) {
-            for (const [col, cellData] of cells.entries()) {
+                // Clear the cell
                 cellData.type = '';
                 cellData.weight = 1;
                 const POS = [row, col];
@@ -61,7 +52,7 @@ class Board extends Component {
     }
 
     setRandomCells(type) {
-        this.clearBoard();
+        this.clearCells("all");
 
         const BOARD = this.props.board;
         for (const [row, cells] of BOARD.entries()) {
