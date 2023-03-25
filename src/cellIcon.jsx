@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHouse, faWeightHanging } from '@fortawesome/free-solid-svg-icons'
 
-function CellIcon({ type, weight }) {
+function CellIcon({ type = '', weight = 1 }) {
     if ((type === '' && weight <= 1)) {
         return null
     }
