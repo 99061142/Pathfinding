@@ -11,48 +11,42 @@ class Settings extends Board {
         super();
         this.state = {
             ...this.state,
-            speed: 50,
-            algorithm: {
-                weighted: true,
-                name: "a*"
-            }
+            algorithmWeighted: true
         };
+        this.speed = createRef();
+        this.algorithm = createRef();
         this.pencil = createRef();
     }
 
     getSpeed = () => {
-        const SPEED = this.state.speed;
+        const SPEED = this.speed.current.value;
         return SPEED
     }
 
-    setSpeed(value) {
-        value = Number(value);
-        this.setState({
-            speed: value
-        });
-    }
+    algorithmChanged(algorithm) {
+        // Always clear the fastest path of the previous algorithm
+        this.clearCells('path');
 
-    setAlgorithm(value) {
-        const WEIGHTED_ALGORITHMS = ['a*', 'dijkstra'];
-        const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(value);
-        this.setState({
-            algorithm: {
-                weighted: IS_WEIGHTED,
-                name: value
-            }
-        });
+        // Set the 'algorithmWeighted' state based on if the current algorithm is weighted
+        const WEIGHTED_ALGORITHMS = ['dijkstra', 'a*'];
+        const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(algorithm);
+        this.setAlgorithmWeighted(IS_WEIGHTED);
 
-        // If the algorithm isn't weighted, but the pencil value is, set pencil value to "wall" and clear weighted cells
-        const PENCIL_ELEMENT = this.pencil.current;
+        // If the chosen algorithm is unweighted, set the pencil to wall and clear all the weights on the board
         if (!IS_WEIGHTED) {
-            PENCIL_ELEMENT.value = "wall";
+            this.pencil.current.value = "wall";
             this.clearCells('weight');
         }
-        this.clearCells('path');
     }
 
-    getAlgorithm() {
-        const ALGORITHM = this.state.algorithm.name;
+    setAlgorithmWeighted(bool) {
+        this.setState({
+            algorithmWeighted: bool
+        });
+    }
+
+    getAlgorithmClass() {
+        const ALGORITHM = this.algorithm.current.value;
         switch (ALGORITHM) {
             case "bfs":
                 return Bfs
@@ -79,7 +73,7 @@ class Settings extends Board {
             getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         };
-        const Algorithm = this.getAlgorithm();
+        const Algorithm = this.getAlgorithmClass();
         await new Algorithm(STATES).run();
 
         this.props.setRunning(false);
@@ -93,7 +87,7 @@ class Settings extends Board {
                     <Col xs={4} lg={true} className="my-2">
                         <Form.Group>
                             <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                            <Form.Select id="algorithm" defaultValue={this.state.algorithm.name} onChange={(e) => this.setAlgorithm(e.target.value)} disabled={this.props.running}>
+                            <Form.Select ref={this.algorithm} id="algorithm" defaultValue="a*" onChange={(e) => this.algorithmChanged(e.target.value)} disabled={this.props.running}>
                                 <option value="bfs">BFS</option>
                                 <option value="dfs">DFS</option>
                                 <option value="dijkstra">Dijkstra</option>
@@ -107,15 +101,15 @@ class Settings extends Board {
                             <Form.Select ref={this.pencil} id="pencil" defaultValue="wall">
                                 <option value="erase">Erase</option>
                                 <option value="wall">Wall</option>
-                                <option value="weight-5" disabled={!this.state.algorithm.weighted}>Weight +5</option>
-                                <option value="weight-10" disabled={!this.state.algorithm.weighted}>Weight +10</option>
+                                <option value="weight-5" disabled={!this.state.algorithmWeighted}>Weight +5</option>
+                                <option value="weight-10" disabled={!this.state.algorithmWeighted}>Weight +10</option>
                             </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
                         <Form.Group>
                             <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                            <Form.Range id="speed" value={this.state.speed} onChange={(e) => this.setSpeed(e.target.value)} />
+                            <Form.Range ref={this.speed} id="speed" />
                         </Form.Group>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
@@ -125,7 +119,7 @@ class Settings extends Board {
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => this.setRandomCells('wall')}>Random Walls</Dropdown.Item>
-                                <Dropdown.Item disabled={!this.state.algorithm.weighted} onClick={() => this.setRandomCells('weight')}>Random weights</Dropdown.Item>
+                                <Dropdown.Item disabled={!this.state.algorithmWeighted} onClick={() => this.setRandomCells('weight')}>Random weights</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
