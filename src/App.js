@@ -47,12 +47,30 @@ class App extends Component {
         });
     }
 
+    setStartPos = pos => {
+        this.setState({
+            startPos: pos
+        });
+        this.setCellData(pos, { type: 'start' })
+    }
+
+    setEndPos = pos => {
+        this.setState({
+            endPos: pos
+        });
+        this.setCellData(pos, { type: 'end' })
+    }
+
     render() {
         const STATES = {
             running: this.state.running,
             board: this.state.board,
+            startPos: this.state.startPos,
+            endPos: this.state.endPos,
             setRunning: this.setRunning,
-            setCellData: this.setCellData
+            setCellData: this.setCellData,
+            setStartPos: this.setStartPos,
+            setEndPos: this.setEndPos
         };
         return (
             <>
