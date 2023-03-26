@@ -1,8 +1,6 @@
-class Algorithm {
-    constructor(props) {
-        this.props = props
-    }
+import { Component } from "react";
 
+class Algorithm extends Component {
     cellData(pos) {
         const [ROW, CELL] = pos;
         const BOARD = this.props.board;
@@ -12,14 +10,14 @@ class Algorithm {
 
     cellWeight(pos) {
         const CELL_DATA = this.cellData(pos);
-        const weight = CELL_DATA.weight;
-        return weight
+        const WEIGHT = CELL_DATA.weight;
+        return WEIGHT
     }
 
-    cellName(pos) {
+    cellType(pos) {
         const CELL_DATA = this.cellData(pos);
-        const name = CELL_DATA.name;
-        return name
+        const TYPE = CELL_DATA.type;
+        return TYPE
     }
 
     isStart(pos) {
@@ -38,43 +36,42 @@ class Algorithm {
 
     canMove(pos) {
         const [ROW, CELL] = pos;
-        const MAX_ROWS = this.props.board.length;
-        const MAX_CELLS = this.props.board[0].length;
+        const BOARD = this.props.board;
+        const BOARD_ROWS = BOARD.length;
+        const BOARD_COLS = BOARD[0].length;
 
-        if(ROW < 0 || CELL < 0 || ROW >= MAX_ROWS || CELL >= MAX_CELLS) { 
+        // If the position is out of bounds, return false
+        if(ROW < 0 || CELL < 0 || ROW >= BOARD_ROWS || CELL >= BOARD_COLS) { 
             return false
         }
 
-        const CELL_NAME = this.cellName(pos);
-        const CAN_MOVE = CELL_NAME !== "wall" && CELL_NAME !== "visited" && CELL_NAME !== "next" && !this.isStart(pos);
+        const NOT_MOVABLE_TYPES = ['wall', 'visited', 'next'];
+        const CELL_TYPE = this.cellType(pos);
+        const CAN_MOVE = !NOT_MOVABLE_TYPES.includes(CELL_TYPE) && !this.isStart(pos);
         return CAN_MOVE
     }
 
-    position(position, direction) {
-        const [POS_ROW, POS_CELL] = position;
-        const [DIR_ROW, DIR_CELL] = direction;
+    position(pos, dir) {
+        const [POS_ROW, POS_CELL] = pos;
+        const [DIR_ROW, DIR_CELL] = dir;
         const ROW = POS_ROW + DIR_ROW;
         const CELL = POS_CELL + DIR_CELL;
-        position = [ROW, CELL];
-        return position
+        pos = [ROW, CELL];
+        return pos
     }
 
     async setVisited(pos) {
-        const [ROW, CELL] = pos;
-        this.props.setCellData({name: 'visited'}, ROW, CELL);
+        this.props.setCellData(pos, {type: 'visited'});
         await this.sleep();
     }
 
     
     setNext(pos) {
-        const [ROW, CELL] = pos;
-        this.props.setCellData({name: 'next'}, ROW, CELL);
+        this.props.setCellData(pos, {type: 'next'});
     }
 
-    
     async setFastest(pos) {
-        const [ROW, CELL] = pos;
-        this.props.setCellData({name: 'fastest'}, ROW, CELL);
+        this.props.setCellData(pos, {type: 'fastest'});
         await this.sleep();
     }
 
