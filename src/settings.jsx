@@ -120,7 +120,7 @@ class Settings extends Board {
                     <Col xs={4} lg={true} className="my-2">
                         <Form.Group>
                             <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                            <Form.Range ref={this.speed} id="speed" />
+                            <Form.Range ref={this.speed} id="speed" max={99} />
                         </Form.Group>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">

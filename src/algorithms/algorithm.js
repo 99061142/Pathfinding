@@ -76,9 +76,8 @@ class Algorithm extends Component {
     }
 
     sleep() {
-        let ms = 100 - this.props.getSpeed();
-        if(ms == 0) { return }
-        return new Promise(resolve => setTimeout(resolve, ms));
+        const MS = 100 - this.props.getSpeed();
+        return new Promise(resolve => setTimeout(resolve, MS));
     }
 
     async showRoute(route) {
