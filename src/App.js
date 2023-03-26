@@ -21,7 +21,7 @@ class App extends Component {
         });
     }
 
-    setCellData = (pos, data) => {
+    setCellData = (pos, newData) => {
         const [ROW, COL] = pos;
         let board = this.state.board;
 
@@ -31,13 +31,15 @@ class App extends Component {
         }
 
         // Set every data value that can be a number to a number
-        for(let [key, value] of Object.entries(data)) {
+        for(let [key, value] of Object.entries(newData)) {
             if(parseInt(value)) {
-                data[key] = Number(value);
+                newData[key] = Number(value);
             }
         }
-        // Add the cell data to the board
-        board[ROW][COL] = data
+        // Merge the new data with the old data and set the data to the cell
+        const OLD_DATA = this.state.board[ROW][COL]
+        newData = Object.assign({}, OLD_DATA, newData)
+        board[ROW][COL] = newData
         this.setBoard(board)
     }
 
