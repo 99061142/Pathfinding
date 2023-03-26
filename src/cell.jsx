@@ -20,7 +20,10 @@ class Cell extends Component {
     }
 
     clicked() {
-
+        if (!this.props.startPos) {
+            this.props.setStartPos(this.pos);
+            return
+        }
     }
 
     render() {
