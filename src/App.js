@@ -53,14 +53,22 @@ class App extends Component {
         this.setState({
             startPos: pos
         });
-        this.setCellData(pos, { type: 'start' })
+
+        // If the position isn't equal to null, add the data to the board
+        if(pos !== null) {
+            this.setCellData(pos, { type: 'start' })
+        }
     }
 
     setEndPos = pos => {
         this.setState({
             endPos: pos
         });
-        this.setCellData(pos, { type: 'end' })
+
+        // If the position isn't equal to null, add the data to the board
+        if(pos !== null) {
+            this.setCellData(pos, { type: 'end' })
+        }
     }
 
     render() {
