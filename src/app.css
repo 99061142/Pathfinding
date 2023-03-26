@@ -1,6 +1,6 @@
 .cell {
-    padding: 12px;
-    max-width: 24px;
+    padding: 1.75vh;
+    max-width: 3.5vh;
 }
 
 .cell:has(svg) {
