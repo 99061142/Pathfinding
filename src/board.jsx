@@ -61,7 +61,7 @@ class Board extends Component {
             for (const [col, cellData] of cells.entries()) {
                 // If the percentage is higher than .33, continue
                 const PERCENAGE = Math.random();
-                if (PERCENAGE > .33) { continue }
+                if (PERCENAGE > .33 || cellData.type !== '') { continue }
 
                 // Add the new data to the cell
                 if (type === "weight") {
@@ -79,13 +79,13 @@ class Board extends Component {
         return (
             <table id="board" className="my-2 d-flex justify-content-center">
                 <tbody>
-                    {this.props.board.map((_, rowIndex) =>
-                        <tr key={rowIndex}>
-                            {this.props.board[rowIndex].map((_, colIndex) =>
+                    {this.props.board.map((_, row) =>
+                        <tr key={row}>
+                            {this.props.board[row].map((_, col) =>
                                 <Cell
-                                    row={rowIndex}
-                                    col={colIndex}
-                                    key={colIndex}
+                                    row={row}
+                                    col={col}
+                                    key={col}
                                     {...this.props}
                                 />
                             )}
