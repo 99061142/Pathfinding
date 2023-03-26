@@ -24,7 +24,7 @@ class Settings extends Board {
     }
 
     pencilIsWeighted() {
-        const CURRENT_PENCIL_VALUE = this.pencil.current.value
+        const CURRENT_PENCIL_VALUE = this.pencil.current.value;
         const CURRENT_OPTION = document.querySelector(`[value = ${CURRENT_PENCIL_VALUE}]`);
         const IS_WEIGHTED = CURRENT_OPTION.dataset.weighted === "true";
         return IS_WEIGHTED
