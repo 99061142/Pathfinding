@@ -57,11 +57,11 @@ class Settings extends Board {
             case "bfs":
                 return Bfs
             case "dfs":
-                return Dfs(STATES);
+                return Dfs;
             case "dijkstra":
-                return Dijkstra(STATES);
+                return Dijkstra;
             case "a*":
-                return AStar(STATES);
+                return AStar;
             default:
                 throw Error(`Algorithm "${ALGORITHM}" couln't be found.`);
         }
@@ -79,8 +79,8 @@ class Settings extends Board {
             getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         };
-        const ALGORITHM = this.getAlgorithm();
-        await new ALGORITHM(STATES).run();
+        const Algorithm = this.getAlgorithm();
+        await new Algorithm(STATES).run();
 
         this.props.setRunning(false);
     }
