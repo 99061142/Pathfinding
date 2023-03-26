@@ -16,9 +16,7 @@ function CellIcon({ type = '', weight = 1 }) {
     };
     const ICON = ICONS[type];
 
-    if (!ICON) {
-        return null
-    }
+    if (!ICON) { return null }
     return <FontAwesomeIcon icon={ICON} />
 }
 
