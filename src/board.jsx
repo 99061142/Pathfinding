@@ -13,18 +13,20 @@ class Board extends Component {
     }
 
     maxRows() {
-        // Get the max amount of rows by the max height of the board divided by the cell height
+        // Get the max amount of rows by the max height of the board divided by the cell view height
         const BOARD = document.getElementById("board");
         const TOP = BOARD.getBoundingClientRect().top;
-        const MAX_HEIGHT = (window.innerHeight - TOP) * .85;
-        const ROWS = Math.floor(MAX_HEIGHT / 24);
+        const MAX_HEIGHT = (window.innerHeight - TOP);
+        const CELL_PADDING = ((window.innerHeight / 100) * 1.75) * 2;
+        const ROWS = Math.floor(MAX_HEIGHT / CELL_PADDING) - 1;
         return ROWS
     }
 
     maxCols() {
-        // Get the max amount of cols by the max width of the board divided by the cell width
-        const MAX_WIDTH = window.innerWidth * .85;
-        const COLS = Math.floor(MAX_WIDTH / 24);
+        // Get the max amount of cols by the max width of the board divided by the cell view height
+        const MAX_WIDTH = window.innerWidth;
+        const CELL_PADDING = ((window.innerHeight / 100) * 1.75) * 2;
+        const COLS = Math.floor(MAX_WIDTH / CELL_PADDING) - 1;
         return COLS
     }
 
