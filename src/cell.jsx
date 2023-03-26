@@ -22,6 +22,9 @@ class Cell extends Component {
     }
 
     hover(e) {
+        // If the algorithm is running, return
+        if (this.props.running) { return }
+
         // When the start/end pos are set, and the user left clicks on the cell, set the pencil value to the cell
         const LEFT_CLICKED = e.buttons === 1;
         if (LEFT_CLICKED && this.props.startPos && this.props.endPos) {
