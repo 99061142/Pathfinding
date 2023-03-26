@@ -21,8 +21,12 @@ class Cell extends Component {
         this.props.setCellData(this.pos, DATA);
     }
 
-    hover() {
-
+    hover(e) {
+        // When the start/end pos are set, and the user left clicks on the cell, set the pencil value to the cell
+        const LEFT_CLICKED = e.buttons === 1;
+        if (LEFT_CLICKED && this.props.startPos && this.props.endPos) {
+            this.clicked();
+        }
     }
 
     clicked() {
