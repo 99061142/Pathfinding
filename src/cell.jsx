@@ -51,19 +51,19 @@ class Cell extends Component {
         }
 
         // Get the pencil type and weight
-        const [NEW_TYPE, NEW_WEIGHT] = document.getElementById('pencil').value.split('-')
+        let [type, weight] = document.getElementById('pencil').value.split('-')
 
         // Only remove start or end position when the new type is empty
-        if (NEW_TYPE !== '' && (OLD_TYPE === "start" || OLD_TYPE === "end")) { return }
+        if (type !== '' && (OLD_TYPE === "start" || OLD_TYPE === "end")) { return }
 
         // Set the data to the cell
-        let data = {
-            type: NEW_TYPE
+        type = type !== "weight" ? type : ''
+        weight = weight || 1
+        const DATA = {
+            type,
+            weight
         };
-        if (NEW_WEIGHT) {
-            data.weight = NEW_WEIGHT
-        }
-        this.props.setCellData(this.pos, data)
+        this.props.setCellData(this.pos, DATA)
 
         // If the current cell is the start or end position, remove it
         if (OLD_TYPE === "start") {
