@@ -10,6 +10,12 @@ class Cell extends Component {
         this.element = createRef();
     }
 
+    getType() {
+        const ELEMENT = this.element.current;
+        const TYPE = ELEMENT.dataset.type
+        return TYPE
+    }
+
     componentDidMount() {
         const DATA = { ...this.element.current.dataset };
         this.props.setCellData(this.pos, DATA);
@@ -20,13 +26,42 @@ class Cell extends Component {
     }
 
     clicked() {
-        if (!this.props.startPos) {
+        // Get the current type of the cell
+        const OLD_TYPE = this.getType();
+
+        // Add the start pos when the current cell isn't the end pos and the start pos isn't already set
+        if (!this.props.startPos && OLD_TYPE !== "end") {
             this.props.setStartPos(this.pos);
             return
         }
-
-        if (!this.props.endPos) {
+        // Add the end pos when the current cell isn't the start pos and the end pos isn't already set
+        if (!this.props.endPos && OLD_TYPE !== "start") {
             this.props.setEndPos(this.pos);
+            return
+        }
+
+        // Get the pencil type and weight
+        const [NEW_TYPE, NEW_WEIGHT] = document.getElementById('pencil').value.split('-')
+
+        // Only remove start or end position when the new type is empty
+        if (NEW_TYPE !== '' && (OLD_TYPE === "start" || OLD_TYPE === "end")) { return }
+
+        // Set the data to the cell
+        let data = {
+            type: NEW_TYPE
+        };
+        if (NEW_WEIGHT) {
+            data.weight = NEW_WEIGHT
+        }
+        this.props.setCellData(this.pos, data)
+
+        // If the current cell is the start or end position, remove it
+        if (OLD_TYPE === "start") {
+            this.props.setStartPos(null)
+            return
+        }
+        if (OLD_TYPE === "end") {
+            this.props.setEndPos(null)
             return
         }
     }
