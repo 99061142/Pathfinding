@@ -44,7 +44,6 @@ class Board extends Component {
                 // If the cell doesn't need to be cleared, continue
                 if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all" || exceptionTypes.includes(cellData.type)) { continue }
 
-
                 // When the cell is equal to the start or end type, remove it
                 if (cellData.type === "start") {
                     this.props.setStartPos(null);
@@ -53,10 +52,9 @@ class Board extends Component {
                     this.props.setEndPos(null);
                 }
 
-
                 // Clear the cell
                 // Only clear weight when parameter 'type' is equal to 'weight'
-                if (type === "weight") {
+                if (type === "weight" || type === "all") {
                     cellData.weight = 1;
                 }
                 cellData.type = '';
