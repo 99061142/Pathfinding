@@ -23,20 +23,31 @@ class Settings extends Board {
         return SPEED
     }
 
+    pencilIsWeighted() {
+        const CURRENT_PENCIL_VALUE = this.pencil.current.value
+        const CURRENT_OPTION = document.querySelector(`[value = ${CURRENT_PENCIL_VALUE}]`);
+        const IS_WEIGHTED = CURRENT_OPTION.dataset.weighted === "true";
+        return IS_WEIGHTED
+    }
+
     algorithmChanged(algorithm) {
-        // Always clear the fastest path of the previous algorithm
+        // Clear the fastest path of the previous algorithm
         this.clearCells('path');
 
-        // Set the 'algorithmWeighted' state based on if the current algorithm is weighted
+        // Set the 'algorithmWeighted' state value based on if the current algorithm is weighted
         const WEIGHTED_ALGORITHMS = ['dijkstra', 'a*'];
         const IS_WEIGHTED = WEIGHTED_ALGORITHMS.includes(algorithm);
         this.setAlgorithmWeighted(IS_WEIGHTED);
 
-        // If the chosen algorithm is unweighted, set the pencil to wall and clear all the weights on the board
-        if (!IS_WEIGHTED) {
+        // If the algorithm is weighted, return
+        if (IS_WEIGHTED) { return }
+
+        // If the pencil value is weighted, set the pencil to "wall"
+        if (this.pencilIsWeighted()) {
             this.pencil.current.value = "wall";
-            this.clearCells('weight');
         }
+        // Delete all weights on the board
+        this.clearCells('weight');
     }
 
     setAlgorithmWeighted(bool) {
@@ -99,10 +110,10 @@ class Settings extends Board {
                         <Form.Group>
                             <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
                             <Form.Select ref={this.pencil} id="pencil" defaultValue="wall">
-                                <option value="erase">Erase</option>
-                                <option value="wall">Wall</option>
-                                <option value="weight-5" disabled={!this.state.algorithmWeighted}>Weight +5</option>
-                                <option value="weight-10" disabled={!this.state.algorithmWeighted}>Weight +10</option>
+                                <option data-weighted={false} value="erase">Erase</option>
+                                <option data-weighted={false} value="wall">Wall</option>
+                                <option data-weighted={true} value="weight-5" disabled={!this.state.algorithmWeighted}>Weight +5</option>
+                                <option data-weighted={true} value="weight-10" disabled={!this.state.algorithmWeighted}>Weight +10</option>
                             </Form.Select>
                         </Form.Group>
                     </Col>
