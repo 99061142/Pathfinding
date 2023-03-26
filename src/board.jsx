@@ -15,16 +15,16 @@ class Board extends Component {
     maxRows() {
         // Get the max amount of rows by the max height of the board divided by the cell height
         const BOARD = document.getElementById("board");
-        const TOP = Math.round(BOARD.getBoundingClientRect().top);
-        const MAX_HEIGHT = Math.round(window.innerHeight - TOP);
-        const ROWS = Math.round(MAX_HEIGHT / 29);
+        const TOP = BOARD.getBoundingClientRect().top;
+        const MAX_HEIGHT = (window.innerHeight - TOP) * .85;
+        const ROWS = Math.floor(MAX_HEIGHT / 24);
         return ROWS
     }
 
     maxCols() {
         // Get the max amount of cols by the max width of the board divided by the cell width
-        const MAX_WIDTH = Math.round(window.innerWidth);
-        const COLS = Math.round(MAX_WIDTH / 29);
+        const MAX_WIDTH = window.innerWidth * .85;
+        const COLS = Math.floor(MAX_WIDTH / 24);
         return COLS
     }
 
