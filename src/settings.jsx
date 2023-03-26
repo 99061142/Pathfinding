@@ -57,11 +57,11 @@ class Settings extends Board {
             case "bfs":
                 return Bfs
             case "dfs":
-                return Dfs;
+                return Dfs
             case "dijkstra":
-                return Dijkstra;
+                return Dijkstra
             case "a*":
-                return AStar;
+                return AStar
             default:
                 throw Error(`Algorithm "${ALGORITHM}" couln't be found.`);
         }
