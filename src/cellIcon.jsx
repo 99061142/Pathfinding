@@ -5,7 +5,7 @@ function CellIcon({ type = '', weight = 1 }) {
     if ((type === '' && weight === 1)) {
         return null
     }
-    if (weight > 1 && type === '') {
+    if (weight > 1) {
         type = "weight";
     }
 
