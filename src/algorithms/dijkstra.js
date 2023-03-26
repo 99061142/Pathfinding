@@ -48,7 +48,6 @@ class Dijkstra extends Algorithm {
         let path = [];
 
         while(parent) {
-            console.log(parent)
             path.push(parent);
             parent = this._path[parent].parent;
         }
