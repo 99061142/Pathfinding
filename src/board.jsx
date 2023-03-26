@@ -44,9 +44,13 @@ class Board extends Component {
                 // If the cell doesn't need to be cleared, continue
                 if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all" || exceptionTypes.includes(cellData.type)) { continue }
 
+
                 // Clear the cell
+                // Only clear weight when parameter 'type' is equal to 'weight'
+                if (type === "weight") {
+                    cellData.weight = 1;
+                }
                 cellData.type = '';
-                cellData.weight = 1;
                 const POS = [row, col];
                 this.props.setCellData(POS, cellData);
             }
