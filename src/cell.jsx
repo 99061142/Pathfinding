@@ -30,6 +30,9 @@ class Cell extends Component {
     }
 
     clicked() {
+        // If the algorithm is running, return
+        if (this.props.running) { return }
+
         // Get the current type of the cell
         const OLD_TYPE = this.getType();
 
