@@ -51,8 +51,27 @@ class Settings extends Board {
         this.clearCells('path');
     }
 
-    async run() {
+    getAlgorithm() {
         const ALGORITHM = this.state.algorithm.name;
+        switch (ALGORITHM) {
+            case "bfs":
+                return Bfs
+            case "dfs":
+                return Dfs(STATES);
+            case "dijkstra":
+                return Dijkstra(STATES);
+            case "a*":
+                return AStar(STATES);
+            default:
+                throw Error(`Algorithm "${ALGORITHM}" couln't be found.`);
+        }
+    }
+
+    async run() {
+        this.clearCells('path');
+        this.props.setRunning(true);
+
+        // Run the algorithm
         const STATES = {
             startPos: this.props.startPos,
             endPos: this.props.endPos,
@@ -60,24 +79,9 @@ class Settings extends Board {
             getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         };
-        this.clearCells('path');
-        this.props.setRunning(true);
-        switch (ALGORITHM) {
-            case "bfs":
-                await new Bfs(STATES).run();
-                break
-            case "dfs":
-                await new Dfs(STATES).run();
-                break
-            case "dijkstra":
-                await new Dijkstra(STATES).run();
-                break
-            case "a*":
-                await new AStar(STATES).run();
-                break
-            default:
-                throw Error(`algorithm "${ALGORITHM}" not found.`);
-        }
+        const ALGORITHM = this.getAlgorithm();
+        await new ALGORITHM(STATES).run();
+
         this.props.setRunning(false);
     }
 
