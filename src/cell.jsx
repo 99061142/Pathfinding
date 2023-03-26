@@ -24,6 +24,11 @@ class Cell extends Component {
             this.props.setStartPos(this.pos);
             return
         }
+
+        if (!this.props.endPos) {
+            this.props.setEndPos(this.pos);
+            return
+        }
     }
 
     render() {
