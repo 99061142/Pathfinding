@@ -81,11 +81,6 @@ class Settings extends Board {
         this.props.setRunning(false);
     }
 
-    refresh() {
-        // Refresh the page
-        window.location.reload();
-    }
-
     render() {
         const RUN_DISABLED = this.props.running || !this.props.startPos || !this.props.endPos;
         return (
