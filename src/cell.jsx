@@ -4,11 +4,21 @@ import CellIcon from './cellIcon'
 class Cell extends Component {
     constructor({ row, col }) {
         super();
-        this.row = row;
-        this.col = col;
         this.pos = [row, col];
         this.element = createRef();
         this.getsDragged = false;
+    }
+
+    isEndPos() {
+        const [ROW, COL] = this.pos;
+        const [END_ROW, END_COL] = this.props.endPos;
+        return ROW === END_ROW && COL === END_COL
+    }
+
+    isStartPos() {
+        const [ROW, COL] = this.pos;
+        const [START_ROW, START_COL] = this.props.startPos;
+        return ROW === START_ROW && COL === START_COL
     }
 
     componentDidMount() {
@@ -93,12 +103,21 @@ class Cell extends Component {
             return
         }
 
-        // Set the dragged cell data inside the new cell
+        // If the user drops on the start pos, remove the start pos
+        if (this.isStartPos()) {
+            this.props.setStartPos(null)
+        }
+        // If the user drops on the end pos, remove the end pos
+        else if (this.isEndPos()) {
+            this.props.setEndPos(null)
+        }
+
+        // Set the dragged cell data inside the cell that the drop was on
         const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
         let dragTargetData = DRAG_TARGET.dataset
         this.props.setCellData(this.pos, dragTargetData)
 
-        // Remove the data inside the cell when the dragging started
+        // Unset the dragged cell data
         const DRAG_TARGET_POS = DRAG_TARGET_ID === 'start' ? this.props.startPos : this.props.endPos
         dragTargetData = {
             type: '',
@@ -106,15 +125,7 @@ class Cell extends Component {
         };
         this.props.setCellData(DRAG_TARGET_POS, dragTargetData);
 
-        console.log(e.target.dataset.type)
-        // If the user drop start on end pos, or end on start pos remove the data that was currently in the cell
-        if (e.target.dataset.type === 'start') {
-            this.props.setStartPos(null)
-        } else {
-            this.props.setEndPos(null)
-        }
-
-        // Add the dropped pos as start or end pos
+        // Set the start or end pos as the pos the drop was on
         if (DRAG_TARGET_ID === 'start') {
             this.props.setStartPos(this.pos)
         } else {
