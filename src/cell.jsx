@@ -86,8 +86,14 @@ class Cell extends Component {
     }
 
     dragDrop(e) {
-        // Set the dragged cell data inside the new cell
         const DRAG_TARGET_ID = e.dataTransfer.getData("id");
+
+        // If a cell was dragged that isn't the start or end pos, return
+        if (DRAG_TARGET_ID === '') {
+            return
+        }
+
+        // Set the dragged cell data inside the new cell
         const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
         let dragTargetData = DRAG_TARGET.dataset
         this.props.setCellData(this.pos, dragTargetData)
