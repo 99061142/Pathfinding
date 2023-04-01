@@ -20,9 +20,9 @@ class Cell extends Component {
         // If the algorithm is running, return
         if (this.props.running) { return }
 
-        // When the user left click on the cell, set the pencil value to the cell
+        // When the start/end pos are set, and the user left clicks on the cell, set the pencil value to the cell
         const LEFT_CLICKED = e.buttons === 1;
-        if (LEFT_CLICKED) {
+        if (LEFT_CLICKED && this.props.startPos && this.props.endPos) {
             this.clicked();
         }
     }
@@ -100,13 +100,20 @@ class Cell extends Component {
         };
         this.props.setCellData(DRAG_TARGET_POS, dragTargetData);
 
-        // If the starting cell was dragged, set the start position as the dropped cell position
+        console.log(e.target.dataset.type)
+        // If the user drop start on end pos, or end on start pos remove the data that was currently in the cell
+        if (e.target.dataset.type === 'start') {
+            this.props.setStartPos(null)
+        } else {
+            this.props.setEndPos(null)
+        }
+
+        // Add the dropped pos as start or end pos
         if (DRAG_TARGET_ID === 'start') {
             this.props.setStartPos(this.pos)
-            return
+        } else {
+            this.props.setEndPos(this.pos)
         }
-        // If the end cell was dragged, set the end position as the dropped cell position
-        this.props.setEndPos(this.pos)
     }
 
     render() {
