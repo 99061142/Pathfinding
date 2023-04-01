@@ -30,12 +30,12 @@ class Board extends Component {
 
                 // Set the starting start pos
                 if (row === START_ROW && col === START_COL) {
-                    this.props.setStartPos(POS)
+                    this.props.setStartPos(POS);
                     continue
                 }
                 // Set the starting end pos
                 if (row === END_ROW && col === END_COL) {
-                    this.props.setEndPos(POS)
+                    this.props.setEndPos(POS);
                 }
             }
         }
