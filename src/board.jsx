@@ -29,12 +29,12 @@ class Board extends Component {
                 this.props.setCellData(POS, {});
 
                 // Set the starting start pos
-                if (row === START_ROW && col === START_COL) {
+                if (row === START_ROW && col === START_COL && this.props.startPos === null) {
                     this.props.setStartPos(POS);
                     continue
                 }
                 // Set the starting end pos
-                if (row === END_ROW && col === END_COL) {
+                if (row === END_ROW && col === END_COL && this.props.endPos === null) {
                     this.props.setEndPos(POS);
                 }
             }
