@@ -136,7 +136,7 @@ class Cell extends Component {
     render() {
         const DATA = this.props.data;
         const TYPE = DATA.type || '';
-        const WEIGHT = DATA.weight === null ? DATA.weight : 1;
+        const WEIGHT = DATA.weight !== null ? DATA.weight : 1;
         return (
             <td
                 ref={this.element}
