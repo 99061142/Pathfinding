@@ -10,12 +10,22 @@ class Cell extends Component {
     }
 
     isEndPos() {
+        // If there is no end pos, return
+        if (this.props.endPos === null) {
+            return false
+        }
+
         const [ROW, COL] = this.pos;
         const [END_ROW, END_COL] = this.props.endPos;
         return ROW === END_ROW && COL === END_COL
     }
 
     isStartPos() {
+        // If there is no start pos, return
+        if (this.props.startPos === null) {
+            return false
+        }
+
         const [ROW, COL] = this.pos;
         const [START_ROW, START_COL] = this.props.startPos;
         return ROW === START_ROW && COL === START_COL
