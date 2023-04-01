@@ -2,12 +2,41 @@ import { Component } from "react";
 import Cell from './cell'
 
 class Board extends Component {
-    setContent(MAX_ROWS, MAX_COLS) {
+    startingStartPos(MAX_ROWS, MAX_COLS) {
+        // Calculate the start position when the board gets created
+        const ROW = Math.floor(MAX_ROWS / 2);
+        const COL = Math.floor(MAX_COLS * .15);
+        const POS = [ROW, COL];
+        return POS
+    }
+
+    startingEndPos(MAX_ROWS, MAX_COLS) {
+        // Calculate the end position when the board gets created
+        const ROW = Math.floor(MAX_ROWS / 2);
+        const COL = Math.floor(MAX_COLS * .85);
+        const POS = [ROW, COL];
+        return POS
+    }
+
+    setContent(MAX_ROWS, MAX_COLS, startPos, endPos) {
+        const [START_ROW, START_COL] = startPos;
+        const [END_ROW, END_COL] = endPos;
+
         // Create the board based on the max rows / cols
         for (let row = 0; row < MAX_ROWS; row++) {
             for (let col = 0; col < MAX_COLS; col++) {
                 const POS = [row, col];
                 this.props.setCellData(POS, {});
+
+                // Set the starting start pos
+                if (row === START_ROW && col === START_COL) {
+                    this.props.setStartPos(POS)
+                    continue
+                }
+                // Set the starting end pos
+                if (row === END_ROW && col === END_COL) {
+                    this.props.setEndPos(POS)
+                }
             }
         }
     }
@@ -33,7 +62,9 @@ class Board extends Component {
     componentDidMount() {
         const MAX_ROWS = this.maxRows();
         const MAX_COLS = this.maxCols();
-        this.setContent(MAX_ROWS, MAX_COLS);
+        const STARTING_START_POS = this.startingStartPos(MAX_ROWS, MAX_COLS);
+        const STARTING_END_POS = this.startingEndPos(MAX_ROWS, MAX_COLS);
+        this.setContent(MAX_ROWS, MAX_COLS, STARTING_START_POS, STARTING_END_POS);
     }
 
     clearCells(type, exceptionTypes = []) {
