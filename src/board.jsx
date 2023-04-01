@@ -92,8 +92,9 @@ class Board extends Component {
                 <tbody>
                     {this.props.board.map((_, row) =>
                         <tr key={row}>
-                            {this.props.board[row].map((_, col) =>
+                            {this.props.board[row].map((data, col) =>
                                 <Cell
+                                    data={data}
                                     row={row}
                                     col={col}
                                     key={col}
