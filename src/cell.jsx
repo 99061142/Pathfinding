@@ -9,15 +9,9 @@ class Cell extends Component {
         this.getsDragged = false;
     }
 
-    isEndPos() {
-        // If there is no end pos, return
-        if (this.props.endPos === null) {
-            return false
-        }
-
-        const [ROW, COL] = this.pos;
-        const [END_ROW, END_COL] = this.props.endPos;
-        return ROW === END_ROW && COL === END_COL
+    componentDidMount() {
+        const DATA = { ...this.element.current.dataset };
+        this.props.setCellData(this.pos, DATA);
     }
 
     isStartPos() {
@@ -31,9 +25,15 @@ class Cell extends Component {
         return ROW === START_ROW && COL === START_COL
     }
 
-    componentDidMount() {
-        const DATA = this.element.current.dataset;
-        this.props.setCellData(this.pos, DATA);
+    isEndPos() {
+        // If there is no end pos, return
+        if (this.props.endPos === null) {
+            return false
+        }
+
+        const [ROW, COL] = this.pos;
+        const [END_ROW, END_COL] = this.props.endPos;
+        return ROW === END_ROW && COL === END_COL
     }
 
     hover(e) {
@@ -146,7 +146,7 @@ class Cell extends Component {
     render() {
         const DATA = this.props.data;
         const TYPE = DATA.type || '';
-        const WEIGHT = DATA.weight !== null ? DATA.weight : 1;
+        const WEIGHT = DATA.weight || 1;
         return (
             <td
                 ref={this.element}
