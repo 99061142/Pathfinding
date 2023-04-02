@@ -107,7 +107,7 @@ class Board extends Component {
 
                 // Add the new data to the cell
                 if (type === "weight") {
-                    cellData.weight = Math.floor(Math.random() * 101);
+                    cellData.weight = 10;
                 } else {
                     cellData.type = type;
                 }

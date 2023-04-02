@@ -124,7 +124,6 @@ class Settings extends Board {
                             <Form.Select ref={this.pencil} id="pencil" defaultValue="wall">
                                 <option data-weighted={false} value="">Erase</option>
                                 <option data-weighted={false} value="wall">Wall</option>
-                                <option data-weighted={true} value="weight-5" disabled={!this.state.algorithmWeighted}>Weight +5</option>
                                 <option data-weighted={true} value="weight-10" disabled={!this.state.algorithmWeighted}>Weight +10</option>
                             </Form.Select>
                         </Form.Group>
