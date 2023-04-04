@@ -121,9 +121,9 @@ class Board extends Component {
         return (
             <table id="board" className="my-2 d-flex justify-content-center">
                 <tbody>
-                    {this.props.board.map((_, row) =>
+                    {this.props.board.map((rowCells, row) =>
                         <tr key={row}>
-                            {this.props.board[row].map((data, col) =>
+                            {rowCells.map((data, col) =>
                                 <Cell
                                     data={data}
                                     row={row}
