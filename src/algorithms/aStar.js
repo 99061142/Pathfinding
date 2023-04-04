@@ -16,7 +16,7 @@ class AStar extends Algorithm {
 
     fCost(pos) {
         // Total cost of the position
-        let { g, h } = this._path[pos];
+        const { g, h } = this._path[pos];
         const COST = g + h;
         return COST;
     }
