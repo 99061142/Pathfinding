@@ -89,10 +89,12 @@ class Settings extends Board {
         this.props.setRunning(true);
 
         // Run the algorithm
+        const MAX_SPEED = Number(this.speed.current.max);
         const STATES = {
             startPos: this.props.startPos,
             endPos: this.props.endPos,
             board: this.props.board,
+            maxSpeed: MAX_SPEED,
             getSpeed: this.getSpeed,
             setCellData: this.props.setCellData
         };
@@ -131,7 +133,7 @@ class Settings extends Board {
                     <Col xs={4} lg={true} className="my-2">
                         <Form.Group>
                             <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                            <Form.Range ref={this.speed} id="speed" max={99} />
+                            <Form.Range ref={this.speed} id="speed" max={100} />
                         </Form.Group>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
