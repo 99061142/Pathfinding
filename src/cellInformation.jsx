@@ -5,9 +5,9 @@ function CellInformation() {
     const TYPES = ['start', 'end', 'weight', 'wall', 'visited', 'next', 'fastest'];
     return (
         <Container fluid className="d-none d-sm-block">
-            <Row className="justify-content-around text-center">
+            <Row className="my-3 justify-content-around text-center">
                 {TYPES.map((type, key) =>
-                    <Col className="my-3" key={key}>
+                    <Col key={key}>
                         <div className={`border border-dark cell mx-auto ${type}`}>
                             <CellIcon type={type} />
                         </div>
