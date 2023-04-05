@@ -27,17 +27,11 @@ class Cell extends Component {
     }
 
     isStartPos() {
-        if (this.props.startPos === null) {
-            return false
-        }
         const TYPE = this.getType();
         return TYPE === "start"
     }
 
     isEndPos() {
-        if (this.props.endPos === null) {
-            return false
-        }
         const TYPE = this.getType();
         return TYPE === "end"
     }
@@ -48,7 +42,7 @@ class Cell extends Component {
 
         // When the start/end pos are set, and the user left clicks on the cell, set the pencil value to the cell
         const LEFT_CLICKED = e.buttons === 1;
-        if (LEFT_CLICKED && this.props.startPos && this.props.endPos) {
+        if (LEFT_CLICKED) {
             this.clicked();
         }
     }
@@ -57,23 +51,11 @@ class Cell extends Component {
         // If the algorithm is running or the cell gets dragged, return
         if (this.props.running || this.getsDragged) { return }
 
-        const TYPE = this.getType();
-
-        // Add the start pos when the current cell isn't the end pos and the start pos isn't already set
-        if (!this.props.startPos && TYPE !== "end") {
-            this.props.setStartPos(this.pos);
-            return
-        }
-        // Add the end pos when the current cell isn't the start pos and the end pos isn't already set
-        if (!this.props.endPos && TYPE !== "start") {
-            this.props.setEndPos(this.pos);
-            return
-        }
-
         // Get the pencil type and weight
         let [pencilType, pencilWeight] = document.getElementById('pencil').value.split('-');
 
         // If the current cell is equal to the start or end position and the cell doesn't get cleared, return
+        const TYPE = this.getType();
         if ((TYPE === "start" || TYPE === "end") && pencilType !== '') { return }
 
         // Set the data to the cell
@@ -84,56 +66,43 @@ class Cell extends Component {
             weight: pencilWeight
         };
         this.props.setCellData(this.pos, DATA);
-
-        // If the current cell is the start position, remove it from the state
-        if (TYPE === "start") {
-            this.props.setStartPos(null);
-            return
-        }
-        // If the current cell is the end position, remove it from the state
-        if (TYPE === "end") {
-            this.props.setEndPos(null);
-            return
-        }
     }
 
     dragOver(e) {
+        // If the user hovers over the start or end pos, return
+        if (this.isStartPos() || this.isEndPos()) {
+            return
+        }
+
         // Allow the drop
         e.preventDefault();
     }
 
     dragStart(e) {
-        const TYPE = this.getType();
-        if (TYPE !== 'start' && TYPE !== 'end' || this.props.running) {
+        // Only allow the start or end pos to be dragged IF the algorithm isn't running
+        if (!this.isStartPos() && !this.isEndPos() || this.props.running) {
             e.preventDefault();
             return
         }
 
+        // Set the cell as dragged, and add the cell id as datatransfer
         this.getsDragged = true;
         e.dataTransfer.setData("id", e.target.id);
     }
 
     dragEnd() {
+        // Unset the cell as dragged
         this.getsDragged = false;
     }
 
     dragDrop(e) {
-        // If the user drops on the start pos, remove the start pos
-        if (this.isStartPos()) {
-            this.props.setStartPos(null)
-        }
-        // If the user drops on the end pos, remove the end pos
-        else if (this.isEndPos()) {
-            this.props.setEndPos(null)
-        }
-
-        // Set the dragged cell data inside the cell that the drop was on
+        // Add the new start / end data
         const DRAG_TARGET_ID = e.dataTransfer.getData('id');
         const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
         let dragTargetData = DRAG_TARGET.dataset;
         this.props.setCellData(this.pos, dragTargetData);
 
-        // Unset the dragged cell data
+        // Remove the old start / end data
         const DRAG_TARGET_POS = DRAG_TARGET_ID === 'start' ? this.props.startPos : this.props.endPos;
         dragTargetData = {
             type: '',
@@ -141,7 +110,7 @@ class Cell extends Component {
         };
         this.props.setCellData(DRAG_TARGET_POS, dragTargetData);
 
-        // Set the start or end pos as the pos the drop was on
+        // Set the new start / end pos
         if (DRAG_TARGET_ID === 'start') {
             this.props.setStartPos(this.pos)
             return
@@ -170,7 +139,7 @@ class Cell extends Component {
                 onDragEnd={() => this.dragEnd()}
             >
                 <CellIcon type={TYPE} weight={WEIGHT} />
-            </td>
+            </td >
         );
     }
 }
