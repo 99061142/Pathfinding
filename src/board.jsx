@@ -2,43 +2,47 @@ import { Component } from "react";
 import Cell from './cell'
 
 class Board extends Component {
-    startingStartPos(MAX_ROWS, MAX_COLS) {
-        // Calculate the start position when the board gets created
-        const ROW = Math.floor(MAX_ROWS / 2);
-        const COL = Math.floor(MAX_COLS * .15);
-        const POS = [ROW, COL];
-        return POS
-    }
-
-    startingEndPos(MAX_ROWS, MAX_COLS) {
-        // Calculate the end position when the board gets created
-        const ROW = Math.floor(MAX_ROWS / 2);
-        const COL = Math.floor(MAX_COLS * .85);
-        const POS = [ROW, COL];
-        return POS
-    }
-
-    setContent(MAX_ROWS, MAX_COLS, startPos, endPos) {
-        const [START_ROW, START_COL] = startPos;
-        const [END_ROW, END_COL] = endPos;
-
-        // Create the board based on the max rows / cols
-        for (let row = 0; row < MAX_ROWS; row++) {
-            for (let col = 0; col < MAX_COLS; col++) {
-                const POS = [row, col];
-                this.props.setCellData(POS, {});
-
-                // Set the starting start pos
-                if (row === START_ROW && col === START_COL && this.props.startPos === null) {
-                    this.props.setStartPos(POS);
-                    continue
-                }
-                // Set the starting end pos
-                if (row === END_ROW && col === END_COL && this.props.endPos === null) {
-                    this.props.setEndPos(POS);
-                }
-            }
+    constructor() {
+        super();
+        this.state = {
+            rows: 0,
+            cols: 0
         }
+    }
+
+    setRows(rows) {
+        this.setState({
+            rows
+        });
+    }
+
+    setCols(cols) {
+        this.setState({
+            cols
+        });
+    }
+
+    componentDidMount() {
+        const MAX_ROWS = this.maxRows();
+        this.setRows(MAX_ROWS);
+        const MAX_COLS = this.maxCols();
+        this.setCols(MAX_COLS);
+    }
+
+    startingStartPos() {
+        // Calculate the starting start position
+        const ROW = Math.floor(this.state.rows / 2);
+        const COL = Math.floor(this.state.cols * .15);
+        const POS = [ROW, COL];
+        return POS
+    }
+
+    startingEndPos() {
+        // Calculate the starting end position
+        const ROW = Math.floor(this.state.rows / 2);
+        const COL = Math.floor(this.state.cols * .85);
+        const POS = [ROW, COL];
+        return POS
     }
 
     maxRows() {
@@ -59,73 +63,61 @@ class Board extends Component {
         return COLS
     }
 
-    componentDidMount() {
-        const MAX_ROWS = this.maxRows();
-        const MAX_COLS = this.maxCols();
-        const STARTING_START_POS = this.startingStartPos(MAX_ROWS, MAX_COLS);
-        const STARTING_END_POS = this.startingEndPos(MAX_ROWS, MAX_COLS);
-        this.setContent(MAX_ROWS, MAX_COLS, STARTING_START_POS, STARTING_END_POS);
-    }
-
-    clearCells(type, exceptionTypes = []) {
+    async clearCells(clear, exceptionTypes = []) {
         const PATH_TYPES = ["visited", "next", "fastest"];
         const BOARD = this.props.board;
-        for (const [row, cells] of BOARD.entries()) {
-            for (const [col, cellData] of cells.entries()) {
-                // If the cell doesn't need to be cleared, continue
-                if ((type === "wall" && cellData.type !== "wall") || (type === "weight" && cellData.weight === 1) || (type === "path" && !PATH_TYPES.includes(cellData.type)) && type !== "all" || exceptionTypes.includes(cellData.type)) { continue }
+        for (const [_, cells] of BOARD.entries()) {
+            for (const [_, cell] of cells.entries()) {
+                const CELL_TYPE = cell.getType();
+                const CELL_WEIGHT = cell.getWeight();
 
-                // When the cell is equal to the start or end type, remove it
-                if (cellData.type === "start") {
-                    this.props.setStartPos(null);
-                }
-                else if (cellData.type === "end") {
-                    this.props.setEndPos(null);
-                }
+                // If the cell doesn't need to be cleared, continue
+                if ((clear === "wall" && CELL_TYPE !== "wall") || (clear === "weight" && CELL_WEIGHT === 1) || (clear === "path" && !PATH_TYPES.includes(CELL_TYPE)) && clear !== "all" || exceptionTypes.includes(CELL_TYPE)) { continue }
 
                 // Clear the cell
-                // Only clear weight when parameter 'type' is equal to 'weight'
-                if (type === "weight" || type === "all") {
-                    cellData.weight = 1;
-                }
-                cellData.type = '';
-                const POS = [row, col];
-                this.props.setCellData(POS, cellData);
+                const WEIGHT = (clear === "weight" || clear === "all") ? 1 : CELL_WEIGHT;
+                const DATA = {
+                    type: '',
+                    weight: WEIGHT
+                };
+                cell.setDataset(DATA);
             }
         }
     }
 
-    setRandomCells(type) {
-        this.clearCells("all", ['start', 'end']);
+    async setRandomCells(setType) {
+        await this.clearCells("all", ['start', 'end']);
 
         const BOARD = this.props.board;
-        for (const [row, cells] of BOARD.entries()) {
-            for (const [col, cellData] of cells.entries()) {
+        for (const cells of BOARD) {
+            for (const cell of cells) {
                 // If the percentage is higher than .33, continue
                 const PERCENAGE = Math.random();
-                if (PERCENAGE > .33 || cellData.type !== '') { continue }
+                if (PERCENAGE > .33 || cell.getType() !== '') { continue }
 
                 // Add the new data to the cell
-                if (type === "weight") {
-                    cellData.weight = 10;
-                } else {
-                    cellData.type = type;
-                }
-                const POS = [row, col];
-                this.props.setCellData(POS, cellData);
+                const WEIGHT = setType === "weight" ? 10 : 1;
+                const DATA = {
+                    type: setType,
+                    weight: WEIGHT
+                };
+                cell.setDataset(DATA);
             }
         }
     }
 
     render() {
+        const IS_START = (row, col) => `${row},${col}` === String(this.startingStartPos());
+        const IS_END = (row, col) => `${row},${col}` === String(this.startingEndPos());
         return (
             <table id="board" className="my-2 d-flex justify-content-center">
                 <tbody>
-                    {this.props.board.map((rowCells, row) =>
+                    {[...Array(this.state.rows)].map((_, row) =>
                         <tr key={row}>
-                            {rowCells.map((data, col) =>
+                            {[...Array(this.state.cols)].map((_, col) =>
                                 <Cell
-                                    data={data}
+                                    isStart={IS_START(row, col)}
+                                    isEnd={IS_END(row, col)}
                                     row={row}
                                     col={col}
                                     key={col}
