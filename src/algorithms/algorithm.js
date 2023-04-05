@@ -76,8 +76,7 @@ class Algorithm extends Component {
     }
 
     sleep() {
-        const MAX_SPEED = this.props.maxSpeed;
-        const MS = MAX_SPEED - this.props.getSpeed();
+        const MS = 100 - this.props.getSpeed();
         if(MS === 0) { return }
         return new Promise(resolve => setTimeout(resolve, MS));
     }
