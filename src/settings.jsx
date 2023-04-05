@@ -156,7 +156,7 @@ class Settings extends Board {
                                 <Dropdown.Item onClick={() => this.clearCells('wall')}>Walls</Dropdown.Item>
                                 <Dropdown.Item onClick={() => this.clearCells('weight')}>Weights</Dropdown.Item>
                                 <Dropdown.Item onClick={() => this.clearCells('path')}>Path</Dropdown.Item>
-                                <Dropdown.Item onClick={() => this.clearCells('all')}>All</Dropdown.Item>
+                                <Dropdown.Item onClick={() => this.clearCells('all', ['start', 'end'])}>All</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
