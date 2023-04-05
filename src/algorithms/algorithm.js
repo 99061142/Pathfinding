@@ -2,36 +2,34 @@ import { Component } from "react";
 
 class Algorithm extends Component {
     cellData(pos) {
-        const [ROW, CELL] = pos;
+        const [ROW, COL] = pos;
         const BOARD = this.props.board;
-        const CELL_DATA = BOARD[ROW][CELL];
+        const CELL_DATA = BOARD[ROW][COL];
         return CELL_DATA
     }
 
     cellWeight(pos) {
         const CELL_DATA = this.cellData(pos);
-        const WEIGHT = CELL_DATA.weight;
+        const WEIGHT = CELL_DATA.getWeight();
         return WEIGHT
     }
 
     cellType(pos) {
         const CELL_DATA = this.cellData(pos);
-        const TYPE = CELL_DATA.type;
+        const TYPE = CELL_DATA.getType();
         return TYPE
     }
 
     isStart(pos) {
-        const [ROW, CELL] = pos;
-        const [START_ROW, START_CELL] = this.props.startPos;
-        const IS_START = ROW === START_ROW && CELL === START_CELL;
-        return IS_START
+        const CELL_DATA = this.cellData(pos);
+        const TYPE = CELL_DATA.getType();
+        return TYPE === "start"
     }
 
     isEnd(pos) {
-        const [ROW, CELL] = pos;
-        const [END_ROW, END_CELL] = this.props.endPos;
-        const IS_END = ROW === END_ROW && CELL === END_CELL;
-        return IS_END
+        const CELL_DATA = this.cellData(pos);
+        const TYPE = CELL_DATA.getType();
+        return TYPE === "end"
     }
 
     canMove(pos) {
@@ -53,25 +51,27 @@ class Algorithm extends Component {
 
     position(pos, dir) {
         const [POS_ROW, POS_CELL] = pos;
-        const [DIR_ROW, DIR_CELL] = dir;
+        const [DIR_ROW, DIR_COL] = dir;
         const ROW = POS_ROW + DIR_ROW;
-        const CELL = POS_CELL + DIR_CELL;
+        const CELL = POS_CELL + DIR_COL;
         pos = [ROW, CELL];
         return pos
     }
 
     async setVisited(pos) {
-        this.props.setCellData(pos, {type: 'visited'});
+        const CELL_DATA = this.cellData(pos);
+        CELL_DATA.setType('visited');
         await this.sleep();
     }
 
-    
     setNext(pos) {
-        this.props.setCellData(pos, {type: 'next'});
+        const CELL_DATA = this.cellData(pos);
+        CELL_DATA.setType('next');
     }
 
     async setFastest(pos) {
-        this.props.setCellData(pos, {type: 'fastest'});
+        const CELL_DATA = this.cellData(pos);
+        CELL_DATA.setType('fastest');
         await this.sleep();
     }
 
