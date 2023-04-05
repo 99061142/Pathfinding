@@ -85,7 +85,7 @@ class Settings extends Board {
     }
 
     async run() {
-        this.clearCells('path');
+        await this.clearCells('path');
         this.props.setRunning(true);
 
         // Run the algorithm
