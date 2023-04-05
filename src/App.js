@@ -21,7 +21,7 @@ class App extends Component {
         });
     }
 
-    setCellData = (pos, newData) => {
+    setCellData = (pos, data) => {
         const [ROW, COL] = pos;
         let board = this.state.board;
 
@@ -30,17 +30,9 @@ class App extends Component {
             board.push([]);
         }
 
-        // Set every data value that can be a number to a number
-        for(let [key, value] of Object.entries(newData)) {
-            if(parseInt(value)) {
-                newData[key] = Number(value);
-            }
-        }
-        // Merge the new data with the old data and set the data to the cell
-        const OLD_DATA = this.state.board[ROW][COL]
-        newData = Object.assign({}, OLD_DATA, newData)
-        board[ROW][COL] = newData
-        this.setBoard(board)
+        // Add the data to the board
+        board[ROW][COL] = data;
+        this.setBoard(board);
     }
 
     setBoard(board) {
@@ -53,22 +45,12 @@ class App extends Component {
         this.setState({
             startPos: pos
         });
-
-        // If the position isn't equal to null, add the data to the board
-        if(pos !== null) {
-            this.setCellData(pos, { type: 'start', weight: 1 })
-        }
     }
 
     setEndPos = pos => {
         this.setState({
             endPos: pos
         });
-
-        // If the position isn't equal to null, add the data to the board
-        if(pos !== null) {
-            this.setCellData(pos, { type: 'end', weight: 1 })
-        }
     }
 
     render() {
