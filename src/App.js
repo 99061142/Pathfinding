@@ -1,17 +1,15 @@
 import './app.css';
+import { Component } from 'react';
 import Settings from './settings.jsx';
 import CellInformation from './cellInformation';
 import Board from './board.jsx';
-import { Component } from 'react';
 
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            startPos: null,
-            endPos: null,
             running: false,
-            board: []
+            cells: []
         };
     }
 
@@ -23,52 +21,36 @@ class App extends Component {
 
     setCellData = (pos, data) => {
         const [ROW, COL] = pos;
-        let board = this.state.board;
+        let cells = this.state.cells;
 
         // If the row isnt created yet, create it
-        if(board.length === ROW) {
-            board.push([]);
+        if(cells.length === ROW) {
+            cells.push([]);
         }
 
-        // Add the data to the board
-        board[ROW][COL] = data;
-        this.setBoard(board);
+        // Add the cell to the cells
+        cells[ROW][COL] = data;
+        this.setCells(cells);
     }
 
-    setBoard(board) {
+    setCells(cells) {
         this.setState({
-            board
-        });
-    }
-
-    setStartPos = pos => {
-        this.setState({
-            startPos: pos
-        });
-    }
-
-    setEndPos = pos => {
-        this.setState({
-            endPos: pos
+            cells
         });
     }
 
     render() {
-        const STATES = {
+        const PROPS = {
             running: this.state.running,
-            board: this.state.board,
-            startPos: this.state.startPos,
-            endPos: this.state.endPos,
+            cells: this.state.cells,
             setRunning: this.setRunning,
-            setCellData: this.setCellData,
-            setStartPos: this.setStartPos,
-            setEndPos: this.setEndPos
+            setCellData: this.setCellData
         };
         return (
             <>
-                <Settings {...STATES} />
+                <Settings {...PROPS} />
                 <CellInformation />
-                <Board {...STATES} />
+                <Board {...PROPS} />
             </>
         );
     }
