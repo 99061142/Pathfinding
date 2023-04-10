@@ -1,16 +1,21 @@
-import { Col, Container, Dropdown, Button, Form, Row } from 'react-bootstrap'
-import { createRef } from 'react';
-import Board from './board';
-import Bfs from './algorithms/bfs';
-import Dfs from './algorithms/dfs';
-import Dijkstra from './algorithms/dijkstra';
-import AStar from './algorithms/aStar';
+import { Component, createRef } from 'react';
+import { Col, Container, Row, FormGroup, FormLabel, FormSelect, Dropdown, Button } from 'react-bootstrap'
+import FormRange from 'react-bootstrap/esm/FormRange';
+import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+import ClearAll from './clear/clearAll';
+import ClearPath from './clear/clearPath';
+import ClearWalls from './clear/clearWalls';
+import ClearWeights from './clear/clearWeights';
+import RandomWalls from './layouts/randomWalls'
+import RandomWeights from './layouts/randomWeights';
+import Run from './run';
 
-class Settings extends Board {
+class Settings extends Component {
     constructor() {
         super();
         this.state = {
-            ...this.state,
             algorithmWeighted: false
         };
         this.speed = createRef();
@@ -22,11 +27,6 @@ class Settings extends Board {
         // Set algorithmWeighted state based on if the default algorithm is weighted
         const ALGORITHM_WEIGHTED = this.isAlgorithmWeighted();
         this.setAlgorithmWeighted(ALGORITHM_WEIGHTED);
-    }
-
-    getSpeed = () => {
-        const SPEED = this.speed.current.value;
-        return SPEED
     }
 
     isPencilWeighted() {
@@ -43,9 +43,12 @@ class Settings extends Board {
         return IS_WEIGHTED
     }
 
-    algorithmChanged() {
-        // Clear the fastest path of the previous algorithm
-        this.clearCells('path');
+    async algorithmChanged() {
+        // If there is a path on the board, clear it
+        const FASTEST_ELEMENT = document.querySelector('td.fastest');
+        if (FASTEST_ELEMENT) {
+            await ClearPath(this.props.cells);
+        }
 
         // Set algorithmWeighted state based on if the chosen algorithm is weighted
         const ALGORITHM_WEIGHTED = this.isAlgorithmWeighted();
@@ -59,7 +62,7 @@ class Settings extends Board {
             this.pencil.current.value = "wall";
         }
         // Delete all weights on the board
-        this.clearCells('weight');
+        await ClearWeights(this.props.cells);
     }
 
     setAlgorithmWeighted(bool) {
@@ -68,98 +71,91 @@ class Settings extends Board {
         });
     }
 
-    getAlgorithmClass() {
-        const ALGORITHM = this.algorithm.current.value;
-        switch (ALGORITHM) {
-            case "bfs":
-                return Bfs
-            case "dfs":
-                return Dfs
-            case "dijkstra":
-                return Dijkstra
-            case "aStar":
-                return AStar
-            default:
-                throw Error(`Algorithm "${ALGORITHM}" couldn't be found.`);
-        }
-    }
-
-    async run() {
-        await this.clearCells('path');
-        this.props.setRunning(true);
-
-        // Run the algorithm
-        const STATES = {
-            startPos: this.props.startPos,
-            endPos: this.props.endPos,
-            board: this.props.board,
-            getSpeed: this.getSpeed,
-            setCellData: this.props.setCellData
-        };
-        const Algorithm = this.getAlgorithmClass();
-        await new Algorithm(STATES).run();
-
-        this.props.setRunning(false);
-    }
-
     render() {
-        const RUN_DISABLED = this.props.running || !this.props.startPos || !this.props.endPos;
         return (
             <Container className="bg-dark py-3" fluid>
                 <Row className="d-flex align-items-center">
                     <Col xs={4} lg={true} className="my-2">
-                        <Form.Group>
-                            <Form.Label className="text-white" htmlFor="algorithm">Algorithm</Form.Label>
-                            <Form.Select ref={this.algorithm} id="algorithm" defaultValue="aStar" onChange={() => this.algorithmChanged()} disabled={this.props.running}>
+                        <FormGroup>
+                            <FormLabel className="text-white" htmlFor="algorithm">Algorithm</FormLabel>
+                            <FormSelect
+                                ref={this.algorithm}
+                                id="algorithm"
+                                defaultValue="aStar"
+                                onChange={() => this.algorithmChanged()}
+                                disabled={this.props.running}
+                            >
                                 <option data-weighted={false} value="bfs">BFS</option>
                                 <option data-weighted={false} value="dfs">DFS</option>
                                 <option data-weighted={true} value="dijkstra">Dijkstra</option>
                                 <option data-weighted={true} value="aStar">A*</option>
-                            </Form.Select>
-                        </Form.Group>
+                            </FormSelect>
+                        </FormGroup>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
-                        <Form.Group>
-                            <Form.Label className="text-white" htmlFor="pencil">Pencil</Form.Label>
-                            <Form.Select ref={this.pencil} id="pencil" defaultValue="wall">
-                                <option data-weighted={false} value="">Erase</option>
+                        <FormGroup>
+                            <FormLabel className="text-white" htmlFor="pencil">Pencil</FormLabel>
+                            <FormSelect
+                                ref={this.pencil}
+                                id="pencil"
+                                defaultValue="wall"
+                            >
+                                <option data-weighted={false} value=''>Erase</option>
                                 <option data-weighted={false} value="wall">Wall</option>
                                 <option data-weighted={true} value="weight-10" disabled={!this.state.algorithmWeighted}>Weight</option>
-                            </Form.Select>
-                        </Form.Group>
+                            </FormSelect>
+                        </FormGroup>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
-                        <Form.Group>
-                            <Form.Label className="text-white" htmlFor="speed">Speed</Form.Label>
-                            <Form.Range ref={this.speed} id="speed" max={this.props.running ? 101 : 100} />
-                        </Form.Group>
+                        <FormGroup>
+                            <FormLabel className="text-white" htmlFor="speed">Speed</FormLabel>
+                            <FormRange ref={this.speed} id="speed" max={99} />
+                        </FormGroup>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
                         <Dropdown>
-                            <Dropdown.Toggle id="layout" className="w-100" variant={this.props.running ? "danger" : "success"} disabled={this.props.running}>
+                            <DropdownToggle
+                                className="w-100"
+                                variant={this.props.running ? "danger" : "success"}
+                                disabled={this.props.running}
+                            >
                                 Layout
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => this.setRandomCells('wall')}>Random Walls</Dropdown.Item>
-                                <Dropdown.Item disabled={!this.state.algorithmWeighted} onClick={() => this.setRandomCells('weight')}>Random weights</Dropdown.Item>
-                            </Dropdown.Menu>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
+                                <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
+                            </DropdownMenu>
                         </Dropdown>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
                         <Dropdown>
-                            <Dropdown.Toggle id="clear" className="w-100" variant={this.props.running ? "danger" : "success"} disabled={this.props.running}>
+                            <DropdownToggle
+                                id="clear"
+                                className="w-100"
+                                variant={this.props.running ? "danger" : "success"}
+                                disabled={this.props.running}
+                            >
                                 Clear
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => this.clearCells('wall')}>Walls</Dropdown.Item>
-                                <Dropdown.Item onClick={() => this.clearCells('weight')}>Weights</Dropdown.Item>
-                                <Dropdown.Item onClick={() => this.clearCells('path')}>Path</Dropdown.Item>
-                                <Dropdown.Item onClick={() => this.clearCells('all', ['start', 'end'])}>All</Dropdown.Item>
-                            </Dropdown.Menu>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => ClearWalls(this.props.cells)}>Walls</DropdownItem>
+                                <DropdownItem onClick={() => ClearWeights(this.props.cells)}>Weights</DropdownItem>
+                                <DropdownItem onClick={() => ClearPath(this.props.cells)}>Path</DropdownItem>
+                                <DropdownItem onClick={() => ClearAll(this.props.cells)}>All</DropdownItem>
+                            </DropdownMenu>
                         </Dropdown>
                     </Col>
                     <Col xs={4} lg={true} className="my-2">
-                        <Button className="w-100" variant={RUN_DISABLED ? "danger" : "success"} disabled={RUN_DISABLED} onClick={() => this.run()}>
+                        <Button
+                            className="w-100"
+                            variant={this.props.running ? 'danger' : 'success'}
+                            disabled={this.props.running}
+                            onClick={() => Run({
+                                setRunning: this.props.setRunning,
+                                cells: this.props.cells,
+                                setCellData: this.props.setCellData,
+                            })}
+                        >
                             Run
                         </Button>
                     </Col>
