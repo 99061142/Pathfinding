@@ -9,7 +9,6 @@ async function RandomWeights(cells) {
             // If the percentage is higher than .33, continue
             const PERCENAGE = Math.random();
             if (PERCENAGE > .33 || cell.getType() !== '') { continue }
-            cell.setType('weight');
             cell.setWeight(10);
         }
     }
