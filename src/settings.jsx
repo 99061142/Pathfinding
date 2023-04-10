@@ -10,6 +10,7 @@ import ClearWalls from './clear/clearWalls';
 import ClearWeights from './clear/clearWeights';
 import RandomWalls from './layouts/randomWalls'
 import RandomWeights from './layouts/randomWeights';
+import RecursiveDivision from './layouts/recursiveDivision';
 import Run from './run';
 
 class Settings extends Component {
@@ -122,6 +123,7 @@ class Settings extends Component {
                                 Layout
                             </DropdownToggle>
                             <DropdownMenu>
+                                <DropdownItem onClick={() => RecursiveDivision(this.props.cells)}>Recursive Division</DropdownItem>
                                 <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
                                 <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
                             </DropdownMenu>
