@@ -2,11 +2,10 @@ import { Component, createRef } from "react";
 import CellIcon from './cellIcon'
 
 class Cell extends Component {
-    constructor({ row, col, isStart, isEnd }) {
+    constructor({ type, row, col }) {
         super();
-        const TYPE = isStart ? 'start' : isEnd ? 'end' : '';
         this.state = {
-            type: TYPE,
+            type,
             weight: 1
         };
         this.pos = [row, col];
@@ -16,47 +15,12 @@ class Cell extends Component {
     componentDidMount() {
         // Add the functionality to update the cell when needed
         const DATA = {
-            setDataset: this.setDataset,
             getType: this.getType,
             setType: this.setType,
             getWeight: this.getWeight,
             setWeight: this.setWeight
         }
         this.props.setCellData(this.pos, DATA);
-
-        // Add the local start pos when it's the start pos
-        if (this.isStartPos()) {
-            this.props.setStartPos(this.pos);
-        }
-        // Add the local end pos when it's the end pos
-        else if (this.isEndPos()) {
-            this.props.setEndPos(this.pos);
-        }
-    }
-
-    setDataset = dataset => {
-        // Set every data value that can be a number to a number
-        for (let [key, value] of Object.entries(dataset)) {
-            if (parseInt(value)) {
-                dataset[key] = Number(value);
-            }
-        }
-        // Merge the new data with the old data and set the data
-        const OLD_DATASET = this.state.dataset;
-        dataset = Object.assign({}, OLD_DATASET, dataset)
-        this.setState({
-            type: dataset.type,
-            weight: dataset.weight
-        });
-
-        // If the dataset has the type 'start', update the local start pos
-        if (dataset.type === 'start') {
-            this.props.setStartPos(this.pos);
-        }
-        // If the dataset has the type 'end', update the local end pos
-        else if (dataset.type === 'end') {
-            this.props.setEndPos(this.pos);
-        }
     }
 
     getWeight = () => {
@@ -79,15 +43,6 @@ class Cell extends Component {
         this.setState({
             type
         });
-
-        // If the dataset has the type 'start', set the pos as start pos
-        if (type === 'start') {
-            this.props.setStartPos(this.pos);
-        }
-        // If the dataset has the type 'end', set the pos as end pos
-        else if (type === 'end') {
-            this.props.seEndPos(this.pos);
-        }
     }
 
     isStartPos() {
@@ -104,7 +59,7 @@ class Cell extends Component {
         // If the algorithm is running, return
         if (this.props.running) { return }
 
-        // When the start/end pos are set, and the user left clicks on the cell, set the pencil value to the cell
+        // When the user left clicks on the cell, set the pencil value to the cell
         const LEFT_CLICKED = e.buttons === 1;
         if (LEFT_CLICKED) {
             this.clicked();
@@ -112,28 +67,19 @@ class Cell extends Component {
     }
 
     clicked() {
-        // If the algorithm is running, return
-        if (this.props.running) { return }
+        // If the algorithm is running or the cell is the start / end pos, return
+        if (this.props.running || this.isStartPos() || this.isEndPos()) { return }
 
-        // Get the pencil type and weight
+        // Set the pencil styling to the cell
         let [pencilType, pencilWeight] = document.getElementById('pencil').value.split('-');
-
-        // If the current cell is equal to the start or end position and the cell doesn't get cleared, return
-        const TYPE = this.getType();
-        if ((TYPE === "start" || TYPE === "end") && pencilType !== '') { return }
-
-        // Set the data to the cell
         pencilType = pencilType !== "weight" ? pencilType : '';
-        pencilWeight = pencilWeight !== undefined ? pencilWeight : 1;
-        const DATA = {
-            type: pencilType,
-            weight: pencilWeight
-        };
-        this.setDataset(DATA);
+        this.setType(pencilType);
+        pencilWeight = Number(pencilWeight) || 1;
+        this.setWeight(pencilWeight);
     }
 
     dragOver(e) {
-        // If the user hovers over the start or end pos, return
+        // Don't allow the drop when the user hovers over the start or end pos
         if (this.isStartPos() || this.isEndPos()) {
             return
         }
@@ -142,53 +88,56 @@ class Cell extends Component {
     }
 
     dragStart(e) {
-        // Only allow the start or end pos to be dragged IF the algorithm isn't running
+        // Only allow the start or end pos to be dragged if the algorithm isn't running
         if ((!this.isStartPos() && !this.isEndPos()) || this.props.running) {
             e.preventDefault();
             return
         }
-        e.dataTransfer.setData("id", e.target.id);
+        e.dataTransfer.setData('id', e.target.id);
     }
 
-    dragEnd() {
-        // Remove the dragged data from the dragged cell
-        const DATA = {
-            type: '',
-            weight: 1
-        };
-        this.setDataset(DATA);
+    async dragEnd() {
+        // If the start / end pos wasn't moved, return
+        const TYPE = this.getType();
+        const POSITIONS = document.querySelectorAll(`[data-type=${TYPE}]`)
+        if (POSITIONS.length === 1) {
+            return
+        }
+        // Remove the old start / end pos
+        this.setType('');
+        this.setWeight(1);
     }
 
     dragDrop(e) {
-        // Add the dragged data on the dropped cell
+        // Move the start or end pos to the dropped cell
         const DRAG_TARGET_ID = e.dataTransfer.getData('id');
         const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
         const DATA = DRAG_TARGET.dataset;
-        this.setDataset(DATA);
+        this.setType(DATA.type);
+        this.setWeight(DATA.weight);
     }
 
     render() {
-        const TYPE = this.state.type;
-        const WEIGHT = this.state.weight
-        const ID = TYPE === 'start' || TYPE === 'end' ? TYPE : null;
-        const DRAGGABLE = (TYPE === 'start' || TYPE === 'end') && !this.props.running;
         return (
             <td
                 ref={this.element}
-                id={ID}
-                className={`border border-dark cell ${TYPE}`}
-                data-type={TYPE}
-                data-weight={WEIGHT}
+                id={this.pos.join('-')}
+                className={`border border-dark cell ${this.state.type}`}
+                data-type={this.state.type}
+                data-weight={this.state.weight}
                 onClick={() => this.clicked()}
                 onMouseEnter={(e) => this.hover(e)}
-                draggable={DRAGGABLE}
+                draggable={(this.isStartPos() || this.isEndPos()) && !this.props.running}
                 onDragStart={(e) => this.dragStart(e)}
                 onDragOver={(e) => this.dragOver(e)}
                 onDrop={(e) => this.dragDrop(e)}
                 onDragEnd={() => this.dragEnd()}
             >
-                <CellIcon type={TYPE} weight={WEIGHT} />
-            </td >
+                <CellIcon
+                    type={this.state.type}
+                    weight={this.state.weight}
+                />
+            </td>
         );
     }
 }
