@@ -4,9 +4,9 @@ class Dijkstra extends Algorithm {
     constructor(props) {
         super(props);
         this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
-        this._queue = [this.props.startPos];
+        this._queue = [this.startPos()];
         this._path = {
-            [this.props.startPos]: {
+            [this.startPos()]: {
                 parent: null,
                 distance: 0
             }
@@ -44,7 +44,7 @@ class Dijkstra extends Algorithm {
     }
 
     get route() {
-        let parent = this.props.endPos;
+        let parent = this.endPos();
         let path = [];
 
         while(parent) {

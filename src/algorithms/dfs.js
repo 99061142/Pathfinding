@@ -5,12 +5,12 @@ class Dfs extends Algorithm {
         super(props);
         this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
         this._path = {
-            [this.props.startPos]: null
+            [this.startPos()]: null
         }
     }
 
     get route() {
-        let parent = this.props.endPos;
+        let parent = this.endPos();
         let path = [];
 
         while(parent) {
@@ -23,7 +23,7 @@ class Dfs extends Algorithm {
 
     async run() {
         // Positions to check
-        let queue = [this.props.startPos];
+        let queue = [this.startPos()];
 
         while(queue && queue.length) {
             let queuedPos = queue.pop();

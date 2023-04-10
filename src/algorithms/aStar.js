@@ -5,13 +5,13 @@ class AStar extends Algorithm {
         super(props);
         this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
         this._path = {
-            [this.props.startPos]: {
+            [this.startPos()]: {
                 parent: null,
                 g: 0,
-                h: this.hCost(this.props.startPos, this.props.endPos),
+                h: this.hCost(this.startPos(), this.endPos()),
             }
         };
-        this._queue = [this.props.startPos];
+        this._queue = [this.startPos()];
     }
 
     fCost(pos) {
@@ -24,7 +24,7 @@ class AStar extends Algorithm {
     hCost(pos) {
         // Cost from the position to the end
         const [ROW, CELL] = pos;
-        const [END_ROW, END_CELL] = this.props.endPos;
+        const [END_ROW, END_CELL] = this.endPos();
         let rowCost = Math.abs(ROW - END_ROW);
         let cellCost = Math.abs(CELL - END_CELL);
         let cost = this.cellWeight(pos) * 10; // Set cost as current weight of the node
@@ -49,7 +49,7 @@ class AStar extends Algorithm {
     gCost(pos) {
         // Cost from the start to the position
         const [ROW, CELL] = pos;
-        const [START_ROW, START_CELL] = this.props.startPos;
+        const [START_ROW, START_CELL] = this.startPos();
         let rowCost = Math.abs(ROW - START_ROW);
         let cellCost = Math.abs(CELL - START_CELL);
         let cost = this.cellWeight(pos) * 10; // Set cost as current weight of the node
@@ -73,7 +73,7 @@ class AStar extends Algorithm {
 
     get route() {
         let route = [];
-        let pos = this.props.endPos;
+        let pos = this.endPos();
         while(pos) {
             route.unshift(pos);
             pos = this._path[pos].parent;

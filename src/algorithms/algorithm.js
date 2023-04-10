@@ -1,42 +1,58 @@
 import { Component } from "react";
 
 class Algorithm extends Component {
+    element(pos) {
+        const ID = pos.join('-');
+        const ELEMENT = document.getElementById(ID);
+        return ELEMENT
+    }
+
+    startPos() {
+        const ELEMENT = document.querySelector('td.start');
+        const POS = ELEMENT.id.split('-').map(v => Number(v));
+        return POS
+    }
+
+    endPos() {
+        const ELEMENT = document.querySelector('td.end');
+        const POS = ELEMENT.id.split('-').map(v => Number(v));
+        return POS
+    }
+
     cellData(pos) {
         const [ROW, COL] = pos;
-        const BOARD = this.props.board;
-        const CELL_DATA = BOARD[ROW][COL];
+        const CELLS = this.props.cells;
+        const CELL_DATA = CELLS[ROW][COL];
         return CELL_DATA
     }
 
     cellWeight(pos) {
-        const CELL_DATA = this.cellData(pos);
-        const WEIGHT = CELL_DATA.getWeight();
+        const ELEMENT = this.element(pos);
+        const WEIGHT = Number(ELEMENT.dataset.weight);
         return WEIGHT
     }
 
     cellType(pos) {
-        const CELL_DATA = this.cellData(pos);
-        const TYPE = CELL_DATA.getType();
+        const ELEMENT = this.element(pos);
+        const TYPE = ELEMENT.dataset.type;
         return TYPE
     }
 
     isStart(pos) {
-        const CELL_DATA = this.cellData(pos);
-        const TYPE = CELL_DATA.getType();
+        const TYPE = this.cellType(pos);
         return TYPE === "start"
     }
 
     isEnd(pos) {
-        const CELL_DATA = this.cellData(pos);
-        const TYPE = CELL_DATA.getType();
+        const TYPE = this.cellType(pos);
         return TYPE === "end"
     }
 
     canMove(pos) {
         const [ROW, CELL] = pos;
-        const BOARD = this.props.board;
-        const BOARD_ROWS = BOARD.length;
-        const BOARD_COLS = BOARD[0].length;
+        const CELLS = this.props.cells;
+        const BOARD_ROWS = CELLS.length;
+        const BOARD_COLS = CELLS[0].length;
 
         // If the position is out of bounds, return false
         if(ROW < 0 || CELL < 0 || ROW >= BOARD_ROWS || CELL >= BOARD_COLS) { 
@@ -76,8 +92,9 @@ class Algorithm extends Component {
     }
 
     sleep() {
-        const MS = 100 - this.props.getSpeed();
-        if(MS === 0) { return }
+        const SPEED_ELEMENT = document.getElementById('speed');
+        const CURR_SPEED = Number(SPEED_ELEMENT.value);
+        const MS = 100 - CURR_SPEED;
         return new Promise(resolve => setTimeout(resolve, MS));
     }
 
