@@ -46,8 +46,8 @@ class Settings extends Component {
 
     async algorithmChanged() {
         // If there is a path on the board, clear it
-        const FASTEST_ELEMENT = document.querySelector('td.fastest');
-        if (FASTEST_ELEMENT) {
+        const HAS_PATH = document.querySelector('td.visited');
+        if (HAS_PATH) {
             await ClearPath(this.props.cells);
         }
 
@@ -123,7 +123,6 @@ class Settings extends Component {
                                 Layout
                             </DropdownToggle>
                             <DropdownMenu>
-
                                 <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
                                 <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
                             </DropdownMenu>
