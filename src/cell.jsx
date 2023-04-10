@@ -108,15 +108,7 @@ class Cell extends Component {
         // Remove the old start / end pos
         this.setType('');
         this.setWeight(1);
-    }
 
-    async dragDrop(e) {
-        // Move the start or end pos to the dropped cell
-        const DRAG_TARGET_ID = e.dataTransfer.getData('id');
-        const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
-        const DATA = DRAG_TARGET.dataset;
-        this.setType(DATA.type);
-        this.setWeight(DATA.weight);
 
         // Run the algorithm when there is a path on the board
         const HAS_PATH = document.querySelector('td.fastest');
@@ -127,6 +119,15 @@ class Cell extends Component {
             skip: true,
             setCellData: this.props.setCellData
         });
+    }
+
+    async dragDrop(e) {
+        // Move the start or end pos to the dropped cell
+        const DRAG_TARGET_ID = e.dataTransfer.getData('id');
+        const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
+        const DATA = DRAG_TARGET.dataset;
+        this.setType(DATA.type);
+        this.setWeight(DATA.weight);
     }
 
     render() {
