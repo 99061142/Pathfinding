@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, createRef } from "react";
 import Cell from './cell'
 
 class Board extends Component {
@@ -8,6 +8,7 @@ class Board extends Component {
             rows: 0,
             cols: 0
         }
+        this.element = createRef();
     }
 
     setRows(rows) {
@@ -29,7 +30,7 @@ class Board extends Component {
         this.setCols(MAX_COLS);
     }
 
-    startingStartPos() {
+    initStartPos() {
         // Calculate the starting start position
         const ROW = Math.floor(this.state.rows / 2);
         const COL = Math.floor(this.state.cols * .15);
@@ -37,7 +38,7 @@ class Board extends Component {
         return POS
     }
 
-    startingEndPos() {
+    initEndPos() {
         // Calculate the starting end position
         const ROW = Math.floor(this.state.rows / 2);
         const COL = Math.floor(this.state.cols * .85);
@@ -47,7 +48,7 @@ class Board extends Component {
 
     maxRows() {
         // Get the max amount of rows by the max height of the board divided by the cell view height
-        const BOARD = document.getElementById("board");
+        const BOARD = this.element.current;
         const TOP = BOARD.getBoundingClientRect().top;
         const MAX_HEIGHT = (window.innerHeight - TOP);
         const CELL_PADDING = ((window.innerHeight / 100) * 1.75) * 2;
@@ -63,61 +64,28 @@ class Board extends Component {
         return COLS
     }
 
-    async clearCells(clear, exceptionTypes = []) {
-        const PATH_TYPES = ["visited", "next", "fastest"];
-        const BOARD = this.props.board;
-        for (const [_, cells] of BOARD.entries()) {
-            for (const [_, cell] of cells.entries()) {
-                const CELL_TYPE = cell.getType();
-                const CELL_WEIGHT = cell.getWeight();
-
-                // If the cell doesn't need to be cleared, continue
-                if ((clear === "wall" && CELL_TYPE !== "wall") || (clear === "weight" && CELL_WEIGHT === 1) || (clear === "path" && !PATH_TYPES.includes(CELL_TYPE)) && clear !== "all" || exceptionTypes.includes(CELL_TYPE)) { continue }
-
-                // Clear the cell
-                const WEIGHT = (clear === "weight" || clear === "all") ? 1 : CELL_WEIGHT;
-                const DATA = {
-                    type: '',
-                    weight: WEIGHT
-                };
-                cell.setDataset(DATA);
-            }
+    initCellType(row, col) {
+        // Get the initializing type of the cell
+        const [START_ROW, START_COL] = this.initStartPos();
+        if (row === START_ROW && col === START_COL) {
+            return 'start'
         }
-    }
-
-    async setRandomCells(setType) {
-        await this.clearCells("all", ['start', 'end']);
-
-        const BOARD = this.props.board;
-        for (const cells of BOARD) {
-            for (const cell of cells) {
-                // If the percentage is higher than .33, continue
-                const PERCENAGE = Math.random();
-                if (PERCENAGE > .33 || cell.getType() !== '') { continue }
-
-                // Add the new data to the cell
-                const WEIGHT = setType === "weight" ? 10 : 1;
-                const DATA = {
-                    type: setType,
-                    weight: WEIGHT
-                };
-                cell.setDataset(DATA);
-            }
+        const [END_ROW, END_COL] = this.initEndPos();
+        if (row === END_ROW && col === END_COL) {
+            return 'end'
         }
+        return ''
     }
 
     render() {
-        const IS_START = (row, col) => `${row},${col}` === String(this.startingStartPos());
-        const IS_END = (row, col) => `${row},${col}` === String(this.startingEndPos());
         return (
-            <table id="board" className="my-2 d-flex justify-content-center">
+            <table ref={this.element} className="my-2 d-flex justify-content-center">
                 <tbody>
                     {[...Array(this.state.rows)].map((_, row) =>
                         <tr key={row}>
                             {[...Array(this.state.cols)].map((_, col) =>
                                 <Cell
-                                    isStart={IS_START(row, col)}
-                                    isEnd={IS_END(row, col)}
+                                    type={this.initCellType(row, col)}
                                     row={row}
                                     col={col}
                                     key={col}
