@@ -109,7 +109,6 @@ class Cell extends Component {
         this.setType('');
         this.setWeight(1);
 
-
         // Run the algorithm when there is a path on the board
         const HAS_PATH = document.querySelector('td.fastest');
         if (!HAS_PATH) { return }
