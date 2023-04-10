@@ -4,7 +4,7 @@ import Dijkstra from './algorithms/dijkstra';
 import AStar from './algorithms/aStar';
 import ClearPath from './clear/clearPath';
 
-async function Run({cells, setCellData, setRunning}) {
+async function Run({cells, setCellData, setRunning, skip}) {
     const getAlgorithmClass = () => {
         const ALGORITHM = document.getElementById('algorithm').value;
         switch (ALGORITHM) {
@@ -28,7 +28,8 @@ async function Run({cells, setCellData, setRunning}) {
     const Algorithm = getAlgorithmClass();
     await new Algorithm({
         cells,
-        setCellData
+        setCellData,
+        skip
     }).run();
 
     setRunning(false);

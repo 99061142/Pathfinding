@@ -1,6 +1,8 @@
 import { Component, createRef } from "react";
 import CellIcon from './cellIcon'
 
+import Run from './run'
+
 class Cell extends Component {
     constructor({ type, row, col }) {
         super();
@@ -108,13 +110,23 @@ class Cell extends Component {
         this.setWeight(1);
     }
 
-    dragDrop(e) {
+    async dragDrop(e) {
         // Move the start or end pos to the dropped cell
         const DRAG_TARGET_ID = e.dataTransfer.getData('id');
         const DRAG_TARGET = document.getElementById(DRAG_TARGET_ID);
         const DATA = DRAG_TARGET.dataset;
         this.setType(DATA.type);
         this.setWeight(DATA.weight);
+
+        // Run the algorithm when there is a path on the board
+        const HAS_PATH = document.querySelector('td.fastest');
+        if (!HAS_PATH) { return }
+        await Run({
+            cells: this.props.cells,
+            setRunning: this.props.setRunning,
+            skip: true,
+            setCellData: this.props.setCellData
+        });
     }
 
     render() {

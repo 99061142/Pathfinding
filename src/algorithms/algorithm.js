@@ -92,6 +92,8 @@ class Algorithm extends Component {
     }
 
     sleep() {
+        if(this.props.skip) { return }
+
         const SPEED_ELEMENT = document.getElementById('speed');
         const CURR_SPEED = Number(SPEED_ELEMENT.value);
         const MS = 100 - CURR_SPEED;

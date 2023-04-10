@@ -155,7 +155,8 @@ class Settings extends Component {
                             onClick={() => Run({
                                 setRunning: this.props.setRunning,
                                 cells: this.props.cells,
-                                setCellData: this.props.setCellData
+                                setCellData: this.props.setCellData,
+                                skip: false
                             })}
                         >
                             Run
