@@ -123,7 +123,7 @@ class Settings extends Component {
                                 Layout
                             </DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem onClick={() => RecursiveDivision(this.props.cells)}>Recursive Division</DropdownItem>
+
                                 <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
                                 <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
                             </DropdownMenu>
