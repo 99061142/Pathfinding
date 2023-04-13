@@ -1,8 +1,8 @@
 import Algorithm from "./algorithm";
 
 class AStar extends Algorithm {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
         this._queue = [this.startPos()];
         this._path = {
