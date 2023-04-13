@@ -1,12 +1,12 @@
 import Algorithm from "./algorithm";
 
 class Dfs extends Algorithm {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
         this._path = {
             [this.startPos()]: null
-        }
+        };
     }
 
     get route() {

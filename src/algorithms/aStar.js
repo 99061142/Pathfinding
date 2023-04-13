@@ -1,17 +1,17 @@
 import Algorithm from "./algorithm";
 
 class AStar extends Algorithm {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
+        this._queue = [this.startPos()];
         this._path = {
             [this.startPos()]: {
                 parent: null,
                 g: 0,
-                h: this.hCost(this.startPos(), this.endPos()),
+                h: this.hCost(this.startPos())
             }
         };
-        this._queue = [this.startPos()];
     }
 
     fCost(pos) {
@@ -90,7 +90,7 @@ class AStar extends Algorithm {
         let lowestFCostPos = null;
         for(let pos of this._queue) {
             let fCost = this.fCost(pos);
-            if(fCost < lowestFCost || fCost == lowestFCost && this.hCost(pos) < this.hCost(lowestFCostPos)) {
+            if(fCost < lowestFCost || (fCost == lowestFCost && this.hCost(pos) < this.hCost(lowestFCostPos))) {
                 lowestFCost = fCost;
                 lowestFCostPos = pos;
             }

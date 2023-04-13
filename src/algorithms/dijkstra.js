@@ -1,8 +1,8 @@
 import Algorithm from "./algorithm";
 
 class Dijkstra extends Algorithm {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
         this._queue = [this.startPos()];
         this._path = {
@@ -10,7 +10,7 @@ class Dijkstra extends Algorithm {
                 parent: null,
                 distance: 0
             }
-        }
+        };
     }
 
     queuedIndex(pos) {
