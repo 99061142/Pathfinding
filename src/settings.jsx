@@ -76,77 +76,67 @@ class Settings extends Component {
         return (
             <Container className="bg-dark py-3" fluid>
                 <Row className="d-flex align-items-center">
-                    <Col xs={4} lg={true} className="my-2">
-                        <FormGroup>
-                            <FormLabel className="text-white" htmlFor="algorithm">Algorithm</FormLabel>
-                            <FormSelect
-                                ref={this.algorithm}
-                                id="algorithm"
-                                defaultValue="aStar"
-                                onChange={() => this.algorithmChanged()}
-                                disabled={this.props.running}
-                            >
-                                <option data-weighted={false} value="bfs">BFS</option>
-                                <option data-weighted={false} value="dfs">DFS</option>
-                                <option data-weighted={true} value="dijkstra">Dijkstra</option>
-                                <option data-weighted={true} value="aStar">A*</option>
-                            </FormSelect>
-                        </FormGroup>
-                    </Col>
-                    <Col xs={4} lg={true} className="my-2">
-                        <FormGroup>
-                            <FormLabel className="text-white" htmlFor="pencil">Pencil</FormLabel>
-                            <FormSelect
-                                ref={this.pencil}
-                                id="pencil"
-                                defaultValue="wall"
-                            >
-                                <option data-weighted={false} value=''>Erase</option>
-                                <option data-weighted={false} value="wall">Wall</option>
-                                <option data-weighted={true} value="weight-10" disabled={!this.state.algorithmWeighted}>Weight</option>
-                            </FormSelect>
-                        </FormGroup>
-                    </Col>
-                    <Col xs={4} lg={true} className="my-2">
-                        <FormGroup>
-                            <FormLabel className="text-white" htmlFor="speed">Speed</FormLabel>
-                            <FormRange ref={this.speed} id="speed" max={99} />
-                        </FormGroup>
-                    </Col>
-                    <Col xs={4} lg={true} className="my-2">
-                        <Dropdown>
-                            <DropdownToggle
-                                className="w-100"
-                                variant={this.props.running ? "danger" : "success"}
-                                disabled={this.props.running}
-                            >
-                                Layout
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem onClick={() => RecursiveDivision(this.props.cells)}>Recursive Division</DropdownItem>
-                                <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
-                                <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </Col>
-                    <Col xs={4} lg={true} className="my-2">
-                        <Dropdown>
-                            <DropdownToggle
-                                id="clear"
-                                className="w-100"
-                                variant={this.props.running ? "danger" : "success"}
-                                disabled={this.props.running}
-                            >
-                                Clear
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem onClick={() => ClearWalls(this.props.cells)}>Walls</DropdownItem>
-                                <DropdownItem onClick={() => ClearWeights(this.props.cells)}>Weights</DropdownItem>
-                                <DropdownItem onClick={() => ClearPath(this.props.cells)}>Path</DropdownItem>
-                                <DropdownItem onClick={() => ClearAll(this.props.cells)}>All</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </Col>
+                    <FormGroup as={Col} xs={4} lg={true} className="my-2">
+                        <FormLabel className="text-white" htmlFor="algorithm">Algorithm</FormLabel>
+                        <FormSelect
+                            ref={this.algorithm}
+                            id="algorithm"
+                            defaultValue="aStar"
+                            onChange={() => this.algorithmChanged()}
+                            disabled={this.props.running}
+                        >
+                            <option data-weighted={false} value="bfs">BFS</option>
+                            <option data-weighted={false} value="dfs">DFS</option>
+                            <option data-weighted={true} value="dijkstra">Dijkstra</option>
+                            <option data-weighted={true} value="aStar">A*</option>
+                        </FormSelect>
+                    </FormGroup>
+                    <FormGroup as={Col} xs={4} lg={true} className="my-2">
+                        <FormLabel className="text-white" htmlFor="pencil">Pencil</FormLabel>
+                        <FormSelect
+                            ref={this.pencil}
+                            id="pencil"
+                            defaultValue="wall"
+                        >
+                            <option data-weighted={false} value=''>Erase</option>
+                            <option data-weighted={false} value="wall">Wall</option>
+                            <option data-weighted={true} value="weight-10" disabled={!this.state.algorithmWeighted}>Weight</option>
+                        </FormSelect>
+                    </FormGroup>
+                    <FormGroup as={Col} xs={4} lg={true} className="my-2">
+                        <FormLabel className="text-white" htmlFor="speed">Speed</FormLabel>
+                        <FormRange ref={this.speed} id="speed" max={99} />
+                    </FormGroup>
+                    <Dropdown as={Col} xs={4} lg={true} className="my-2">
+                        <DropdownToggle
+                            className="w-100"
+                            variant={this.props.running ? "danger" : "success"}
+                            disabled={this.props.running}
+                        >
+                            Layout
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem onClick={() => RecursiveDivision(this.props.cells)}>Recursive Division</DropdownItem>
+                            <DropdownItem onClick={() => RandomWalls(this.props.cells)}>Walls</DropdownItem>
+                            <DropdownItem onClick={() => RandomWeights(this.props.cells)} disabled={!this.state.algorithmWeighted}>Weights</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Dropdown as={Col} xs={4} lg={true} className="my-2">
+                        <DropdownToggle
+                            id="clear"
+                            className="w-100"
+                            variant={this.props.running ? "danger" : "success"}
+                            disabled={this.props.running}
+                        >
+                            Clear
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem onClick={() => ClearWalls(this.props.cells)}>Walls</DropdownItem>
+                            <DropdownItem onClick={() => ClearWeights(this.props.cells)}>Weights</DropdownItem>
+                            <DropdownItem onClick={() => ClearPath(this.props.cells)}>Path</DropdownItem>
+                            <DropdownItem onClick={() => ClearAll(this.props.cells)}>All</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <Col xs={4} lg={true} className="my-2">
                         <Button
                             className="w-100"
