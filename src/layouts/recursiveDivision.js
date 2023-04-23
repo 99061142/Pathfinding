@@ -1,4 +1,4 @@
-function RecursiveDivision(cells) {
+function RecursiveDivision() {
 
 }
 
