@@ -26,7 +26,9 @@ function Board(props) {
             return COLS
         }
         setCols(maxCols());
-    }, [board]);
+
+        // eslint-disable-next-line
+    }, []);
 
     const initCellType = (row, col) => {
         // Return the type of the cell based on the row and col
