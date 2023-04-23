@@ -19,13 +19,6 @@ class Algorithm extends Component {
         return POS
     }
 
-    cellData(pos) {
-        const [ROW, COL] = pos;
-        const CELLS = this.props.cells;
-        const CELL_DATA = CELLS[ROW][COL];
-        return CELL_DATA
-    }
-
     cellWeight(pos) {
         const ELEMENT = this.element(pos);
         const WEIGHT = Number(ELEMENT.dataset.weight);
@@ -50,9 +43,8 @@ class Algorithm extends Component {
 
     canMove(pos) {
         const [ROW, CELL] = pos;
-        const CELLS = this.props.cells;
-        const BOARD_ROWS = CELLS.length;
-        const BOARD_COLS = CELLS[0].length;
+        const BOARD_ROWS = document.querySelectorAll('tr').length;
+        const BOARD_COLS = document.querySelectorAll('td').length / BOARD_ROWS;
 
         // If the position is out of bounds, return false
         if(ROW < 0 || CELL < 0 || ROW >= BOARD_ROWS || CELL >= BOARD_COLS) { 
@@ -75,19 +67,19 @@ class Algorithm extends Component {
     }
 
     async setVisited(pos) {
-        const CELL_DATA = this.cellData(pos);
-        CELL_DATA.setType('visited');
+        const CELL = this.element(pos);
+        CELL.dataset.type = "visited";
         await this.sleep();
     }
 
     setNext(pos) {
-        const CELL_DATA = this.cellData(pos);
-        CELL_DATA.setType('next');
+        const CELL = this.element(pos);
+        CELL.dataset.type = "next";
     }
 
     async setFastest(pos) {
-        const CELL_DATA = this.cellData(pos);
-        CELL_DATA.setType('fastest');
+        const CELL = this.element(pos);
+        CELL.dataset.type = "fastest";
         await this.sleep();
     }
 
