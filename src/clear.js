@@ -1,6 +1,6 @@
 const getCells = () => document.querySelectorAll('td');
 
-export function ClearAll() {
+export async function ClearAll() {
     for (const cell of getCells()) {
         const CELL_TYPE = cell.dataset.type;
         const CELL_WEIGHT = Number(cell.dataset.weight);
