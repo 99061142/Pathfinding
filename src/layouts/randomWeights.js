@@ -1,8 +1,8 @@
 import { ClearAll } from "../clear";
 
-function RandomWeights() {
+async function RandomWeights() {
     // CLear the board before creating a new layout
-    ClearAll();
+    await ClearAll();
 
     const CELLS = document.querySelectorAll('td');
     for (const cell of CELLS) {
