@@ -4,10 +4,7 @@ import FormRange from 'react-bootstrap/esm/FormRange';
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
-import ClearAll from './clear/clearAll';
-import ClearPath from './clear/clearPath';
-import ClearWalls from './clear/clearWalls';
-import ClearWeights from './clear/clearWeights';
+import { ClearAll, ClearPath, ClearWeights, ClearWalls } from './clear';
 import RandomWalls from './layouts/randomWalls'
 import RandomWeights from './layouts/randomWeights';
 import RecursiveDivision from './layouts/recursiveDivision';
@@ -46,7 +43,7 @@ class Settings extends Component {
 
     async algorithmChanged() {
         // If there is a path on the board, clear it
-        const HAS_PATH = document.querySelector('td.next, td.visited, td.fastest');;
+        const HAS_PATH = document.querySelector('td.next, td.visited, td.fastest');
         if (HAS_PATH) {
             await ClearPath(this.props.cells);
         }
@@ -144,8 +141,6 @@ class Settings extends Component {
                             disabled={this.props.running}
                             onClick={() => Run({
                                 setRunning: this.props.setRunning,
-                                cells: this.props.cells,
-                                setCellData: this.props.setCellData,
                                 skip: false
                             })}
                         >
