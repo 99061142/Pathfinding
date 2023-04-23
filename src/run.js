@@ -2,9 +2,9 @@ import Bfs from './algorithms/bfs';
 import Dfs from './algorithms/dfs';
 import Dijkstra from './algorithms/dijkstra';
 import AStar from './algorithms/aStar';
-import ClearPath from './clear/clearPath';
+import { ClearPath } from './clear';
 
-async function Run({cells, setCellData, setRunning, skip}) {
+async function Run({setRunning, skip}) {
     const getAlgorithmClass = () => {
         const ALGORITHM = document.getElementById('algorithm').value;
         switch (ALGORITHM) {
@@ -21,14 +21,12 @@ async function Run({cells, setCellData, setRunning, skip}) {
         }
     }
     
-    await ClearPath(cells);
+    await ClearPath();
     setRunning(true);
 
     // Run the algorithm
     const Algorithm = getAlgorithmClass();
     await new Algorithm({
-        cells,
-        setCellData,
         skip
     }).run();
 
