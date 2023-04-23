@@ -1,16 +1,15 @@
-import ClearAll from "../clear/clearAll";
+import { ClearAll } from "../clear";
 
-async function RandomWeights(cells) {
+function RandomWeights() {
     // CLear the board before creating a new layout
-    await ClearAll(cells);
+    ClearAll();
 
-    for (const cellsRow of cells) {
-        for (const cell of cellsRow) {
-            // If the percentage is higher than .33, continue
-            const PERCENAGE = Math.random();
-            if (PERCENAGE > .33 || cell.getType() !== '') { continue }
-            cell.setWeight(10);
-        }
+    const CELLS = document.querySelectorAll('td');
+    for (const cell of CELLS) {
+        // If the percentage is higher than .33, continue
+        const PERCENAGE = Math.random();
+        if (PERCENAGE > .33 || cell.dataset.type !== '') { continue }
+        cell.dataset.weight = 10;
     }
 }
 
