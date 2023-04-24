@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef } from 'react';
+import { useState, useEffect, createRef, useCallback } from 'react';
 import { Col, Container, Row, FormGroup, FormLabel, FormSelect, Dropdown, Button } from 'react-bootstrap'
 import { ClearAll, ClearPath, ClearWeights, ClearWalls } from './clear';
 import FormRange from 'react-bootstrap/esm/FormRange';
@@ -16,21 +16,21 @@ function Settings({ running, setRunning }) {
     const algorithm = createRef(null);
     const pencil = createRef(null);
 
+    const currentAlgorithmWeighted = useCallback(() => {
+        const CURRENT_ALGORITHM_OPTION_ELEMENT = algorithm.current.selectedOptions[0];
+        const IS_WEIGHTED = CURRENT_ALGORITHM_OPTION_ELEMENT.dataset.weighted === 'true';
+        return IS_WEIGHTED
+    }, [algorithm]);
+
     useEffect(() => {
         // Set the algorithm weighted state based on the default algorithm value
         const ALGORITHM_WEIGHTED = currentAlgorithmWeighted();
         setAlgorithmWeighted(ALGORITHM_WEIGHTED);
-    }, [])
+    }, [currentAlgorithmWeighted])
 
     const currentPencilWeighted = () => {
         const CURRENT_PENCIL_OPTION_ELEMENT = pencil.current.selectedOptions[0];
         const IS_WEIGHTED = CURRENT_PENCIL_OPTION_ELEMENT.dataset.weighted === 'true';
-        return IS_WEIGHTED
-    }
-
-    const currentAlgorithmWeighted = () => {
-        const CURRENT_ALGORITHM_OPTION_ELEMENT = algorithm.current.selectedOptions[0];
-        const IS_WEIGHTED = CURRENT_ALGORITHM_OPTION_ELEMENT.dataset.weighted === 'true';
         return IS_WEIGHTED
     }
 
