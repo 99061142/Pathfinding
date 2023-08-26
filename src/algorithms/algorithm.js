@@ -1,100 +1,92 @@
 import { Component } from "react";
 
 class Algorithm extends Component {
-    element(pos) {
-        const ID = pos.join('-');
-        const ELEMENT = document.getElementById(ID);
-        return ELEMENT
+    isStart(pos) {
+        const IS_START = this.cellType(pos) === "start"
+        return IS_START
     }
 
-    startPos() {
-        const ELEMENT = document.querySelector('td.start');
-        const POS = ELEMENT.id.split('-').map(v => Number(v));
-        return POS
+    isEnd(pos) {
+        const IS_END = this.cellType(pos) === "end"
+        return IS_END
     }
 
-    endPos() {
-        const ELEMENT = document.querySelector('td.end');
-        const POS = ELEMENT.id.split('-').map(v => Number(v));
-        return POS
+    cellData(pos) {
+        const BOARD = this.props.board
+        const [ROW, COL] = pos
+        const CELL_DATA = BOARD[ROW][COL]
+        return CELL_DATA
     }
 
     cellWeight(pos) {
-        const ELEMENT = this.element(pos);
-        const WEIGHT = Number(ELEMENT.dataset.weight);
+        const CELL = this.cellData(pos);
+        const WEIGHT = Number(CELL.getWeight());
         return WEIGHT
     }
 
     cellType(pos) {
-        const ELEMENT = this.element(pos);
-        const TYPE = ELEMENT.dataset.type;
+        const CELL = this.cellData(pos)
+        const TYPE = CELL.getType();
         return TYPE
     }
 
-    isStart(pos) {
-        const TYPE = this.cellType(pos);
-        return TYPE === "start"
-    }
-
-    isEnd(pos) {
-        const TYPE = this.cellType(pos);
-        return TYPE === "end"
+    cellInBounds(pos) {
+        const BOARD = this.props.board;
+        const [ROW, COL] = pos;
+        if(ROW < 0 || COL < 0 || ROW >= BOARD.length || COL >= BOARD[ROW].length) {
+            return false
+        }
+        return true
     }
 
     canMove(pos) {
-        const [ROW, CELL] = pos;
-        const BOARD_ROWS = document.querySelectorAll('tr').length;
-        const BOARD_COLS = document.querySelectorAll('td').length / BOARD_ROWS;
-
         // If the position is out of bounds, return false
-        if(ROW < 0 || CELL < 0 || ROW >= BOARD_ROWS || CELL >= BOARD_COLS) { 
+        if(!this.cellInBounds(pos)) { 
             return false
         }
-
-        const NOT_MOVABLE_TYPES = ['wall', 'visited', 'next'];
+        // If the element is inside the 'NOT_MOVABLE_TYPES' list, return false
+        const NOT_MOVABLE_TYPES = ['visited', 'queued', 'wall', 'start'];
         const CELL_TYPE = this.cellType(pos);
-        const CAN_MOVE = !NOT_MOVABLE_TYPES.includes(CELL_TYPE) && !this.isStart(pos);
+        const CAN_MOVE = !NOT_MOVABLE_TYPES.includes(CELL_TYPE);
         return CAN_MOVE
     }
 
-    position(pos, dir) {
-        const [POS_ROW, POS_CELL] = pos;
-        const [DIR_ROW, DIR_COL] = dir;
-        const ROW = POS_ROW + DIR_ROW;
-        const CELL = POS_CELL + DIR_COL;
-        pos = [ROW, CELL];
-        return pos
+    dirPosition(pos, dir) {
+        const POS = pos.map((val, i) => {
+            return val + dir[i]
+        });
+        return POS
+    }
+
+    setCellType(pos, type) {
+        const CELL = this.cellData(pos)
+        CELL.setType(type)
     }
 
     async setVisited(pos) {
-        const CELL = this.element(pos);
-        CELL.dataset.type = "visited";
+        this.setCellType(pos, 'visited');
         await this.sleep();
     }
 
-    setNext(pos) {
-        const CELL = this.element(pos);
-        CELL.dataset.type = "next";
+    setQueued(pos) {
+        this.setCellType(pos, 'queued');
     }
 
     async setFastest(pos) {
-        const CELL = this.element(pos);
-        CELL.dataset.type = "fastest";
+        this.setCellType(pos, 'fastest');
         await this.sleep();
     }
 
     sleep() {
         if(this.props.skip) { return }
 
-        const SPEED_ELEMENT = document.getElementById('speed');
-        const CURR_SPEED = Number(SPEED_ELEMENT.value);
-        const MS = 100 - CURR_SPEED;
+        const MS = 100 - this.props.getSpeed()
         return new Promise(resolve => setTimeout(resolve, MS));
     }
 
     async showRoute(route) {
-        for(let position of route) {
-            await this.setFastest(position);
+        for(const pos of route) {
+            await this.setFastest(pos);
         }
     }
 }
