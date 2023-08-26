@@ -1,139 +1,160 @@
-import { createRef, useEffect, useState } from "react";
-import CellIcon from './cellIcon'
-import Run from './run'
+import { Component } from 'react';
 
-function Cell({ initType, initWeight, row, col, running, setRunning }) {
-    const element = createRef(null);
-    const pos = [row, col];
-    const [type, setType] = useState(initType);
-    const [weight, setWeight] = useState(initWeight);
+class Cell extends Component {
+    constructor({ type, row, col }) {
+        super();
+        this.state = {
+            type,
+            weight: 1
+        };
+        this.pos = [row, col];
+    }
 
-    useEffect(() => {
-        // When a state attribute gets updated, set the state as the updated value
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                const MUTATED_ATTRIBUTE_NAME = mutation.attributeName;
-                switch (MUTATED_ATTRIBUTE_NAME) {
-                    case 'data-type':
-                        const DATASET_TYPE = mutation.target.dataset.type;
-                        setType(DATASET_TYPE);
-                        break
-                    case 'data-weight':
-                        const DATASET_WEIGHT = Number(mutation.target.dataset.weight);
-                        setWeight(DATASET_WEIGHT);
-                        break
-                    default:
-                        throw Error(`The attribute "${MUTATED_ATTRIBUTE_NAME}" doesn't have a state that needs to be updated`);
-                }
-            }
+    componentDidMount() {
+        // If the initialization type of the cell is 'start' or 'end' add the position globally. 
+        // The prop functions (setStartPos and setEndPos) to add the positions can be found at 'App.js'
+        if (this.state.type === "start") {
+            this.props.setStartPos(this.pos);
+        }
+        else if (this.state.type === "end") {
+            this.props.setEndPos(this.pos);
+        }
+
+        // Save every state getter/setter as arrow functions globally to callback when needed.
+        // The prop function (addCellToBoard) can be found at 'App.js'
+        const CELL_DATA = {}
+        for (const state in this.state) {
+            const CAPITALIZED_STATE = state[0].toUpperCase() + state.slice(1);
+            const GETTER = "get" + CAPITALIZED_STATE;
+            CELL_DATA[GETTER] = () => this.state[state];
+
+            const SETTER = "set" + CAPITALIZED_STATE;
+            CELL_DATA[SETTER] = (v) => this[SETTER](v);
+        }
+        this.props.addCellToBoard(
+            this.props.row,
+            CELL_DATA,
+        );
+    }
+
+    setType(type) {
+        this.setState({
+            type
         });
 
-        observer.observe(element.current, {
-            attributeFilter: ['data-type', 'data-weight'],
+        // If the type gets changed to 'start' or 'end' add the position globally
+        // The prop functions to add the positions can be found at 'App.js'
+        if (type === "start") {
+            this.props.setStartPos(this.pos);
+        }
+        else if (type === "end") {
+            this.props.setEndPos(this.pos);
+        }
+    }
+
+    setWeight(weight) {
+        this.setState({
+            weight
         });
-    }, [element]);
+    }
 
-    const hover = (e) => {
-        // If the algorithm is running or the cell is the start / end pos, return
-        if (running || type === 'start' || type === 'end') { return }
+    canUsePencil() {
+        // If an algorithm isn't running, and the type of the cell isn't 'start' or 'end, return true, else false
+        if (!this.props.running && this.state.type !== "start" && this.state.type !== "end") {
+            return true
+        }
+        return false
+    }
 
-        // When the user left clicks on the cell, set the pencil value to the cell
+    hover(e) {
+        // When the user left clicks on the cell, and the pencil can be used on the cell, use the pencil
         const LEFT_CLICK = e.buttons === 1;
-        if (LEFT_CLICK) {
-            clicked();
+        if (LEFT_CLICK && this.canUsePencil()) {
+            this.clicked();
         }
     }
 
-    const clicked = () => {
-        // If the algorithm is running or the cell is the start / end pos, return
-        if (running || type === 'start' || type === 'end') { return }
-
-        // If the pencil type and/or weight is different than the current type and/or weight, update it
-        let [pencilType, pencilWeight] = document.getElementById('pencil').value.split('-');
-        pencilType = pencilType !== "weight" ? pencilType : '';
-        if (pencilType !== type) {
-            element.current.dataset.type = pencilType;
+    clicked() {
+        // Don't use the pencil on the cell if it can't be used
+        if (!this.canUsePencil()) {
+            return
         }
-        pencilWeight = Number(pencilWeight) || 1;
-        if (pencilWeight !== weight) {
-            element.current.dataset.weight = pencilWeight;
+
+        const PENCIL = document.getElementById('pencil');
+        const SELECTED_PENCIL = PENCIL.options[PENCIL.selectedIndex];
+
+        // If the pencil type is different than the cell type, update the cell type to the pencil type
+        const PENCIL_TYPE = SELECTED_PENCIL.dataset.type;
+        if (PENCIL_TYPE !== this.state.type) {
+            this.setType(PENCIL_TYPE);
+        }
+
+        // If the pencil weight is different than the cell weight, update the cell weight to the pencil weight
+        const PENCIL_WEIGHT = Number(SELECTED_PENCIL.dataset.weight);
+        if (PENCIL_WEIGHT !== this.state.weight) {
+            this.setWeight(PENCIL_WEIGHT);
         }
     }
 
-    const dragOver = (e) => {
+    dragOver(e) {
         // Don't allow the drop when the user hovers over the start or end pos
-        if (type === 'start' || type === 'end') {
+        if (this.state.type === "start" || this.state.type === "end") {
             return
         }
         // Allow the drop
         e.preventDefault();
     }
 
-    const dragStart = (e) => {
+    dragStart(e) {
         // Don't allow the drag when it isn't the start or end cell, or the algorithm is running
-        if ((type !== 'start' && type !== 'end') || running) {
+        if (this.props.running || (this.state.type !== "start" && this.state.type !== "end")) {
             e.preventDefault();
             return
         }
-        // Set the needed data to get it when the cell gets dropped
+
+        // Save the type and weight of the cell that gets dragged
         const TYPE = e.target.dataset.type;
         e.dataTransfer.setData('type', TYPE);
         const WEIGHT = e.target.dataset.weight;
         e.dataTransfer.setData('weight', WEIGHT);
     }
 
-    const dragEnd = () => {
+    async dragEnd(e) {
         // If the cell wasn't moved, return
-        const POSITIONS = document.querySelectorAll(`td.${type}`)
-        if (POSITIONS.length === 1) {
+        if (e.dataTransfer.dropEffect === "none") {
             return
         }
-        // Remove the old start / end pos
-        element.current.dataset.type = '';
-        element.current.dataset.weight = 1;
 
-        // Run the algorithm when there is a path on the board
-        const HAS_PATH = document.querySelector('td.next, td.visited, td.fastest');
-        if (!HAS_PATH) { return }
-        Run({
-            setRunning: setRunning,
-            skip: true
-        });
+        // Clear the cell where the drag was initialized
+        this.setType('');
+        this.setWeight(1);
     }
 
-    const dragDrop = (e) => {
-        // Set the type and weight as the dragged cell (if it isn't already)
+    dragDrop(e) {
+        // Set the dropped data
         const DROPPED_TYPE = e.dataTransfer.getData('type');
-        if (DROPPED_TYPE !== type) {
-            element.current.dataset.type = DROPPED_TYPE;
-        }
+        this.setType(DROPPED_TYPE);
         const DROPPED_WEIGHT = Number(e.dataTransfer.getData('weight'));
-        if (DROPPED_WEIGHT !== weight) {
-            element.current.dataset.type = DROPPED_WEIGHT;
-        }
+        this.setWeight(DROPPED_WEIGHT);
     }
 
-    return (
-        <td
-            ref={element}
-            id={pos.join('-')}
-            className={`border border-dark cell ${type}`}
-            data-type={initType}
-            data-weight={initWeight}
-            onClick={clicked}
-            onMouseEnter={hover}
-            draggable={(type === 'start' || type === 'end') && !running}
-            onDragStart={dragStart}
-            onDragOver={dragOver}
-            onDrop={dragDrop}
-            onDragEnd={dragEnd}
-        >
-            <CellIcon
-                type={type}
-                weight={weight}
-            />
-        </td>
-    );
+    render() {
+        return (
+            <td
+                className="cell"
+                data-type={this.state.type}
+                data-weight={this.state.weight}
+                onClick={() => this.clicked()}
+                onMouseEnter={(e) => this.hover(e)}
+                draggable={(this.state.type === "start" || this.state.type === "end") && !this.props.running}
+                onDragStart={(e) => this.dragStart(e)}
+                onDragOver={(e) => this.dragOver(e)}
+                onDrop={(e) => this.dragDrop(e)}
+                onDragEnd={(e) => this.dragEnd(e)}
+            >
+            </td>
+        );
+    }
 }
 
 export default Cell;
