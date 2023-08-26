@@ -1,12 +1,12 @@
+import { ClearPath } from './clear';
 import Bfs from './algorithms/bfs';
 import Dfs from './algorithms/dfs';
 import Dijkstra from './algorithms/dijkstra';
 import AStar from './algorithms/aStar';
-import { ClearPath } from './clear';
 
-async function Run({setRunning, skip}) {
+async function Run(props) {
     const getAlgorithmClass = () => {
-        const ALGORITHM = document.getElementById('algorithm').value;
+        const ALGORITHM = props.algorithm;
         switch (ALGORITHM) {
             case "bfs":
                 return Bfs
@@ -14,23 +14,21 @@ async function Run({setRunning, skip}) {
                 return Dfs
             case "dijkstra":
                 return Dijkstra
-            case "aStar":
+            case "a*":
                 return AStar
             default:
-                throw Error(`Algorithm "${ALGORITHM}" couldn't be found.`);
+                const ERROR_MESSAGE = `"${ALGORITHM}" is not an optional algorithm`
+                throw Error(ERROR_MESSAGE);
         }
     }
-    
-    await ClearPath();
-    setRunning(true);
+
+    await ClearPath(props.board);
 
     // Run the algorithm
     const Algorithm = getAlgorithmClass();
     await new Algorithm({
-        skip
+        ...props
     }).run();
-
-    setRunning(false);
 }
 
 export default Run;
