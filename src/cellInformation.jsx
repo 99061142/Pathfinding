@@ -1,17 +1,30 @@
-import { Container, Row, Col } from "react-bootstrap";
-import CellIcon from './cellIcon';
+import { Container, Row, Col } from 'react-bootstrap';
 
 function CellInformation() {
-    const TYPES = ['start', 'end', 'weight', 'wall', 'visited', 'next', 'fastest'];
+    const TYPES = ['start', 'end', 'weight', 'wall', 'visited', 'queued', 'fastest'];
     return (
-        <Container fluid className="my-3 d-none d-sm-block">
-            <Row className="justify-content-around text-center">
+        <Container
+            className='my-3 d-none d-sm-block'
+            fluid
+        >
+            <Row
+                className='justify-content-around text-center'
+            >
                 {TYPES.map((type, key) =>
-                    <Col key={key}>
-                        <div className={`border border-dark cell mx-auto ${type}`}>
-                            <CellIcon type={type} />
+                    <Col
+                        key={key}
+                    >
+                        <div
+                            className='cell mx-auto'
+                            data-type={type}
+                            data-weight={type === 'weight' ? 10 : 1}
+                        >
                         </div>
-                        <p className="mb-0 text-capitalize">{type}</p>
+                        <p
+                            className='mb-0 text-capitalize'
+                        >
+                            {type}
+                        </p>
                     </Col>
                 )}
             </Row>
