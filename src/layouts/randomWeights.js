@@ -1,15 +1,16 @@
 import { ClearAll } from "../clear";
 
-async function RandomWeights() {
+async function RandomWeights(board) {
     // CLear the board before creating a new layout
-    await ClearAll();
+    await ClearAll(board);
 
-    const CELLS = document.querySelectorAll('td');
-    for (const cell of CELLS) {
-        // If the percentage is higher than .33, continue
-        const PERCENAGE = Math.random();
-        if (PERCENAGE > .33 || cell.dataset.type !== '') { continue }
-        cell.dataset.weight = 10;
+    for (let row of board) {
+        for(let cell of row) {
+            if(cell.getType() !== '' || Math.random() > .15) { 
+                continue
+            }
+            cell.setWeight(10);
+        }
     }
 }
 
