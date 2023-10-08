@@ -1,18 +1,24 @@
 import { Component } from 'react';
 
 class Cell extends Component {
-    constructor({ type, row, col }) {
+    constructor({ initType, row, col }) {
         super();
         this.state = {
-            type,
+            type: initType,
             weight: 1
         };
         this.pos = [row, col];
     }
 
+    capitalizeString(str) {
+        // Capitalize the string and return it
+        const CAPITALIZED_STRING = str[0].toUpperCase() + str.slice(1);
+        return CAPITALIZED_STRING
+    }
+
     componentDidMount() {
-        // If the initialization type of the cell is 'start' or 'end' add the position globally. 
-        // The prop functions (setStartPos and setEndPos) to add the positions can be found at 'App.js'
+        // If the initialization type of the cell is "start" or "end" add the position globally.
+        // The prop functions "setStartPos" and "setEndPos" can be found at "App.js"
         if (this.state.type === "start") {
             this.props.setStartPos(this.pos);
         }
@@ -21,20 +27,17 @@ class Cell extends Component {
         }
 
         // Save every state getter/setter as arrow functions globally to callback when needed.
-        // The prop function (addCellToBoard) can be found at 'App.js'
-        const CELL_DATA = {}
+        // The prop function "addCellToBoard" can be found at "App.js"
+        const CELLS_DATA = {};
         for (const state in this.state) {
-            const CAPITALIZED_STATE = state[0].toUpperCase() + state.slice(1);
+            const CAPITALIZED_STATE = this.capitalizeString(state);
             const GETTER = "get" + CAPITALIZED_STATE;
-            CELL_DATA[GETTER] = () => this.state[state];
+            CELLS_DATA[GETTER] = () => this.state[state];
 
             const SETTER = "set" + CAPITALIZED_STATE;
-            CELL_DATA[SETTER] = (v) => this[SETTER](v);
+            CELLS_DATA[SETTER] = (v) => this[SETTER](v);
         }
-        this.props.addCellToBoard(
-            this.props.row,
-            CELL_DATA,
-        );
+        this.props.addCellToBoard(this.props.row, CELLS_DATA);
     }
 
     setType(type) {
@@ -42,8 +45,8 @@ class Cell extends Component {
             type
         });
 
-        // If the type gets changed to 'start' or 'end' add the position globally
-        // The prop functions to add the positions can be found at 'App.js'
+        // If the type gets changed to "start" or "end" add the position globally
+        // The prop functions "setStartPos" and "setEndPos" can be found at "App.js"
         if (type === "start") {
             this.props.setStartPos(this.pos);
         }
@@ -59,7 +62,7 @@ class Cell extends Component {
     }
 
     canUsePencil() {
-        // If an algorithm isn't running, and the type of the cell isn't 'start' or 'end, return true, else false
+        // If an algorithm isn't running, and the type of the cell isn't the start or end position, return true, else false
         if (!this.props.running && this.state.type !== "start" && this.state.type !== "end") {
             return true
         }
@@ -75,29 +78,26 @@ class Cell extends Component {
     }
 
     clicked() {
-        // Don't use the pencil on the cell if it can't be used
+        // If the pencil can't be used, return
         if (!this.canUsePencil()) {
             return
         }
 
-        const PENCIL = document.getElementById('pencil');
-        const SELECTED_PENCIL = PENCIL.options[PENCIL.selectedIndex];
-
         // If the pencil type is different than the cell type, update the cell type to the pencil type
-        const PENCIL_TYPE = SELECTED_PENCIL.dataset.type;
+        const PENCIL_TYPE = this.props.pencilType;
         if (PENCIL_TYPE !== this.state.type) {
             this.setType(PENCIL_TYPE);
         }
 
         // If the pencil weight is different than the cell weight, update the cell weight to the pencil weight
-        const PENCIL_WEIGHT = Number(SELECTED_PENCIL.dataset.weight);
+        const PENCIL_WEIGHT = this.props.pencilWeight;
         if (PENCIL_WEIGHT !== this.state.weight) {
             this.setWeight(PENCIL_WEIGHT);
         }
     }
 
     dragOver(e) {
-        // Don't allow the drop when the user hovers over the start or end pos
+        // Don't allow the drop when the user hovers over the start or end position
         if (this.state.type === "start" || this.state.type === "end") {
             return
         }
@@ -112,11 +112,9 @@ class Cell extends Component {
             return
         }
 
-        // Save the type and weight of the cell that gets dragged
-        const TYPE = e.target.dataset.type;
-        e.dataTransfer.setData('type', TYPE);
-        const WEIGHT = e.target.dataset.weight;
-        e.dataTransfer.setData('weight', WEIGHT);
+        // Save the states of the cell that gets dragged
+        const STATES = JSON.stringify(this.state);
+        e.dataTransfer.setData('states', STATES);
     }
 
     async dragEnd(e) {
@@ -131,22 +129,22 @@ class Cell extends Component {
     }
 
     dragDrop(e) {
-        // Set the dropped data
-        const DROPPED_TYPE = e.dataTransfer.getData('type');
-        this.setType(DROPPED_TYPE);
-        const DROPPED_WEIGHT = Number(e.dataTransfer.getData('weight'));
-        this.setWeight(DROPPED_WEIGHT);
+        // Set the dropped states
+        const STATES = JSON.parse(e.dataTransfer.getData('states'));
+        for (const [key, value] of Object.entries(STATES)) {
+            const SETTER = 'set' + this.capitalizeString(key);
+            this[SETTER](value);
+        }
     }
 
     render() {
         return (
             <td
-                className="cell"
-                data-type={this.state.type}
+                className={"cell" + (this.state.type ? ' ' + this.state.type : '')}
                 data-weight={this.state.weight}
                 onClick={() => this.clicked()}
                 onMouseEnter={(e) => this.hover(e)}
-                draggable={(this.state.type === "start" || this.state.type === "end") && !this.props.running}
+                draggable={!this.props.running && (this.state.type === "start" || this.state.type === "end")}
                 onDragStart={(e) => this.dragStart(e)}
                 onDragOver={(e) => this.dragOver(e)}
                 onDrop={(e) => this.dragDrop(e)}
