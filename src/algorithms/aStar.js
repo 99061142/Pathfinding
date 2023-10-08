@@ -3,152 +3,146 @@ import Algorithm from "./algorithm";
 class AStar extends Algorithm {
     constructor(props) {
         super(props);
-        this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
-        this._queue = [this.startPos()];
+        this._queue = [props.startPos];
         this._path = {
-            [this.startPos()]: {
+            [props.startPos]: {
                 parent: null,
                 g: 0,
-                h: this.hCost(this.startPos())
+                f: this.h(props.startPos)
             }
         };
     }
 
-    fCost(pos) {
-        // Total cost of the position
-        const { g, h } = this._path[pos];
-        const COST = g + h;
-        return COST;
+    f(pos) {
+        // ~ Cost from the start to end if it goes through the pos
+        const COST = this.g(pos) + this.h(pos);
+        return COST
     }
 
-    hCost(pos) {
-        // Cost from the position to the end
-        const [ROW, CELL] = pos;
-        const [END_ROW, END_CELL] = this.endPos();
-        let rowCost = Math.abs(ROW - END_ROW);
-        let cellCost = Math.abs(CELL - END_CELL);
-        let cost = this.cellWeight(pos) * 10; // Set cost as current weight of the node
-
-        // Add 14 cost for each diagonal move and 10 cost for each horizontal or vertical move, and return the total cost
-        while(rowCost && cellCost) {
-            rowCost--;
-            cellCost--;
-            cost += 14;
-        }
-        while(rowCost) {
-            rowCost--;
-            cost += 10;
-        }
-        while(cellCost) {
-            cellCost--;
-            cost += 10;
-        }
-        return cost;
+    g(pos) {
+        // Cheapest path from start to pos
+        const [ROW, COL] = pos;
+        const [START_ROW, START_COL] = this.props.startPos;
+        const COL_COST = Math.abs(COL - START_COL);
+        const ROW_COST = Math.abs(ROW - START_ROW);
+        const COST = 1 * (COL_COST + ROW_COST);
+        return COST
     }
 
-    gCost(pos) {
-        // Cost from the start to the position
-        const [ROW, CELL] = pos;
-        const [START_ROW, START_CELL] = this.startPos();
-        let rowCost = Math.abs(ROW - START_ROW);
-        let cellCost = Math.abs(CELL - START_CELL);
-        let cost = this.cellWeight(pos) * 10; // Set cost as current weight of the node
-
-        // Add 14 cost for each diagonal move and 10 cost for each horizontal or vertical move, adn return the total cost
-        while(rowCost && cellCost) {
-            rowCost--;
-            cellCost--;
-            cost += 14;
-        }
-        while(rowCost) {
-            rowCost--;
-            cost += 10;
-        }
-        while(cellCost) {
-            cellCost--;
-            cost += 10;
-        }
-        return cost;
+    h(pos) {
+        // ~ Cost to go to the end position from pos
+        const [ROW, COL] = pos;
+        const [END_ROW, END_COL] = this.props.endPos;
+        const COL_COST = Math.abs(COL - END_COL);
+        const ROW_COST = Math.abs(ROW - END_ROW);
+        const COST = 1 * (COL_COST + ROW_COST);
+        return COST
     }
 
-    get route() {
-        let route = [];
-        let pos = this.endPos();
-        while(pos) {
-            route.unshift(pos);
-            pos = this._path[pos].parent;
-        }
-        // Return the route without the start/end position
-        route.shift();
-        route.pop();
-        return route;
-    }
-
-    get head() {
-        // Get the position with the lowest f cost, or if the f costs are equal, the lowest h cost
-        let lowestFCost = Infinity;
-        let lowestFCostPos = null;
-        for(let pos of this._queue) {
-            let fCost = this.fCost(pos);
-            if(fCost < lowestFCost || (fCost == lowestFCost && this.hCost(pos) < this.hCost(lowestFCostPos))) {
-                lowestFCost = fCost;
-                lowestFCostPos = pos;
+    queuedIndex(pos) {
+        // Get the index of the position in the queue, otherwise return an error
+        const [ROW, COL] = pos;
+        for (const [i, pos] of this._queue.entries()) {
+            const [QUEUED_ROW, QUEUED_COL] = pos
+            if (ROW === QUEUED_ROW && COL === QUEUED_COL) {
+                return i
             }
         }
-        return lowestFCostPos;
+        this.posOutOfBoundsError();
     }
 
     dequeue(pos) {
-        const INDEX = this._queue.indexOf(pos);
-        this._queue.splice(INDEX, 1);
+        const QUEUED_INDEX = this.queuedIndex(pos);
+        this._queue.splice(QUEUED_INDEX, 1);
+    }
+
+    get route() {
+        // Loop from the position that found the end position to the position that has the start position as parent
+        let route = [];
+        let parent = this._path[this.props.endPos].parent;
+        while(!this.isStartPos(parent)) {
+            route.push(parent);
+            parent = this._path[parent].parent;
+        }
+        return route
+    }
+
+    get head() {
+        // Get the position in the queue with the lowest F cost or lowest H cost if the F costs are equal
+        let lowestFCost = Infinity;
+        let pos = null;
+        for(const queuedPos of this._queue) {
+            const QUEUED_POS_F_COST = this._path[queuedPos].f;
+            if(
+                QUEUED_POS_F_COST < lowestFCost ||
+                (QUEUED_POS_F_COST == lowestFCost && this.h(pos) < this.h(queuedPos))
+            ) {
+                lowestFCost = QUEUED_POS_F_COST;
+                pos = queuedPos;
+            }
+        }
+        return pos
+    }
+
+    canMove(pos) {
+        if(!this.cellInBounds(pos) || 
+            this.cellWeight(pos) === Infinity
+        ) {
+            return false
+        }
+        return true
     }
 
     async run() {
-        while(this._queue && this._queue.length) {
-            const QUEUED_POS = this.head;
-            this.dequeue(QUEUED_POS);
+        while(this._queue.length) {
+            // Get the queued position with the lowest F cost and dequeue it
+            const CURRENT = this.head;
+            this.dequeue(CURRENT);
 
-            for(const DIRECTION of this._directions) {
-                const POS = this.position(QUEUED_POS, DIRECTION);
+            // If the current position is the end position, show and return the route
+            if(this.isEndPos(CURRENT)) {
+                const ROUTE = this.route;
+                await this.showRoute(ROUTE);
+                return ROUTE
+            }
 
-                // If the position is not movable, skip
-                if(!this.canMove(POS)) { continue; }
-
-                // Get the costs of the position
-                const G = this.gCost(POS);
-                const H = this.hCost(POS);
-                const F = G + H;
-
-                // If the position is already in the path, and the new cost is higher than the old cost, or if the position is visited, skip
-                if(this._path[POS] && this._path[POS].f < F) { continue }
-
-                // If the position is not in the path, add it
-                if(this._path[POS] === undefined) {
-                    this._path[POS] = {};
-
-                    // Add the position to the queue and visited list
-                    this._queue.push(POS);
-
-                    if(!this.isEnd(POS)) {
-                        this.setNext(POS);
-                    }
+            const NEIGHBOURS = this.neighbours(CURRENT);
+            for(let neighbour of NEIGHBOURS) {
+                // If the position is not movable, continue
+                if(!this.canMove(neighbour)) {
+                    continue
                 }
-                // Add position costs to the path
-                this._path[POS].parent = QUEUED_POS;
-                this._path[POS].g = G;
-                this._path[POS].h = H;
-            }
-            // If it can't search any further, break
-            if(this.head == null) { return }
 
-            if(!this.isEnd(this.head)) {
-                await this.setVisited(this.head);
+                // Get the tentative G score based on the saved G cost of the current position (parent of neighbour) + cell cost
+                const TENTATIVE_G_SCORE = this._path[CURRENT].g + this.cellWeight(neighbour);
+                
+                // If the neighbour was already searched, and the saved G cost is higher than the tentative G cost, continue
+                if(neighbour in this._path && this._path[neighbour].g <= TENTATIVE_G_SCORE) {
+                    continue 
+                }
+
+                // Save the neighbour costs
+                this._path[neighbour] = {
+                    parent: CURRENT,
+                    g: TENTATIVE_G_SCORE,
+                    f: TENTATIVE_G_SCORE + this.h(neighbour)
+                };
+
+                // If the neighbour is in the queue, continue
+                if(neighbour in this._queue) {
+                    continue
+                }
+
+                // Queue the position, and set the element as 'queued' if the neighbour position isn't the end position
+                this._queue.push(neighbour)
+                if(!this.isEndPos(neighbour)) {
+                    this.setQueued(neighbour);
+                }
             }
 
-            // If the head is the end position, return the route
-            if(this.isEnd(this.head)) {
-                await this.showRoute(this.route);
-                return;
+            // Set the element as 'visited' if the current position isn't the start position
+            if(!this.isStartPos(CURRENT)) {
+                await this.setVisited(CURRENT);
             }
         }
     }
