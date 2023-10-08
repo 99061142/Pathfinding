@@ -1,12 +1,19 @@
-import { createRef, Component } from "react";
+// Imports to render the component
+import { createRef, Component } from 'react';
 import { Col, Container, Row, FormGroup, FormLabel, FormSelect, Dropdown, Button } from 'react-bootstrap'
-import { ClearAll, ClearPath, ClearWeights, ClearWalls } from './clear';
 import FormRange from 'react-bootstrap/esm/FormRange';
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+
+// Imports to clear the board cell(s)
+import { ClearAll, ClearPath, ClearWeights, ClearWalls } from './clear';
+
+// Board layouts
 import RandomWalls from './layouts/randomWalls';
 import RandomWeights from './layouts/randomWeights';
+
+// Run function for the algorithm
 import Run from './run';
 
 class Settings extends Component {
@@ -16,7 +23,6 @@ class Settings extends Component {
             algorithm: '',
             algorithmWeighted: false,
             speed: 0,
-            pencil: ''
         }
         this.algorithmSelect = createRef(null);
         this.pencilSelect = createRef(null);
@@ -26,7 +32,7 @@ class Settings extends Component {
     componentDidMount() {
         this.pencilChanged();
         this.algorithmChanged();
-        this.speedChanged()
+        this.speedChanged();
     }
 
     setAlgorithm(algorithm) {
@@ -38,12 +44,6 @@ class Settings extends Component {
     setAlgorithmWeighted(bool) {
         this.setState({
             algorithmWeighted: bool
-        });
-    }
-
-    setPencil(pencil) {
-        this.setState({
-            pencil
         });
     }
 
@@ -64,7 +64,7 @@ class Settings extends Component {
         });
     }
 
-    algorithmChanged() {
+    async algorithmChanged() {
         const ALGORITHM_SELECT = this.algorithmSelect.current;
         const CURRENT_ALGORITHM_OPTION = ALGORITHM_SELECT.options[ALGORITHM_SELECT.selectedIndex];
 
@@ -74,22 +74,31 @@ class Settings extends Component {
         const ALGORITHM_IS_WEIGHTED = CURRENT_ALGORITHM_OPTION.dataset.weighted === "true";
         this.setAlgorithmWeighted(ALGORITHM_IS_WEIGHTED);
 
-        const CURRENT_PENCIL_WEIGHTED = this.currentPencilWeighted()
-        if (CURRENT_PENCIL_WEIGHTED) {
-            this.setPencil('wall');
+        const CURRENT_PENCIL_WEIGHTED = this.currentPencilWeighted();
+        if (!ALGORITHM_IS_WEIGHTED && CURRENT_PENCIL_WEIGHTED) {
+            this.pencilSelect.current.value = 'wall';
+            this.props.setPencilType('wall');
+            ClearWeights(this.props.board);
         }
+
+        // Clear the path from start to end
+        ClearPath(this.props.board);
     }
 
     pencilChanged() {
         const PENCIL_SELECT = this.pencilSelect.current;
         const CURRENT_PENCIL_OPTION = PENCIL_SELECT.options[PENCIL_SELECT.selectedIndex];
-        const PENCIL = CURRENT_PENCIL_OPTION.value;
-        this.setPencil(PENCIL);
+
+        const PENCIL_TYPE = CURRENT_PENCIL_OPTION.value;
+        this.props.setPencilType(PENCIL_TYPE);
+
+        const PENCIL_WEIGHT = Number(CURRENT_PENCIL_OPTION.dataset.weight);
+        this.props.setPencilWeight(PENCIL_WEIGHT)
     }
 
     speedChanged() {
         const SPEED = Number(this.speedRange.current.value);
-        this.setSpeed(SPEED)
+        this.setSpeed(SPEED);
     }
 
     currentPencilWeighted() {
@@ -97,21 +106,6 @@ class Settings extends Component {
         const PENCIL_OPTION = PENCIL_SELECT.options[PENCIL_SELECT.selectedIndex];
         const PENCIL_WEIGHTED = PENCIL_OPTION.dataset.weighted;
         return PENCIL_WEIGHTED
-    }
-
-    async run() {
-        this.props.setRunning(true)
-
-        await Run({
-            skip: false,
-            board: this.props.board,
-            startPos: this.props.startPos,
-            endPos: this.props.endPos,
-            algorithm: this.state.algorithm,
-            getSpeed: this.getSpeed
-        })
-
-        this.props.setRunning(false)
     }
 
     render() {
@@ -136,10 +130,12 @@ class Settings extends Component {
                             Algorithm
                         </FormLabel>
                         <FormSelect
+                            id="algorithm"
                             ref={this.algorithmSelect}
                             defaultValue="a*"
                             onChange={() => this.algorithmChanged()}
                             disabled={this.props.running}
+                            role="button"
                         >
                             <option
                                 data-weighted={false}
@@ -181,16 +177,18 @@ class Settings extends Component {
                         </FormLabel>
                         <FormSelect
                             id="pencil"
+                            defaultValue="wall"
                             ref={this.pencilSelect}
-                            value={this.state.pencil}
                             onChange={() => this.pencilChanged()}
+                            role="button"
                         >
                             <option
                                 data-weighted={false}
                                 data-weight={1}
                                 data-type=""
                                 value="erase"
-                            >Erase
+                            >
+                                Erase
                             </option>
                             <option
                                 data-weighted={false}
@@ -204,7 +202,7 @@ class Settings extends Component {
                                 data-weighted={true}
                                 disabled={!this.state.algorithmWeighted}
                                 data-weight={10}
-                                data-type=""
+                                data-type=''
                                 value="weight"
                             >
                                 Weight
@@ -231,12 +229,14 @@ class Settings extends Component {
                         />
                     </FormGroup>
                     <Dropdown
+                        htmlFor="layout"
                         as={Col}
                         xs={4}
                         lg={true}
                         className="my-2"
                     >
                         <DropdownToggle
+                            id="layout"
                             className="w-100"
                             variant={this.props.running ? "danger" : "success"}
                             disabled={this.props.running}
@@ -244,20 +244,17 @@ class Settings extends Component {
                             Layout
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem
-                                onClick={() => RandomWalls(this.props.board)}
-                            >
-                                Walls
-                            </DropdownItem>
-                            <DropdownItem
-                                onClick={() => RandomWeights(this.props.board)}
-                                disabled={!this.state.algorithmWeighted}
-                            >
-                                Weights
-                            </DropdownItem>
+                            <RandomWalls
+                                board={this.props.board}
+                            />
+                            <RandomWeights
+                                board={this.props.board}
+                                algorithmWeighted={this.state.algorithmWeighted}
+                            />
                         </DropdownMenu>
                     </Dropdown>
                     <Dropdown
+                        htmlFor="clear"
                         as={Col}
                         xs={4}
                         lg={true}
@@ -273,21 +270,25 @@ class Settings extends Component {
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem
+                                as={Button}
                                 onClick={() => ClearWalls(this.props.board)}
                             >
                                 Walls
                             </DropdownItem>
                             <DropdownItem
+                                as={Button}
                                 onClick={() => ClearWeights(this.props.board)}
                             >
                                 Weights
                             </DropdownItem>
                             <DropdownItem
+                                as={Button}
                                 onClick={() => ClearPath(this.props.board)}
                             >
                                 Path
                             </DropdownItem>
                             <DropdownItem
+                                as={Button}
                                 onClick={() => ClearAll(this.props.board)}
                             >
                                 All
@@ -299,14 +300,15 @@ class Settings extends Component {
                         lg={true}
                         className="my-2"
                     >
-                        <Button
-                            className="w-100"
-                            variant={this.props.running ? "danger" : "success"}
-                            disabled={this.props.running}
-                            onClick={() => this.run()}
-                        >
-                            Run
-                        </Button>
+                        <Run
+                            algorithm={this.state.algorithm}
+                            getSpeed={this.getSpeed}
+                            setRunning={this.props.setRunning}
+                            running={this.props.running}
+                            board={this.props.board}
+                            startPos={this.props.startPos}
+                            endPos={this.props.endPos}
+                        />
                     </Col>
                 </Row>
             </Container>
