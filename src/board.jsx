@@ -50,18 +50,19 @@ class Board extends Component {
     }
 
     initCellType(row, col) {
-        // Return the initialized type of the cell based on the row and column 
+        // Return the initialized type of the cell based on the row and column
         const CENTER_ROW = Math.floor(this.state.rows / 2);
         if (row !== CENTER_ROW) {
             return ''
         }
         const START_COL = Math.floor(this.state.cols * .15);
         if (col === START_COL) {
-            return 'start'
+            return "start"
         }
-        const END_COL = Math.floor(this.state.cols * .85);
+
+        const END_COL = Math.floor(this.state.cols * .75);
         if (col === END_COL) {
-            return 'end'
+            return "end"
         }
         return ''
     }
@@ -70,7 +71,7 @@ class Board extends Component {
         return (
             <table
                 ref={this.ref}
-                className='my-2 d-flex justify-content-center'
+                className="my-2 d-flex justify-content-center"
             >
                 <tbody>
                     {[...Array(this.state.rows)].map((_, row) =>
@@ -79,7 +80,7 @@ class Board extends Component {
                         >
                             {[...Array(this.state.cols)].map((_, col) =>
                                 <Cell
-                                    type={this.initCellType(row, col)}
+                                    initType={this.initCellType(row, col)}
                                     key={col}
                                     row={row}
                                     col={col}
@@ -88,12 +89,14 @@ class Board extends Component {
                                     addCellToBoard={this.props.addCellToBoard}
                                     setStartPos={this.props.setStartPos}
                                     setEndPos={this.props.setEndPos}
+                                    pencilType={this.props.pencilType}
+                                    pencilWeight={this.props.pencilWeight}
                                 />
                             )}
                         </tr>
                     )}
                 </tbody>
-            </table>
+            </table >
         )
     }
 }
