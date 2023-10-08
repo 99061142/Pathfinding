@@ -1,5 +1,5 @@
-import './css/app.scss';
-import { Component  } from 'react';
+import './styling/board.scss';
+import { Component } from 'react';
 import Settings from './settings';
 import CellInformation from './cellInformation';
 import Board from './board';
@@ -8,6 +8,8 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
+            pencilType: null,
+            pencilWeight: null,
             running: false,
             board: [],
             startPos: null,
@@ -15,52 +17,71 @@ class App extends Component {
         };
     }
 
-    setStartPos = (pos) => {
+    setPencilType = (type) => {
         this.setState({
-            startPos: pos
+            pencilType: type
         });
     }
+
+    setPencilWeight = (weight) => {
+        this.setState({
+            pencilWeight: weight
+        });
+    }
+
+    setStartPos = (pos) => {
+        this.setState({
+            startPos: pos,
+        });
+    };
 
     setEndPos = (pos) => {
         this.setState({
-            endPos: pos
+            endPos: pos,
         });
-    }
-    
+    };
+
     setRunning = (bool) => {
         this.setState({
-            running: bool
+            running: bool,
         });
-    }
+    };
 
     addCellToBoard = (row, cell) => {
-        let board = this.state.board
+        // If the length of the board list is lower than the cell row, add a new row to the board
+        let board = this.state.board;
         if (row >= board.length) {
-            board.push([])
+            board.push([]);
         }
-        board[row].push(cell)
 
+        // Add the cell to the row
+        board[row].push(cell);
         this.setState({
             board
         });
-    }
+    };
 
     render() {
         return (
             <>
-                <Settings 
+                <Settings
                     setRunning={this.setRunning}
+                    setPencilType={this.setPencilType}
+                    setPencilWeight={this.setPencilWeight}
                     board={this.state.board}
                     startPos={this.state.startPos}
                     endPos={this.state.endPos}
                     running={this.state.running}
+                    pencilType={this.state.pencilType}
                 />
                 <CellInformation />
-                <Board 
-                    addCellToBoard={this.addCellToBoard} 
+                <Board
+                    addCellToBoard={this.addCellToBoard}
                     setStartPos={this.setStartPos}
                     setEndPos={this.setEndPos}
                     running={this.state.running}
+                    pencilType={this.state.pencilType}
+                    pencilWeight={this.state.pencilWeight}
                 />
             </>
         );
