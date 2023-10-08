@@ -1,20 +1,68 @@
 import { Component } from "react";
 
 class Algorithm extends Component {
-    isStart(pos) {
-        const IS_START = this.cellType(pos) === "start"
-        return IS_START
+    constructor(props) {
+        super(props);
+        this.boardRows = props.board.length;
+        this.boardCols = props.board.at(0).length;
     }
 
-    isEnd(pos) {
-        const IS_END = this.cellType(pos) === "end"
-        return IS_END
+    neighbours(pos) {
+        // Right, down, left, up
+        const DIRECTIONS = [
+            [0, 1],
+            [1, 0],
+            [0, -1],
+            [-1, 0]
+        ];
+        const NEIGHBOURS = DIRECTIONS.map(direction => {
+            return direction.map((val, i) => {
+                return val + pos[i]
+            });
+        });
+        return NEIGHBOURS
+    }
+
+    posOutOfBoundsError(pos) {
+        // Throw an error with the information if the row and / or col is out of bounds
+        // Even if the row or col isn't out of bounds, the error gets throwed anyway
+        const [ROW, COL] = pos;
+        let rowOutOfBounds = (ROW < 0 || ROW >= this.boardRows);
+        let colOutOfBounds = (COL < 0 || COL >= this.boardCols);
+        let error = "The ";
+        error += (rowOutOfBounds && colOutOfBounds) ? "row and col" : rowOutOfBounds ? "row" : "col";
+        error += " is out of bounds.";
+        if(rowOutOfBounds) {
+            error += " (row: " + ROW + "/" + this.boardRows + ")";
+        }
+        if(colOutOfBounds) {
+            error += " (col: " + COL + "/" + this.boardCols + ")";
+        }
+        throw RangeError(error);
+    }
+
+    isStartPos(pos) {
+        const [START_ROW, START_COL] = this.props.startPos;
+        const [ROW, COL] = pos;
+        if(ROW === START_ROW && COL === START_COL) {
+            return true
+        }
+        return false
+    }
+
+    isEndPos(pos) {
+        const [END_ROW, END_COL] = this.props.endPos;
+        const [ROW, COL] = pos;
+        if(ROW === END_ROW && COL === END_COL) {
+            return true
+        }
+        return false
     }
 
     cellData(pos) {
-        const BOARD = this.props.board
-        const [ROW, COL] = pos
-        const CELL_DATA = BOARD[ROW][COL]
+        const BOARD = this.props.board;
+        const [ROW, COL] = pos;
+        const CELL_DATA = BOARD[ROW][COL];
         return CELL_DATA
     }
 
@@ -25,7 +73,7 @@ class Algorithm extends Component {
     }
 
     cellType(pos) {
-        const CELL = this.cellData(pos)
+        const CELL = this.cellData(pos);
         const TYPE = CELL.getType();
         return TYPE
     }
@@ -33,59 +81,43 @@ class Algorithm extends Component {
     cellInBounds(pos) {
         const BOARD = this.props.board;
         const [ROW, COL] = pos;
-        if(ROW < 0 || COL < 0 || ROW >= BOARD.length || COL >= BOARD[ROW].length) {
+        if (
+            ROW < 0 ||
+            COL < 0 ||
+            ROW >= BOARD.length ||
+            COL >= BOARD.at(0).length
+        ) {
             return false
         }
         return true
     }
 
-    canMove(pos) {
-        // If the position is out of bounds, return false
-        if(!this.cellInBounds(pos)) { 
-            return false
-        }
-        // If the element is inside the 'NOT_MOVABLE_TYPES' list, return false
-        const NOT_MOVABLE_TYPES = ['visited', 'queued', 'wall', 'start'];
-        const CELL_TYPE = this.cellType(pos);
-        const CAN_MOVE = !NOT_MOVABLE_TYPES.includes(CELL_TYPE);
-        return CAN_MOVE
-    }
-
-    dirPosition(pos, dir) {
-        const POS = pos.map((val, i) => {
-            return val + dir[i]
-        });
-        return POS
-    }
-
     setCellType(pos, type) {
-        const CELL = this.cellData(pos)
-        CELL.setType(type)
+        const CELL_DATA = this.cellData(pos);
+        CELL_DATA.setType(type);
     }
 
     async setVisited(pos) {
-        this.setCellType(pos, 'visited');
+        this.setCellType(pos, "visited");
         await this.sleep();
     }
 
     setQueued(pos) {
-        this.setCellType(pos, 'queued');
+        this.setCellType(pos, "queued");
     }
 
     async setFastest(pos) {
-        this.setCellType(pos, 'fastest');
+        this.setCellType(pos, "fastest");
         await this.sleep();
     }
 
     sleep() {
-        if(this.props.skip) { return }
-
-        const MS = 100 - this.props.getSpeed()
-        return new Promise(resolve => setTimeout(resolve, MS));
+        const MS = 100 - this.props.getSpeed();
+        return new Promise((resolve) => setTimeout(resolve, MS));
     }
 
     async showRoute(route) {
-        for(const pos of route) {
+        for (const pos of route) {
             await this.setFastest(pos);
         }
     }
