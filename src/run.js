@@ -1,13 +1,21 @@
+// Imports to render the component
+import { Component } from 'react';
+import { Button } from 'react-bootstrap';
+
+// Imports to clear the board cell(s)
 import { ClearPath } from './clear';
+
+// Algorithms
 import Bfs from './algorithms/bfs';
 import Dfs from './algorithms/dfs';
 import Dijkstra from './algorithms/dijkstra';
 import AStar from './algorithms/aStar';
 
-async function Run(props) {
-    const getAlgorithmClass = () => {
-        const ALGORITHM = props.algorithm;
-        switch (ALGORITHM) {
+class Run extends Component {
+
+    get algorithmClass() {
+        const ALGORITHM_NAME = this.props.algorithm;
+        switch (ALGORITHM_NAME) {
             case "bfs":
                 return Bfs
             case "dfs":
@@ -17,18 +25,38 @@ async function Run(props) {
             case "a*":
                 return AStar
             default:
-                const ERROR_MESSAGE = `"${ALGORITHM}" is not an optional algorithm`
+                const ERROR_MESSAGE = `"${ALGORITHM_NAME}" is not an optional algorithm`;
                 throw Error(ERROR_MESSAGE);
         }
     }
 
-    await ClearPath(props.board);
+    async run() {
+        await ClearPath(this.props.board);
+        this.props.setRunning(true);
 
-    // Run the algorithm
-    const Algorithm = getAlgorithmClass();
-    await new Algorithm({
-        ...props
-    }).run();
+        const Algorithm = this.algorithmClass;
+        await new Algorithm({
+            board: this.props.board,
+            startPos: this.props.startPos,
+            endPos: this.props.endPos,
+            getSpeed: this.props.getSpeed
+        }).run();
+
+        this.props.setRunning(false);
+    }
+
+    render() {
+        return (
+            <Button
+                className="w-100"
+                variant={this.props.running ? "danger" : "success"}
+                disabled={this.props.running}
+                onClick={() => this.run()}
+            >
+                Run
+            </Button>
+        );
+    }
 }
 
 export default Run;
