@@ -3,60 +3,72 @@ import Algorithm from "./algorithm";
 class Bfs extends Algorithm {
     constructor(props) {
         super(props);
-        this._directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // right, down, left, up
         this._path = {
-            [this.startPos()]: null
+            [props.startPos]: null
         };
+        this._notMovablePositions = [props.startPos.join(',')];
     }
 
     get route() {
-        let parent = this.endPos();
+        // Loop from the position that found the end position to the position that has the start position as parent
+        let parent = this._path[this.props.endPos];
         let path = [];
-
-        while(parent) {
+        while (!this.isStartPos(parent)) {
             path.push(parent);
             parent = this._path[parent];
         }
-        path = path.slice(1, -1);
-        return path;
+        return path
     }
-    
+
+    canMove(pos) {
+        // If the cell isn't in bounds, not possible to reach (wall), or already queued / visited, return false, else true
+        if (
+            !this.cellInBounds(pos) || 
+            this.cellWeight(pos) === Infinity ||
+            this._notMovablePositions.includes(pos.join(','))
+        ) {
+            return false
+        }
+        return true
+    }
+
     async run() {
-        // Positions to check
-        let queue = [this.startPos()];
+        let queue = [this.props.startPos]
+        while (queue.length) {
+            // Select the first position in the queue and dequeue it
+            const CURRENT = queue.shift();
 
-        while(queue && queue.length) {
-            // Select the first position in the queue and remove it from the queue
-            let queuedPos = queue.shift();
+            // If the current position is the end position, show and return the route
+            if (this.isEndPos(CURRENT)) {
+                const ROUTE = this.route;
+                await this.showRoute(ROUTE);
+                return ROUTE
+            }
 
-            for(let direction of this._directions) {
-                // Get the neighbour position
-                let pos = this.position(queuedPos, direction);
-
-                // Skip if the algorithm can't move to the position
-                if(!this.canMove(pos)) { continue; }
-
-                // Push the position to the queue
-                queue.push(pos);
-
-                if(!this.isEnd(pos)) {
-                    this.setNext(pos);
+            const NEIGHBOURS = this.neighbours(CURRENT);
+            for (const neighbour of NEIGHBOURS) {
+                // If the position is not movable, continue
+                if (!this.canMove(neighbour)) {
+                    continue
                 }
 
-                // Add the position to the path
-                this._path[pos] = queuedPos;
-            }
-            if(!this.isStart(queuedPos)) {
-                await this.setVisited(queuedPos);
+                // Save the neighbour parent
+                this._path[neighbour] = CURRENT;
+
+                // Queue the position, add the position to the "notMovablePositions" list
+                // and set the element as 'queued' if the neighbour position isn't the end position
+                queue.push(neighbour);
+                if (!this.isEndPos(neighbour)) {
+                    this._notMovablePositions.push(neighbour.join(','));
+                    this.setQueued(neighbour);
+                }
             }
 
-            // If the end position is found, return the path
-            let nextQueuedPosition = queue[0];
-            if(queue.length && this.isEnd(nextQueuedPosition)) {
-                await this.showRoute(this.route);
-                return
+            // Set the element as 'visited' if the current position isn't the start position
+            if (!this.isStartPos(CURRENT)) {
+                await this.setVisited(CURRENT);
             }
-        }   
+        }
     }
 }
 
