@@ -3,10 +3,9 @@ import Algorithm from "./algorithm";
 class Dijkstra extends Algorithm {
     constructor(props) {
         super(props);
-        this._directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]; // left bottom right up
-        this._queue = [this.startPos()];
+        this._queue = [props.startPos];
         this._path = {
-            [this.startPos()]: {
+            [props.startPos]: {
                 parent: null,
                 distance: 0
             }
@@ -14,14 +13,15 @@ class Dijkstra extends Algorithm {
     }
 
     queuedIndex(pos) {
-        pos = pos.toString();
-
-        // Get the index of the position in the queue if it exists, otherwise return -1
-        for(let [i, queuedPos] of this._queue.entries()) {
-            queuedPos = queuedPos.toString();
-            if(queuedPos === pos) { return i; }
+        // Get the index of the position in the queue if it exists, otherwise return an error
+        const [ROW, COL] = pos;
+        for (const [i, pos] of this._queue.entries()) {
+            const [QUEUED_ROW, QUEUED_COL] = pos
+            if (ROW === QUEUED_ROW && COL === QUEUED_COL) {
+                return i
+            }
         }
-        return -1;
+        this.posOutOfBoundsError(pos);
     }
 
     dequeue(pos) {
@@ -30,75 +30,87 @@ class Dijkstra extends Algorithm {
     }
 
     get head() {
-        // Get the position with the lowest distance
-        let lowest = Infinity;
+        // Get the position with the lowest distance to the start position
+        let lowestDistance = Infinity;
         let pos = null;
-        for(let queuedPos of this._queue) {
-            let distance = this._path[queuedPos].distance;
-            if(distance < lowest) {
-                lowest = distance;
+        for (const queuedPos of this._queue) {
+            const QUEUED_DISTANCE = this._path[queuedPos].distance;
+            if (QUEUED_DISTANCE < lowestDistance) {
+                lowestDistance = QUEUED_DISTANCE;
                 pos = queuedPos;
             }
         }
-        return pos;
+        return pos
     }
 
     get route() {
-        let parent = this.endPos();
-        let path = [];
-
-        while(parent) {
-            path.push(parent);
+        // Loop from the position that found the end position to the position that has the start position as parent
+        let parent = this._path[this.props.endPos].parent;
+        let route = [];
+        while (!this.isStartPos(parent)) {
+            route.push(parent);
             parent = this._path[parent].parent;
         }
-        path = path.slice(1, -1);
-        return path;
+        return route
     }
 
-    async run() {
-        while(this._queue && this._queue.length) {
-            let queuedPos = this.head;
-            this.dequeue(queuedPos);
+    canMove(pos) {
+        // If the cell isn't in bounds or not possible to reach (wall), return false, else true
+        if (
+            !this.cellInBounds(pos) ||
+            this.cellWeight(pos) === Infinity
+        ) {
+            return false
+        }
+        return true
+    }
+    
 
-            // If the position is the end position, return the path
-            if(this.isEnd(queuedPos)) {
-                await this.showRoute(this.route);
-                return
+    async run() {
+        while (this._queue.length) {
+            // Get the queued position with the lowest distance from the start and dequeue it
+            const CURRENT = this.head;
+            this.dequeue(CURRENT);
+            
+            // If the current position is the end position, show and return the route
+            if (this.isEndPos(CURRENT)) {
+                const ROUTE = this.route;
+                await this.showRoute(ROUTE);
+                return ROUTE
             }
 
-            for(let direction of this._directions) {
-                let pos = this.position(queuedPos, direction);
-
+            const NEIGHBOURS = this.neighbours(CURRENT);
+            for (const neighbour of NEIGHBOURS) {
                 // If the position is not movable, skip
-                if(!this.canMove(pos)) { continue; }
+                if (!this.canMove(neighbour)) {
+                    continue
+                }
 
                 // Get the total distance of the position to the start position
-                let parentDistance = this._path[queuedPos].distance;
-                let posWeight = this.cellWeight(pos);
-                let distance = parentDistance + posWeight;
-
-                // If the current distance is higher than the saved distance, continue
-                if(this._path[pos] && distance >= this._path[pos].distance)  { continue }
-
-                // Add to path
-                if(this._path[pos] === undefined) {
-                    this._path[pos] = {};
-
-                    // Add the position to the queue
-                    this._queue.push(pos);
-
-                    if(!this.isEnd(pos)) {
-                        this.setNext(pos);
-                    }
+                // If the distance of the neighbour is equal or higher than the saved distance, continue
+                const CURRENT_DISTANCE = this._path[CURRENT].distance;
+                const NEIGHBOUR_DISTANCE = this.cellWeight(neighbour);
+                const DISTANCE_TO_START = CURRENT_DISTANCE + NEIGHBOUR_DISTANCE;
+                if (neighbour in this._path && DISTANCE_TO_START >= this._path[neighbour].distance) {
+                    continue
                 }
-                this._path[pos].distance = distance;
-                this._path[pos].parent = queuedPos;
-            }
-            // If it can't search any further, break. else, set cell to visited
-            if(this.head == null) { return }
+                
+                // Save the neighbour parent and distance cost
+                this._path[neighbour] = {
+                    distance: DISTANCE_TO_START,
+                    parent: CURRENT
+                };
 
-            if(!this.isEnd(this.head)) {
-                await this.setVisited(this.head);
+                // Queue the position and set the element as 'queued' if the neighbour position isn't the end position
+                this._queue.push(neighbour);
+                if (!this.isEndPos(neighbour)) {
+                    this.setQueued(neighbour);
+                }
+            }
+
+            // Set the element as 'visited' if the current position isn't the start position
+            if (!this.isStartPos(CURRENT)) {
+                await this.setVisited(CURRENT);
             }
         }
     }
