@@ -1,10 +1,14 @@
 // Imports to render the component
-import { createRef, Component } from 'react';
-import { Col, Container, Row, FormGroup, FormLabel, FormSelect, Dropdown, Button } from 'react-bootstrap'
+import { Component, createRef } from 'react';
+import { Col, Container, Row, FormGroup, FormLabel, Dropdown, Button } from 'react-bootstrap'
 import FormRange from 'react-bootstrap/esm/FormRange';
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+import { faCheck, faWeightHanging } from '@fortawesome/free-solid-svg-icons'
+
+// Styling for the component
+import './styling/settings.scss';
 
 // Imports to clear the board cell(s)
 import { ClearAll, ClearPath, ClearWeights, ClearWalls } from './clear';
@@ -15,24 +19,18 @@ import RandomWeights from './layouts/randomWeights';
 
 // Run function for the algorithm
 import Run from './run';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Settings extends Component {
     constructor() {
         super();
         this.state = {
-            algorithm: '',
-            algorithmWeighted: false,
-            speed: 0,
-        }
-        this.algorithmSelect = createRef(null);
-        this.pencilSelect = createRef(null);
-        this.speedRange = createRef(null);
-    }
-
-    componentDidMount() {
-        this.pencilChanged();
-        this.algorithmChanged();
-        this.speedChanged();
+            algorithm: 'A*',
+            algorithmWeighted: true,
+            speed: 50,
+        };
+        this.pencilWeighted = null;
+        this.pencilDropdownMenu = createRef(null);
     }
 
     setAlgorithm(algorithm) {
@@ -41,15 +39,9 @@ class Settings extends Component {
         });
     }
 
-    setAlgorithmWeighted(bool) {
+    setAlgorithmWeighted(weighted) {
         this.setState({
-            algorithmWeighted: bool
-        });
-    }
-
-    setPencilWeighted(bool) {
-        this.setState({
-            pencilWeighted: bool
+            algorithmWeighted: weighted
         });
     }
 
@@ -64,48 +56,38 @@ class Settings extends Component {
         });
     }
 
-    async algorithmChanged() {
-        const ALGORITHM_SELECT = this.algorithmSelect.current;
-        const CURRENT_ALGORITHM_OPTION = ALGORITHM_SELECT.options[ALGORITHM_SELECT.selectedIndex];
+    async algorithmChanged(algorithm, e) {
+        this.setAlgorithm(algorithm);
 
-        const ALGORITHM = CURRENT_ALGORITHM_OPTION.value;
-        this.setAlgorithm(ALGORITHM);
+        const ALGORITHM_WEIGHTED = e.target.dataset.weighted === "true";
+        this.setAlgorithmWeighted(ALGORITHM_WEIGHTED);
 
-        const ALGORITHM_IS_WEIGHTED = CURRENT_ALGORITHM_OPTION.dataset.weighted === "true";
-        this.setAlgorithmWeighted(ALGORITHM_IS_WEIGHTED);
-
-        const CURRENT_PENCIL_WEIGHTED = this.currentPencilWeighted();
-        if (!ALGORITHM_IS_WEIGHTED && CURRENT_PENCIL_WEIGHTED) {
-            this.pencilSelect.current.value = 'wall';
-            this.props.setPencilType('wall');
+        // Set the pencil to 'wall' if the chosen algorithm isn't weighted, but the pencil is
+        // And clear all weights on the board
+        if (!ALGORITHM_WEIGHTED && this.pencilWeighted) {
+            this.pencilChanged('wall');
             ClearWeights(this.props.board);
         }
 
-        // Clear the path from start to end
         ClearPath(this.props.board);
     }
 
-    pencilChanged() {
-        const PENCIL_SELECT = this.pencilSelect.current;
-        const CURRENT_PENCIL_OPTION = PENCIL_SELECT.options[PENCIL_SELECT.selectedIndex];
+    pencilChanged(type) {
+        this.props.setPencilType(type);
 
-        const PENCIL_TYPE = CURRENT_PENCIL_OPTION.value;
-        this.props.setPencilType(PENCIL_TYPE);
+        const DROPDOWN_MENU = this.pencilDropdownMenu.current;
+        const CLICKED_OPTION = DROPDOWN_MENU.querySelector(`[data-type=${type}]`);
 
-        const PENCIL_WEIGHT = Number(CURRENT_PENCIL_OPTION.dataset.weight);
-        this.props.setPencilWeight(PENCIL_WEIGHT)
+        const WEIGHT = Number(CLICKED_OPTION.dataset.weight);
+        this.props.setPencilWeight(WEIGHT);
+
+        const PENCIL_WEIGHTED = CLICKED_OPTION.dataset.weighted === "true";
+        this.pencilWeighted = PENCIL_WEIGHTED;
     }
 
-    speedChanged() {
-        const SPEED = Number(this.speedRange.current.value);
+    speedChanged(e) {
+        const SPEED = Number(e.target.value);
         this.setSpeed(SPEED);
-    }
-
-    currentPencilWeighted() {
-        const PENCIL_SELECT = this.pencilSelect.current;
-        const PENCIL_OPTION = PENCIL_SELECT.options[PENCIL_SELECT.selectedIndex];
-        const PENCIL_WEIGHTED = PENCIL_OPTION.dataset.weighted;
-        return PENCIL_WEIGHTED
     }
 
     render() {
@@ -117,103 +99,88 @@ class Settings extends Component {
                 <Row
                     className="d-flex align-items-center"
                 >
-                    <FormGroup
+                    <Dropdown
                         as={Col}
                         xs={4}
                         lg={true}
-                        className="my-2"
+                        onSelect={
+                            (algorithm, e) => this.algorithmChanged(
+                                algorithm,
+                                e
+                            )
+                        }
                     >
-                        <FormLabel
-                            className="text-white"
-                            htmlFor="algorithm"
-                        >
-                            Algorithm
-                        </FormLabel>
-                        <FormSelect
+                        <DropdownToggle
                             id="algorithm"
-                            ref={this.algorithmSelect}
-                            defaultValue="a*"
-                            onChange={() => this.algorithmChanged()}
+                            className={"w-100 m-0 text-center btn btn-dark" + (this.props.running ? " text-danger" : '')}
                             disabled={this.props.running}
-                            role="button"
                         >
-                            <option
+                            Algorithms
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem
                                 data-weighted={false}
-                                value="bfs"
+                                active={this.state.algorithm === "BFS"}
+                                eventKey="BFS"
+                                as={Button}
                             >
-                                BFS
-                            </option>
-                            <option
+                                Best First Search
+                                <FontAwesomeIcon
+                                    icon={faCheck}
+                                />
+                            </DropdownItem>
+                            <DropdownItem
                                 data-weighted={false}
-                                value="dfs"
+                                active={this.state.algorithm === "DFS"}
+                                eventKey="DFS"
+                                as={Button}
                             >
-                                DFS
-                            </option>
-                            <option
+                                Depth First Search
+                            </DropdownItem>
+                            <Dropdown.Divider />
+                            <DropdownItem
                                 data-weighted={true}
-                                value="dijkstra"
+                                active={this.state.algorithm === "Dijkstra"}
+                                eventKey="Dijkstra"
+                                as={Button}
                             >
                                 Dijkstra
-                            </option>
-                            <option
+                                <FontAwesomeIcon icon={faCheck} />
+                                <FontAwesomeIcon
+                                    icon={faWeightHanging}
+                                />
+                            </DropdownItem>
+                            <DropdownItem
                                 data-weighted={true}
-                                value="a*"
+                                active={this.state.algorithm === "A*"}
+                                eventKey="A*"
+                                as={Button}
                             >
                                 A*
-                            </option>
-                        </FormSelect>
-                    </FormGroup>
-                    <FormGroup
-                        as={Col}
-                        xs={4}
-                        lg={true}
-                        className="my-2"
-                    >
-                        <FormLabel
-                            className="text-white"
-                            htmlFor="pencil"
-                        >
-                            Pencil
-                        </FormLabel>
-                        <FormSelect
-                            id="pencil"
-                            defaultValue="wall"
-                            ref={this.pencilSelect}
-                            onChange={() => this.pencilChanged()}
-                            role="button"
-                        >
-                            <option
-                                data-weighted={false}
-                                data-weight={1}
-                                data-type=""
-                                value="erase"
-                            >
-                                Erase
-                            </option>
-                            <option
-                                data-weighted={false}
-                                data-weight={Infinity}
-                                data-type="wall"
-                                value="wall"
-                            >
-                                Wall
-                            </option>
-                            <option
+                                <FontAwesomeIcon
+                                    icon={faCheck}
+                                />
+                                <FontAwesomeIcon
+                                    icon={faWeightHanging}
+                                />
+                            </DropdownItem>
+                            <DropdownItem
                                 data-weighted={true}
-                                disabled={!this.state.algorithmWeighted}
-                                data-weight={10}
-                                data-type=''
-                                value="weight"
+                                active={this.state.algorithm === "GBFS"}
+                                eventKey="GBFS"
+                                as={Button}
                             >
-                                Weight
-                            </option>
-                        </FormSelect>
-                    </FormGroup>
+                                Greedy Best First Search
+                                <FontAwesomeIcon
+                                    icon={faWeightHanging}
+                                />
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <FormGroup
                         as={Col}
                         xs={4}
                         lg={true}
-                        className="my-2"
                     >
                         <FormLabel
                             className="text-white"
@@ -222,23 +189,89 @@ class Settings extends Component {
                             Speed
                         </FormLabel>
                         <FormRange
-                            ref={this.speedRange}
-                            onChange={() => this.speedChanged()}
+                            onChange={(e) => this.speedChanged(e)}
                             id="speed"
                             max={99}
                         />
                     </FormGroup>
+                    <Col
+                        xs={4}
+                        lg={true}
+                    >
+                        <Run
+                            algorithm={this.state.algorithm}
+                            getSpeed={this.getSpeed}
+                            setRunning={this.props.setRunning}
+                            running={this.props.running}
+                            board={this.props.board}
+                            startPos={this.props.startPos}
+                            endPos={this.props.endPos}
+                        />
+                    </Col>
                     <Dropdown
-                        htmlFor="layout"
                         as={Col}
                         xs={4}
                         lg={true}
-                        className="my-2"
+                        onSelect={
+                            (type) => this.pencilChanged(
+                                type
+                            )
+                        }
+                    >
+                        <DropdownToggle
+                            id="pencil"
+                            className="w-100 m-0 text-center btn btn-dark"
+                        >
+                            Pencil
+                        </DropdownToggle>
+                        <DropdownMenu
+                            ref={this.pencilDropdownMenu}
+                        >
+                            <DropdownItem
+                                data-weighted={false}
+                                data-weight={1}
+                                data-type="erase"
+                                active={this.props.pencilType === "erase"}
+                                eventKey="erase"
+                                as={Button}
+                            >
+                                Erase
+                            </DropdownItem>
+                            <DropdownItem
+                                data-weighted={false}
+                                data-weight={Infinity}
+                                data-type="wall"
+                                active={this.props.pencilType === "wall"}
+                                eventKey="wall"
+                                as={Button}
+                            >
+                                Wall
+                            </DropdownItem>
+                            <Dropdown.Divider />
+                            <DropdownItem
+                                style={{
+                                    color: this.state.algorithmWeighted ? null : "#dc3545"
+                                }}
+                                disabled={!this.state.algorithmWeighted}
+                                data-weight={10}
+                                data-weighted={true}
+                                data-type="weight"
+                                active={this.props.pencilType === "weight"}
+                                eventKey="weight"
+                                as={Button}
+                            >
+                                Weight
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Dropdown
+                        as={Col}
+                        xs={4}
+                        lg={true}
                     >
                         <DropdownToggle
                             id="layout"
-                            className="w-100"
-                            variant={this.props.running ? "danger" : "success"}
+                            className={"w-100 m-0 text-center btn btn-dark" + (this.props.running ? " text-danger" : '')}
                             disabled={this.props.running}
                         >
                             Layout
@@ -254,16 +287,13 @@ class Settings extends Component {
                         </DropdownMenu>
                     </Dropdown>
                     <Dropdown
-                        htmlFor="clear"
                         as={Col}
                         xs={4}
                         lg={true}
-                        className="my-2"
                     >
                         <DropdownToggle
                             id="clear"
-                            className="w-100"
-                            variant={this.props.running ? "danger" : "success"}
+                            className={"w-100 m-0 text-center btn btn-dark" + (this.props.running ? " text-danger" : '')}
                             disabled={this.props.running}
                         >
                             Clear
@@ -295,21 +325,6 @@ class Settings extends Component {
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                    <Col
-                        xs={4}
-                        lg={true}
-                        className="my-2"
-                    >
-                        <Run
-                            algorithm={this.state.algorithm}
-                            getSpeed={this.getSpeed}
-                            setRunning={this.props.setRunning}
-                            running={this.props.running}
-                            board={this.props.board}
-                            startPos={this.props.startPos}
-                            endPos={this.props.endPos}
-                        />
-                    </Col>
                 </Row>
             </Container>
         );
