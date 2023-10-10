@@ -1,4 +1,8 @@
+// Imports to render the component
 import { Component } from 'react';
+
+// Styling for the component
+import './styling/cell.scss';
 
 class Cell extends Component {
     constructor({ initType, row, col }) {
@@ -129,8 +133,18 @@ class Cell extends Component {
     }
 
     dragDrop(e) {
-        // Set the dropped states
-        const STATES = JSON.parse(e.dataTransfer.getData('states'));
+        // Get the dropped data (states of the cell) if a cell got dropped
+        const DRAG_DROPPED_STATES = e.dataTransfer.getData('states');
+
+        // If there is no dropped data, log an error and return
+        // This could happen if the user dropped something else than an draggable cell (like anchors)
+        if (!DRAG_DROPPED_STATES) {
+            console.error("The dropped data couldn't be used");
+            return
+        }
+
+        // Set the dropped states 
+        const STATES = JSON.parse(DRAG_DROPPED_STATES);
         for (const [key, value] of Object.entries(STATES)) {
             const SETTER = 'set' + this.capitalizeString(key);
             this[SETTER](value);
