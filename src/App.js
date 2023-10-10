@@ -1,4 +1,3 @@
-import './styling/board.scss';
 import { Component } from 'react';
 import Settings from './settings';
 import CellInformation from './cellInformation';
@@ -8,8 +7,8 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            pencilType: null,
-            pencilWeight: null,
+            pencilType: 'wall',
+            pencilWeight: Infinity,
             running: false,
             board: [],
             startPos: null,
@@ -73,6 +72,7 @@ class App extends Component {
                     endPos={this.state.endPos}
                     running={this.state.running}
                     pencilType={this.state.pencilType}
+                    pencilWeight={this.state.pencilWeight}
                 />
                 <CellInformation />
                 <Board
