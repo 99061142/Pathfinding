@@ -16,11 +16,26 @@
 }
 
 .dropdown-item {
+    // If the users hovers over the item that isn't currently active
     &:hover:not(.active) {
-        background-color: #28a745;
+        background-color: #28a745 !important;
     }
 
-    .active {
-        color: #212529;
+    // When the user hovers over the item
+    &:hover {
+        color: white !important;
     }
+
+    // Active item
+    &.active {
+        background-color: #0d6efd !important;
+    }
+    
+    // The standard background color is transparent
+    &:not(.active) {
+        background-color: transparent !important;
+    }
+
+    // Standard text color
+    color: #212529 !important;
 }
