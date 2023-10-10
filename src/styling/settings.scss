@@ -15,6 +15,12 @@
     border-color: transparent !important;
 }
 
-.dropdown-item.active {
-    color: #212529;
+.dropdown-item {
+    &:hover:not(.active) {
+        background-color: #28a745;
+    }
+
+    .active {
+        color: #212529;
+    }
 }
