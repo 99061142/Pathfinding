@@ -10,20 +10,22 @@ import Bfs from './algorithms/bfs';
 import Dfs from './algorithms/dfs';
 import Dijkstra from './algorithms/dijkstra';
 import AStar from './algorithms/aStar';
+import Gbfs from './algorithms/gbfs';
 
 class Run extends Component {
-
     get algorithmClass() {
         const ALGORITHM_NAME = this.props.algorithm;
         switch (ALGORITHM_NAME) {
-            case "bfs":
+            case "BFS":
                 return Bfs
-            case "dfs":
+            case "DFS":
                 return Dfs
-            case "dijkstra":
+            case "Dijkstra":
                 return Dijkstra
-            case "a*":
+            case "A*":
                 return AStar
+            case "GBFS":
+                return Gbfs
             default:
                 const ERROR_MESSAGE = `"${ALGORITHM_NAME}" is not an optional algorithm`;
                 throw Error(ERROR_MESSAGE);
@@ -49,11 +51,14 @@ class Run extends Component {
         return (
             <Button
                 className="w-100"
-                variant={this.props.running ? "danger" : "success"}
+                style={{
+                    backgroundColor: this.props.running ? "#dc3545" : "#28a745",
+                    border: "transparent"
+                }}
                 disabled={this.props.running}
                 onClick={() => this.run()}
             >
-                Run
+                Run {this.props.algorithm}
             </Button>
         );
     }
