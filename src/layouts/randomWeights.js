@@ -30,6 +30,9 @@ class RandomWeights extends Component {
             <DropdownItem
                 as={Button}
                 onClick={() => this.clicked()}
+                style={{
+                    color: this.props.algorithmWeighted ? null : "#dc3545"
+                }}
                 disabled={!this.props.algorithmWeighted}
             >
                 Random weights
