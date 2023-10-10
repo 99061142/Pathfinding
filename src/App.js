@@ -72,7 +72,6 @@ class App extends Component {
                     endPos={this.state.endPos}
                     running={this.state.running}
                     pencilType={this.state.pencilType}
-                    pencilWeight={this.state.pencilWeight}
                 />
                 <CellInformation />
                 <Board
