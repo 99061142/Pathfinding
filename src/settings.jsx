@@ -280,6 +280,7 @@ class Settings extends Component {
                             <RandomWalls
                                 board={this.props.board}
                             />
+                            <Dropdown.Divider />
                             <RandomWeights
                                 board={this.props.board}
                                 algorithmWeighted={this.state.algorithmWeighted}
