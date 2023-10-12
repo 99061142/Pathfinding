@@ -20,6 +20,3 @@
 ## Layouts
 * Random walls
 * Random weights
-
-## Note
-* This website is in the starting phase. It gets updated frequently.
