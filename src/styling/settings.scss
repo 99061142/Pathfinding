@@ -16,6 +16,11 @@
 }
 
 .dropdown-item {
+    // Only fire the dropdown item onclick event if the user clicks on a SVG inside the dropdown item
+    svg {
+        pointer-events: none
+    }
+
     // If the users hovers over the item that isn't currently active
     &:hover:not(.active) {
         background-color: #28a745 !important;
