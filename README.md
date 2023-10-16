@@ -11,14 +11,12 @@
 * Weight
 
 ## Algorithms
-* BFS
-* DFS
+* Best First Search
+* Depth First Search
 * Dijkstra
 * A*
+* Greedy Best First Search
 
 ## Layouts
 * Random walls
 * Random weights
-
-## Note
-* This website is in the starting phase. It gets updated frequently.
