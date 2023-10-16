@@ -29,7 +29,7 @@ class Settings extends Component {
             algorithmWeighted: true,
             speed: 50,
         };
-        this.pencilWeighted = null;
+        this.pencilWeighted = false;
         this.pencilDropdownMenu = createRef(null);
     }
 
@@ -145,7 +145,9 @@ class Settings extends Component {
                                 as={Button}
                             >
                                 Dijkstra
-                                <FontAwesomeIcon icon={faCheck} />
+                                <FontAwesomeIcon
+                                    icon={faCheck}
+                                />
                                 <FontAwesomeIcon
                                     icon={faWeightHanging}
                                 />
