@@ -64,11 +64,13 @@ class Settings extends Component {
 
         // Set the pencil to 'wall' if the chosen algorithm isn't weighted, but the pencil is
         // And clear all weights on the board
-        if (!ALGORITHM_WEIGHTED && this.pencilWeighted) {
-            this.pencilChanged('wall');
+        if (!ALGORITHM_WEIGHTED) {
             ClearWeights(this.props.board);
-        }
 
+            if (this.pencilWeighted) {
+                this.pencilChanged('wall');
+            }
+        }
         ClearPath(this.props.board);
     }
 
