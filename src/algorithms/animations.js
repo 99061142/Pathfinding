@@ -22,7 +22,7 @@ class Animations extends Component {
     async animateSearch() {
         for (const [pos, type] of this.animations) {
             this.setCellType(pos, type);
-            if (type === "visited") await this.sleep()
+            if (type === "visited") await this.sleep();
         }
     }
 
