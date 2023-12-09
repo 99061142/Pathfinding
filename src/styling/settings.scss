@@ -41,6 +41,9 @@
         background-color: transparent !important;
     }
 
-    // Standard text color
+    &.disabled {
+        color: #dc3545 !important;
+    }
+
     color: #212529 !important;
 }
