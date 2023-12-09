@@ -1,10 +1,37 @@
-import { Component } from "react";
+import Animations from "./animations";
 
-class Algorithm extends Component {
-    constructor(props) {
-        super(props);
-        this.boardRows = props.board.length;
-        this.boardCols = props.board.at(0).length;
+
+class Algorithm extends Animations {
+    posOutOfBoundsError(pos) {
+        // Throw an error with the information if the row and / or col are out of bounds.
+        const [ROW, COL] = pos;
+        const ROW_OUT_OF_BOUNDS = (ROW < 0 || ROW >= this.props.boardRow);
+        const COL_OUT_OF_BOUNDS = (COL < 0 || COL >= this.props.boardRowCols);
+        const ROW_ERROR = `The ROW ${ROW} is out of bounds for row length ${this.props.boardRows}.`;
+        const COL_ERROR = `The COL ${COL} is out of bounds for col length ${this.props.boardRowCols}.`;
+        if (ROW_OUT_OF_BOUNDS && COL_OUT_OF_BOUNDS) throw RangeError(ROW_ERROR + "\n" + COL_ERROR)
+        if (ROW_OUT_OF_BOUNDS) throw RangeError(ROW_ERROR)
+        if (COL_OUT_OF_BOUNDS) throw RangeError(COL_ERROR)
+        throw Error("The ROW and COL are NOT out of bounds.")
+    }
+
+    cellComponent(pos) {
+        const [ROW, COL] = pos;
+        const COMPONENT = this.props.board[ROW][COL].current;
+        if (!COMPONENT) this.posOutOfBoundsError(pos);
+        return COMPONENT
+    }
+
+    cellType(pos) {
+        const CELL_COMPONENT = this.cellComponent(pos);
+        const CELL_TYPE = CELL_COMPONENT.type;
+        return CELL_TYPE
+    }
+
+    cellWeight(pos) {
+        const CELL_COMPONENT = this.cellComponent(pos);
+        const CELL_WEIGHT = CELL_COMPONENT.weight;
+        return CELL_WEIGHT
     }
 
     neighbours(pos) {
@@ -15,111 +42,60 @@ class Algorithm extends Component {
             [0, -1],
             [-1, 0]
         ];
-        const NEIGHBOURS = DIRECTIONS.map(direction => {
-            return direction.map((val, i) => {
+
+        // Return the neighbours based on the current pos and the directions
+        // example: pos=[10,5], direction=[0,1] = [10,6] as neighbour position.
+        // The neighbour position isn't used if the position is out of bounds, or has a weight of Infinity.
+        const neighbours = [];
+        for (const direction of DIRECTIONS ) {
+            const neighbour = direction.map((val, i) => {
                 return val + pos[i]
             });
-        });
-        return NEIGHBOURS
-    }
-
-    posOutOfBoundsError(pos) {
-        // Throw an error with the information if the row and / or col is out of bounds
-        // Even if the row or col isn't out of bounds, the error gets throwed anyway
-        const [ROW, COL] = pos;
-        let rowOutOfBounds = (ROW < 0 || ROW >= this.boardRows);
-        let colOutOfBounds = (COL < 0 || COL >= this.boardCols);
-        let error = "The ";
-        error += (rowOutOfBounds && colOutOfBounds) ? "row and col" : rowOutOfBounds ? "row" : "col";
-        error += " is out of bounds.";
-        if(rowOutOfBounds) {
-            error += " (row: " + ROW + "/" + this.boardRows + ")";
+            if (
+                this.cellInBounds(neighbour) &&
+                this.cellWeight(neighbour) !== Infinity
+            ) {
+                neighbours.push(neighbour);
+            }
         }
-        if(colOutOfBounds) {
-            error += " (col: " + COL + "/" + this.boardCols + ")";
-        }
-        throw RangeError(error);
-    }
-
-    isStartPos(pos) {
-        const [START_ROW, START_COL] = this.props.startPos;
-        const [ROW, COL] = pos;
-        if(ROW === START_ROW && COL === START_COL) {
-            return true
-        }
-        return false
-    }
-
-    isEndPos(pos) {
-        const [END_ROW, END_COL] = this.props.endPos;
-        const [ROW, COL] = pos;
-        if(ROW === END_ROW && COL === END_COL) {
-            return true
-        }
-        return false
-    }
-
-    cellData(pos) {
-        const BOARD = this.props.board;
-        const [ROW, COL] = pos;
-        const CELL_DATA = BOARD[ROW][COL];
-        return CELL_DATA
-    }
-
-    cellWeight(pos) {
-        const CELL = this.cellData(pos);
-        const WEIGHT = Number(CELL.getWeight());
-        return WEIGHT
-    }
-
-    cellType(pos) {
-        const CELL = this.cellData(pos);
-        const TYPE = CELL.getType();
-        return TYPE
+        return neighbours
     }
 
     cellInBounds(pos) {
-        const BOARD = this.props.board;
         const [ROW, COL] = pos;
         if (
             ROW < 0 ||
             COL < 0 ||
-            ROW >= BOARD.length ||
-            COL >= BOARD.at(0).length
+            ROW >= this.props.boardRows ||
+            COL >= this.props.boardRowCols
         ) {
             return false
         }
         return true
     }
 
-    setCellType(pos, type) {
-        const CELL_DATA = this.cellData(pos);
-        CELL_DATA.setType(type);
-    }
-
-    async setVisited(pos) {
-        this.setCellType(pos, "visited");
-        await this.sleep();
-    }
-
-    setQueued(pos) {
-        this.setCellType(pos, "queued");
-    }
-
-    async setFastest(pos) {
-        this.setCellType(pos, "fastest");
-        await this.sleep();
-    }
-
-    sleep() {
-        const MS = 100 - this.props.getSpeed();
-        return new Promise((resolve) => setTimeout(resolve, MS));
-    }
-
-    async showRoute(route) {
-        for (const pos of route) {
-            await this.setFastest(pos);
+    isStartPos(pos) {
+        const [ROW, COL] = pos;
+        const [START_ROW, START_COL] = this.props.startPos;
+        if (
+            ROW === START_ROW &&
+            COL === START_COL
+        ) {
+            return true
         }
+        return false
+    }
+
+    isEndPos(pos) {
+        const [ROW, COL] = pos;
+        const [END_ROW, END_COL] = this.props.endPos;
+        if (
+            ROW === END_ROW &&
+            COL === END_COL
+        ) {
+            return true
+        }
+        return false
     }
 }
 
