@@ -1,11 +1,13 @@
-.cell {
-    width: 3.5vh;
+.cell,
+.cell-example {
     height: 3.5vh;
+    width: 3.5vh;
     border: 1px solid black;
 
+    // Center the SVG
     &.start,
     &.end,
-    &[data-weight='10'] {
+    &[class*="weight"] {
         background-position: center;
         background-repeat: no-repeat;
         background-size: 75%;
@@ -21,23 +23,23 @@
         background-color: #dc3545;
     }
 
-    &[data-weight='10'] {
-        background-image:url('cellIcons/weightTen.svg');
-    }
-
     &.wall {
         background-color: #343a40;
     }
 
-    &.visited {
+    &[class*="weight"] {
+        background-image:url('cellIcons/weight.svg');
+    }
+
+    &[class*="visited"] {
         background-color: lightskyblue;
     }
 
-    &.queued {
+    &[class*="queued"] {
         background-color: lightpink;
     }
 
-    &.fastest {
+    &[class*="route"] {
         background-color: yellow;
     }
 }
