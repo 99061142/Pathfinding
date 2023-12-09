@@ -74,9 +74,9 @@ class Dijkstra extends Algorithm {
             
             // If the current position is the end position, show and return the route
             if (this.isEndPos(CURRENT)) {
-                const ROUTE = this.route;
-                await this.showRoute(ROUTE);
-                return ROUTE
+                await this.animateSearch();
+                await this.animateRoute(this.route);
+                return
             }
 
             const NEIGHBOURS = this.neighbours(CURRENT);
@@ -101,18 +101,31 @@ class Dijkstra extends Algorithm {
                     parent: CURRENT
                 };
 
-                // Queue the position and set the element as 'queued' if the neighbour position isn't the end position
+                // Queue the position
+                // and set the element as 'queued' if the neighbour position isn't the end position
                 this._queue.push(neighbour);
                 if (!this.isEndPos(neighbour)) {
-                    this.setQueued(neighbour);
+                    // Push a list with the position and 'queued' to the animations list
+                    // to show the user how the algorithm is working/
+                    // The first list value is the position of the cell, and the second is the type what the cell gets
+                    this.animations.push([
+                        neighbour, 
+                        "queued"
+                    ]);
                 }
             }
 
-            // Set the element as 'visited' if the current position isn't the start position
             if (!this.isStartPos(CURRENT)) {
-                await this.setVisited(CURRENT);
+                // Push a list with the position and 'visited' to the animations list 
+                // to show the user how the algorithm is working
+                // The first list value is the position of the cell, and the second is the type what the cell gets
+                this.animations.push([
+                    CURRENT,
+                    "visited"
+                ]);
             }
         }
+        await this.animateSearch();
     }
 }
 

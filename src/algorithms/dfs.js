@@ -40,9 +40,9 @@ class Dfs extends Algorithm {
 
             // If the current position is the end position, show and return the route
             if (this.isEndPos(CURRENT)) {
-                const ROUTE = this.route;
-                await this.showRoute(ROUTE);
-                return ROUTE
+                await this.animateSearch();
+                await this.animateRoute(this.route);
+                return
             }
 
             const NEIGHBOURS = this.neighbours(CURRENT)
@@ -60,15 +60,28 @@ class Dfs extends Algorithm {
                 queue.push(neighbour);
                 if (!this.isEndPos(neighbour)) {
                     this._notMovablePositions.push(neighbour.join(','));
-                    this.setQueued(neighbour);
+                    
+                    // Push a list with the position and 'queued' to the animations list
+                    // to show the user how the algorithm is working/
+                    // The first list value is the position of the cell, and the second is the type what the cell gets
+                    this.animations.push([
+                        neighbour, 
+                        "queued"
+                    ]);
                 }
             }
 
-            // Set the element as 'visited' if the current position isn't the start position
             if (!this.isStartPos(CURRENT)) {
-                await this.setVisited(CURRENT);
+                // Push a list with the position and 'visited' to the animations list 
+                // to show the user how the algorithm is working
+                // The first list value is the position of the cell, and the second is the type what the cell gets
+                this.animations.push([
+                    CURRENT,
+                    "visited"
+                ]);
             }
         }
+        await this.animateSearch();
     }
 }
 

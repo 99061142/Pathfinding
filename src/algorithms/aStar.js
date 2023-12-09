@@ -20,7 +20,7 @@ class AStar extends Algorithm {
     }
 
     g(pos) {
-        // Cheapest path from start to pos
+        // ~ Cost to go from start to pos
         const [ROW, COL] = pos;
         const [START_ROW, START_COL] = this.props.startPos;
         const COL_COST = Math.abs(COL - START_COL);
@@ -30,7 +30,7 @@ class AStar extends Algorithm {
     }
 
     h(pos) {
-        // ~ Cost to go to the end position from pos
+        // ~ Cost to go from pos to end
         const [ROW, COL] = pos;
         const [END_ROW, END_COL] = this.props.endPos;
         const COL_COST = Math.abs(COL - END_COL);
@@ -48,7 +48,7 @@ class AStar extends Algorithm {
                 return i
             }
         }
-        this.posOutOfBoundsError();
+        throw Error(`The pos ${pos} isn't queued.`);
     }
 
     dequeue(pos) {
@@ -75,22 +75,13 @@ class AStar extends Algorithm {
             const QUEUED_POS_F_COST = this._path[queuedPos].f;
             if(
                 QUEUED_POS_F_COST < lowestFCost ||
-                (QUEUED_POS_F_COST == lowestFCost && this.h(pos) < this.h(queuedPos))
+                (QUEUED_POS_F_COST === lowestFCost && this.h(pos) < this.h(queuedPos))
             ) {
                 lowestFCost = QUEUED_POS_F_COST;
                 pos = queuedPos;
             }
         }
         return pos
-    }
-
-    canMove(pos) {
-        if(!this.cellInBounds(pos) || 
-            this.cellWeight(pos) === Infinity
-        ) {
-            return false
-        }
-        return true
     }
 
     async run() {
@@ -101,18 +92,13 @@ class AStar extends Algorithm {
 
             // If the current position is the end position, show and return the route
             if(this.isEndPos(CURRENT)) {
-                const ROUTE = this.route;
-                await this.showRoute(ROUTE);
-                return ROUTE
+                await this.animateSearch();
+                await this.animateRoute(this.route);
+                return
             }
 
             const NEIGHBOURS = this.neighbours(CURRENT);
             for(let neighbour of NEIGHBOURS) {
-                // If the position is not movable, continue
-                if(!this.canMove(neighbour)) {
-                    continue
-                }
-
                 // Get the tentative G score based on the saved G cost of the current position (parent of neighbour) + cell cost
                 const TENTATIVE_G_SCORE = this._path[CURRENT].g + this.cellWeight(neighbour);
                 
@@ -133,18 +119,30 @@ class AStar extends Algorithm {
                     continue
                 }
 
-                // Queue the position, and set the element as 'queued' if the neighbour position isn't the end position
+                // Queue the position
+                // and set the element as 'queued' if the neighbour position isn't the end position
                 this._queue.push(neighbour)
+
                 if(!this.isEndPos(neighbour)) {
-                    this.setQueued(neighbour);
+                    // Push a list with the position and type to the animations list to show the user how the algorithm is working.
+                    // The first list value is the position of the cell, and the second is the type what the cell gets
+                    this.animations.push([
+                        neighbour,
+                        "queued"
+                    ]);
                 }
             }
 
-            // Set the element as 'visited' if the current position isn't the start position
             if(!this.isStartPos(CURRENT)) {
-                await this.setVisited(CURRENT);
+                // Push a list with the position and type to the animations list to show the user how the algorithm is working.
+                // The first list value is the position of the cell, and the second is the type what the cell gets
+                this.animations.push([
+                    CURRENT,
+                    "visited"
+            ]);
             }
         }
+        await this.animateSearch();
     }
 }
 
