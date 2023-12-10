@@ -24,6 +24,8 @@ class Cell extends Component {
         for (const [state, stateValue] of Object.entries(states)) {
             // If there is no setter for the state, throw an error, else set the state value
             if (this[state] === undefined) throw Error(`There is no state setter for "${state}"`)
+
+            // eslint-disable-next-line react/no-direct-mutation-state
             this[state] = stateValue;
         }
     }
