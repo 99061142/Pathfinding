@@ -1,9 +1,9 @@
 import { Component, createRef } from 'react';
-import { Col, Container, Row, FormGroup, FormLabel, Dropdown, Button } from 'react-bootstrap'
-import FormRange from 'react-bootstrap/esm/FormRange';
-import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
-import DropdownItem from 'react-bootstrap/esm/DropdownItem';
-import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+import { Col, Container, Row, FormGroup, FormLabel, Dropdown, Button } from 'react-bootstrap';
+import FormRange from 'react-bootstrap/FormRange';
+import DropdownMenu from 'react-bootstrap/DropdownMenu';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import DropdownToggle from 'react-bootstrap/DropdownToggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faWeightHanging } from '@fortawesome/free-solid-svg-icons';
 import './styling/settings.scss';
@@ -18,7 +18,6 @@ class Settings extends Component {
             pencilIndex: 1 // Wall
         };
         this.speedRef = createRef(null);
-        this.speed = null; // Set when component did mount (default value of speed range)
         this.pencils = [
             {
                 name: "erase",
@@ -77,10 +76,6 @@ class Settings extends Component {
                 guaranteed_shortest_path: false
             }
         ];
-    }
-
-    componentDidMount() {
-        this.speed = Number(this.speedRef.current.value);
     }
 
     get running() {
@@ -145,11 +140,6 @@ class Settings extends Component {
         this.algorithmIndex = algorithmIndex;
     }
 
-    speedChanged(ev) {
-        const SPEED = Number(ev.target.value);
-        this.speed = SPEED;
-    }
-
     get pencilType() {
         const PENCIL_TYPE = this.state.pencilType;
         return PENCIL_TYPE
@@ -188,7 +178,8 @@ class Settings extends Component {
                         onSelect={(algorithmIndex) => this.algorithmChanged(Number(algorithmIndex))}
                     >
                         <DropdownToggle
-                            id="this.algorithms"
+                            data-testid="algorithms"
+                            id="algorithms"
                             className={
                                 "w-100 m-0 text-center btn btn-dark" +
                                 (this.state.running ? " text-danger" : '')
@@ -201,6 +192,7 @@ class Settings extends Component {
                             {this.algorithms
                                 .map((algorithm, i) =>
                                     <DropdownItem
+                                        data-testid="algorithm-option"
                                         active={this.state.algorithmIndex === i}
                                         eventKey={i}
                                         as={Button}
@@ -235,7 +227,6 @@ class Settings extends Component {
                         <FormRange
                             ref={this.speedRef}
                             defaultValue={50}
-                            onChange={(ev) => this.speedChanged(ev)}
                             id="speed"
                             max={99}
                         />
@@ -246,7 +237,6 @@ class Settings extends Component {
                     >
                         <Run
                             speedRef={this.speedRef}
-                            getSpeed={() => this.speed}
                             setRunning={this.setRunning}
                             algorithm={this.algorithm}
                             running={this.state.running}

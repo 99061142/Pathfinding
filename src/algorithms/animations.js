@@ -28,7 +28,8 @@ class Animations extends Component {
 
     async sleep() {
         // SLeep X ms based on the current speed [1, 100]
-        const MS = Number(this.props.speedRef.current.max) + 1 - this.props.getSpeed();
+        const SPEED_REF = this.props.speedRef.current;
+        const MS = Number(SPEED_REF.max) + 1 - Number(SPEED_REF.value);
         return new Promise((resolve) => setTimeout(resolve, MS));
     }
 }
