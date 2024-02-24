@@ -34,7 +34,6 @@ class Run extends Component {
 
         await new this.algorithm({
             speedRef: this.props.speedRef,
-            getSpeed: this.props.getSpeed,
             board: board.cells,
             boardRows: board.rows,
             boardRowCols: board.rowCols,
