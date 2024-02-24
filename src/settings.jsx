@@ -341,7 +341,7 @@ class Settings extends Component {
                     </Dropdown>
                 </Row>
             </Container>
-        )
+        );
     }
 }
 
