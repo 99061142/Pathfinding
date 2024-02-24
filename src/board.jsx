@@ -56,8 +56,10 @@ class Board extends Component {
             for (const col of row) {
                 const cell = col.current;
                 if (cell.type !== "wall") continue
-                cell.type = '';
-                cell.weight = 1;
+                cell.states = {
+                    type: '',
+                    weight: 1
+                };
             }
         }
     }
@@ -68,8 +70,10 @@ class Board extends Component {
             for (const col of row) {
                 const cell = col.current;
                 if (!cell.type.includes('weight')) continue
-                cell.type = '';
-                cell.weight = 1;
+                cell.states = {
+                    type: '',
+                    weight: 1
+                };
             }
         }
     }
@@ -101,8 +105,10 @@ class Board extends Component {
                     cell.type !== "start" &&
                     cell.type !== "end"
                 ) {
-                    cell.type = '';
-                    cell.weight = 1;
+                    cell.states = {
+                        type: '',
+                        weight: 1
+                    };
                 }
             }
         }
@@ -122,8 +128,10 @@ class Board extends Component {
                     cell.type !== "start" &&
                     cell.type !== "end"
                 ) {
-                    cell.type = "wall";
-                    cell.weight = Infinity;
+                    cell.states = {
+                        type: "wall",
+                        weight: Infinity
+                    };
                 }
             }
         }
@@ -143,8 +151,10 @@ class Board extends Component {
                     cell.type !== "start" &&
                     cell.type !== "end"
                 ) {
-                    cell.type = "weight";
-                    cell.weight = 10;
+                    cell.states = {
+                        type: "weight",
+                        weight: 10
+                    };
                 }
             }
         }
